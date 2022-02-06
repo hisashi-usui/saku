@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+    <title>UCJS20211229.cdy</title>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #CSConsole {
+            background-color: #FAFAFA;
+            border-top: 1px solid #333333;
+            bottom: 0px;
+            height: 200px;
+            overflow-y: scroll;
+            position: fixed;
+            width: 100%;
+        }
+    </style>
+
+<!--
+    <link rel="stylesheet" href="https:/cindyjs.org/dist/v0.8/CindyJS.css">
+    <script type="text/javascript" src="https://cindyjs.org/dist/v0.8/Cindy.js"></script>
+-->
+
+    <link rel="stylesheet" href="cindyjs/CindyJS.css">
+    <script type="text/javascript" src="cindyjs/Cindy.js"></script>
+
+<script id="csinit" type="text/x-cindyscript">
+
+createtool([["Move","Delete","Point", "Intersection", "Mid", "Compass","Line", "Segment", "Parallel", "Orthogonal","Circle"]],2,2,//flipped->true,
+reference->"UL");
+
+Dq=unicode("0022");
+Cr=unicode("000a");
+sample=0;
+realtime=0;
+start3d=0;
+axes3d=0;
+allback=0;
+axes=0;
+grid=0;
+surff=0;
+
+Stop():=(
+ surff=mod(surff+1,3);
+);
+
+JSprint(cstext):=(
+ if(isstring(cstext),,cstext=text(cstext));
+ javatext=replace(cstext,"\","\\");
+ javatext=replace(javatext,Cr,"\n");
+ javascript("document.getElementById("+Dq+"kakidashi"+Dq+").value +="+Dq+javatext+Dq);
+);
+
+JSprintln(cstext):=(
+ if(isstring(cstext),,cstext=text(cstext));
+ javatext=replace(cstext,"\","\\");
+ javatext=replace(javatext,Cr,"\n");
+ javatext=replace(javatext,"[DQ]","\"+Dq);
+ javascript("document.getElementById("+Dq+"kakidashi"+Dq+").value +="+Dq+javatext+"\n"+Dq);
+);
+
+bordera(para,range):=(
+ regional(br);
+ br=curve3d(replace(para,[["u","("+text(range_1)+")"],["v","t"]]),[range_3,range_4]);
+ br=concat(br,curve3d(replace(para,[["u","t"],["v","("+text(range_4)+")"]]),[range_1,range_2]));
+ br=concat(br,reverse(curve3d(replace(para,[["u","("+text(range_2)+")"],["v","t"]]),[range_3,range_4])));
+ br=concat(br,reverse(curve3d(replace(para,[["u","t"],["v","("+text(range_3)+")"]]),[range_1,range_2])));
+ br;
+);
+
+Uinter1(mdata1,mdata2):=(
+ regional(l1,l2,i1,i2,ans,ans1);
+ ans=[];
+ data1=sort(mdata1,#_1);
+ data2=sort(mdata2,#_1);
+ l1=length(data1);l2=length(data2);
+if(l1*l2>0,
+ i1=1;i2=1;
+ if(data1_i1_1<data2_i2_1,
+  while(data1_(i1+1)_1<data2_i2_1 & i1<l1,i1=i1+1),
+  while(data2_(i2+1)_1<data1_i1_1 & i2<l2,i2=i2+1)
+ );
+ while(i1<l1 & i2<l2,
+  ans1=Useginter([data1_i1,data1_(i1+1)],[data2_i2,data2_(i2+1)]);
+  if(isreal(ans1_1),ans=append(ans,ans1));
+  if(data1_(i1+1)_1<data2_(i2+1)_1,i1=i1+1,i2=i2+1);
+ );
+ ans=Uset(ans);
+);
+ ans;
+);
+
+Uinterplus1(mdata1,mdata2):=(
+ regional(l1,l2,i1,i2,ans,ans1);
+ ans=[];
+ data1=sort(mdata1,#_1);
+ data2=sort(mdata2,#_1);
+ l1=length(data1);l2=length(data2);
+if(l1*l2>0,
+ i1=1;i2=1;
+ if(data1_i1_1<data2_i2_1,
+  while(data1_(i1+1)_1<data2_i2_1 & i1<l1,i1=i1+1),
+  while(data2_(i2+1)_1<data1_i1_1 & i2<l2,i2=i2+1)
+ );
+ while(i1<l1 & i2<l2,
+  ans1=Useginter([data1_i1,data1_(i1+1)],[data2_i2,data2_(i2+1)]);
+  if(isreal(ans1_1),ans=append(ans,[ans1,i1,i2]));
+  if(data1_(i1+1)_1<data2_(i2+1)_1,i1=i1+1,i2=i2+1);
+ );
+ ans=Uset(ans);
+);
+ ans;
+);
+
+oneway(data):=(
+ regional(list,list1,i,l);
+ list=[];l=length(data);list1=[data_1,data_2];
+ if(data_2_1>=data_1_1,c=1,c=-1);
+ i=2;
+ while(i<l,
+  if(c*data_(i+1)_1>=c*data_i_1,
+   list1=append(list1,data_(i+1));
+  ,
+   list=append(list,list1);
+   list1=[data_i,data_(i+1)];
+   c=c*(-1);
+  ); 
+  i=i+1;
+ );
+ list=append(list,list1);
+);
+
+Uinter23(mdata1,mdata2):=(
+ regional(l1,l2,i1,i2,ans,ans1,a1,a2,b1,b2,pt,data1,data2);
+ ans=[];
+ data1=sort(mdata1,#_1);
+ data2=sort(mdata2,#_1);
+ l1=length(data1);l2=length(data2);
+if(l1*l2>0,
+ i1=1;i2=1;
+ if(data1_i1_1<data2_i2_1,
+  while(data1_(i1+1)_1<data2_i2_1 & i1<l1,i1=i1+1),
+  while(data2_(i2+1)_1<data1_i1_1 & i2<l2,i2=i2+1)
+ );
+ while(i1<l1 & i2<l2,
+  a1=data1_i1;b1=data1_(i1+1);
+  a2=data2_i2;b2=data2_(i2+1);
+  pt=Useginter([[a1_1,a1_2],[b1_1,b1_2]],[[a2_1,a2_2],[b2_1,b2_2]]);
+  if(pt==[],ans1=[],
+   if(b1_2==a1_2,
+    c1=a1_3+(b1_3-a1_3)*(pt_1-a1_1)/(b1_1-a1_1),
+    c1=a1_3+(b1_3-a1_3)*(pt_2-a1_2)/(b1_2-a1_2)
+   );
+   if(b2_2==a2_2,
+    c2=a2_3+(b2_3-a2_3)*(pt_1-a2_1)/(b2_1-a2_1),
+    c2=a2_3+(b2_3-a2_3)*(pt_2-a2_2)/(b2_2-a2_2)
+   );
+   ans1=[pt,c1,c2];
+   if(isreal(ans1_1_1),ans=append(ans,ans1));
+  );
+  if(data1_(i1+1)_1<data2_(i2+1)_1,i1=i1+1,i2=i2+1);
+ );
+ ans=Uset23(ans);
+);
+ ans;
+);
+
+Uset23(data):=(
+ regional(eps,ans,i1);
+ eps=0.05;
+ ans=set(data);
+ ans=sort(ans,#_1_1*100+#_1_2);
+ i1=1;
+ while(i1<length(ans),
+  if(dist(ans_i1_1,ans_(i1+1)_1)<eps,
+   ans=remove(ans,[ans_(i1+1)]);
+   i1=i1-1;
+  );
+  i1=i1+1;
+ );
+ ans;
+);
+
+Uinter23plus(mdata1,mdata2):=(
+ regional(l1,l2,i1,i2,ans,ans1,a1,a2,b1,b2,pt,data1,data2);
+ ans=[];
+ data1=[];
+ repeat(length(mdata1),i,
+  data1=append(data1,[mdata1_i,i]);
+ );
+ data1=sort(data1,#_1_1);
+ data2=[];
+ repeat(length(mdata2),i,
+  data2=append(data2,[mdata2_i,i]);
+ );
+ data2=sort(data2,#_1_1);
+ l1=length(data1);l2=length(data2);
+if(l1*l2>0,
+ i1=1;i2=1;
+ if(data1_i1_1_1<data2_i2_1_1,
+  while(data1_(i1+1)_1_1<data2_i2_1_1 & i1<l1,i1=i1+1),
+  while(data2_(i2+1)_1_1<data1_i1_1_1 & i2<l2,i2=i2+1)
+ );
+ while(i1<l1 & i2<l2,
+  a1=data1_i1_1;b1=data1_(i1+1)_1;
+  a2=data2_i2_1;b2=data2_(i2+1)_1;
+  pt=Useginter([[a1_1,a1_2],[b1_1,b1_2]],[[a2_1,a2_2],[b2_1,b2_2]]);
+  if(pt==[],ans1=[],
+   if(b1_2==a1_2,
+    c1=a1_3+(b1_3-a1_3)*(pt_1-a1_1)/(b1_1-a1_1),
+    c1=a1_3+(b1_3-a1_3)*(pt_2-a1_2)/(b1_2-a1_2)
+   );
+   if(b2_2==a2_2,
+    c2=a2_3+(b2_3-a2_3)*(pt_1-a2_1)/(b2_1-a2_1),
+    c2=a2_3+(b2_3-a2_3)*(pt_2-a2_2)/(b2_2-a2_2)
+   );
+   ans1=[pt,c1,c2,data1_i1_2,data2_i2_2];
+   if(isreal(ans1_1_1),ans=append(ans,ans1));
+  );
+  if(data1_(i1+1)_1_1<data2_(i2+1)_1_1,i1=i1+1,i2=i2+1);
+ );
+ ans=Uset23(ans);
+);
+ ans;
+);
+
+cut(para,range,data1,data2):=cut(para,range,data1,data2,[]);
+cut(para,range,data1,data2,option1):=(
+ regional(ans,i,sp,b,c,j,ocl,oc1,oc2,oc3);
+ ans=Uinter23(list3d(data1),list3d(data2));
+ repeat(length(ans),i,
+  if(abs(ans_i_2-ans_i_3)>0.05,
+   ocl=[invmap3d(append(ans_i_1,-5)),invmap3d(append(ans_i_1,5))];
+   oc1=intersl1(para,range,ocl);
+   oc2=list3d(oc1);
+   oc3=sort(oc2,-#_3);
+   sp=Uparamlist("ans_i_1+0.1*[cos(t),sin(t)]","[0,2*pi]");
+   Ulistplot(sp,["Thick=0","Shade=0"]);
+   if(ans_i_2>ans_i_3,
+    c=Uinter(list2d(data1),sp_1),
+    c=Uinter(list2d(data2),sp_1)
+   );
+   b=[];
+   repeat(length(c),j,
+    if(islist(c_j),b=append(b,c_j));
+   );
+   if(oc3==[],Ulistplot([b_1,ans_i_1,b_2],option1),
+    if(oc3_1_3>max(ans_i_2,ans_i_3),
+     Ulistplot([b_1,ans_i_1,b_2],append(option1,"do")),
+     Ulistplot([b_1,ans_i_1,b_2],option1)
+    );
+   );
+  );
+ );
+);
+
+line23(data1,data2):=(
+ regional(a1,b1,a2,b2,c1,c2,pt,ans);
+ a1=map3d(data1_1);b1=map3d(data1_2);
+ a2=map3d(data2_1);b2=map3d(data2_2);
+ pt=Useginter([[a1_1,a1_2],[b1_1,b1_2]],[[a2_1,a2_2],[b2_1,b2_2]]);
+if(pt==[],ans=[],
+ if(b1_2==a1_2,
+  c1=a1_3+(b1_3-a1_3)*(pt_1-a1_1)/(b1_1-a1_1),
+  c1=a1_3+(b1_3-a1_3)*(pt_2-a1_2)/(b1_2-a1_2)
+ );
+ if(b2_2==a2_2,
+  c2=a2_3+(b2_3-a2_3)*(pt_1-a2_1)/(b2_1-a2_1),
+  c2=a2_3+(b2_3-a2_3)*(pt_2-a2_2)/(b2_2-a2_2)
+ );
+ ans=[pt,c1,c2];
+);
+ans;
+);
+
+backline(para,range,data):=(
+ regional(f,ans,ans1,ans2,ans3,bbb,i,j,pt,ocl,oc1,oc2,oc3,env);
+ ans1=concat(data,intersl1(para,range,data));
+ bbb=border(para,range);
+ env=envelope(para,range,["numu=30","numv=30"]);
+ bbb=append(bbb,env);
+ repeat(5,i,
+  ans2=Uinter23(list3d(data),list3d(bbb_i));
+  repeat(length(ans2),j,
+   ans3=append(ans2_j_1,ans2_j_2);
+   ans1=append(ans1,invmap3d(ans3));
+  );
+ );
+ ans=sort(ans1,#_1*10000+#_2*100+#_3);
+ repeat(length(ans)-1,i,
+  pt=(ans_i+ans_(i+1))/2;
+  ocl=[invmap3d(append(map2d(pt),-5)),invmap3d(append(map2d(pt),5))];
+  oc1=intersl1(para,range,ocl);
+  oc2=list3d(oc1);
+  oc3=sort(oc2,-#_3);
+  if(oc3==[],
+   Ulistplot([map2d(ans_i),map2d(ans_(i+1))],["dr"]),
+  if(oc3_1_3>map3d(pt)_3,
+   Ulistplot([map2d(ans_i),map2d(ans_(i+1))],["do"]),
+   Ulistplot([map2d(ans_i),map2d(ans_(i+1))],["dr"])
+  );
+  );
+ );
+);
+
+backborder(bbb):=(
+ regional(f,ans,ans1,ans2,ans3,ans4,i,j,k,pt,ocl,oc1,oc2,oc3,st,env);
+ repeat(5,i,
+  ans1=[];ans=[];
+  repeat(5,j,
+   if(i==j,,
+    ans2=Uinter23plus(list3d(bbb_i),list3d(bbb_j));
+    repeat(length(ans2),k,
+     if(ans2_k_4>1,
+      ans3=append(ans2_k_1,ans2_k_2);
+      ans1=append(ans1,[invmap3d(ans3),ans2_k_4]);
+     );
+    );
+   );
+  );
+  ans4=sort(ans1,#_2);
+ ans4=append(ans4,[bbb_i_(length(bbb_i)),length(bbb_i)]);
+  st=1;
+  repeat(length(ans4),j,
+   ans5=partlist(bbb_i,st,ans4_j_2);
+   ans=append(ans,ans5);
+   st=ans4_j_2;
+  );
+  repeat(length(ans),j,
+   pt=floor(length(ans_j)/2);
+   ocl=[invmap3d(append(map2d(ans_j_pt),-5)),invmap3d(append(map2d(ans_j_pt),5))];
+   oc1=intersl1(para,range,ocl);
+   oc2=list3d(oc1);
+   oc3=sort(oc2,-#_3);
+   if(oc3==[],
+    Ulistplot(list2d(ans_j),["dr"]);
+,
+    if(oc3_1_3>map3d(ans_j_pt)_3+0.05,
+     Ulistplot(list2d(ans_j),["do"]);
+,
+     Ulistplot(list2d(ans_j),["dr"]);
+    );
+   );
+  );
+ );
+);
+
+intersl1(para,range,data):=intersl1(para,range,data,5);
+intersl1(para,range,data,rep):=(
+ regional(f,ep,p1,p2,p3,v1,v2,v3,ans);
+ ep=0.005;ans=[];
+ f(u,v):=parse(para)_3;
+ dp=(data_2-data_1)/rep;
+ p1=data_1;
+ repeat(rep,
+  p2=p1+dp;
+  v1=p1_3-f(p1_1,p1_2);v2=p2_3-f(p2_1,p2_2);
+  if(v1*v2<0,
+   while(abs(v1)>ep,
+    p3=(p1+p2)/2;
+    v3=p3_3-f(p3_1,p3_2);
+    if(v1*v3<0,p2=p3;v2=v3,p1=p3;v1=v3);
+   );
+   if(p3_1>range_1-ep & p3_1<range_2+ep & p3_2>range_3-ep & p3_2<range_4+ep,ans=append(ans,p3));
+  );
+  p1=p2;
+ );
+ ans;
+);
+
+surface3df(f,para,range):=surface3df(f,para,range,[]);
+surface3df(f,para,range,option):=(
+ regional(bbb,xax,yax,zax,ax,i,j,k.env);
+ if(f==0,
+  allback=0;
+  surface3d(para,range,option)
+ ,
+  env=envelope(para,range,["numu=30","numv=30"]);
+  bbb=border(para,range);
+  bbb=append(bbb,env);
+  if(f==1,
+   allback=0;
+   repeat(5,i,
+    connect(list2d(bbb_i));
+   );
+  ,
+   allback=1;
+   xax=[[-5,0,0],[5,0,0]];
+   yax=[[0,-5,0],[0,5,0]];
+   zax=[[0,0,-5],[0,0,5]];
+   ax=[xax,yax,zax];
+   backborder(bbb);
+   repeat(3,i,
+    backline(para,range,ax_i);
+    repeat(5,j,
+     cut(para,range,ax_i,bbb_j);
+    );
+   );
+   repeat(5,i,
+    repeat(5,j,
+     cut(para,range,bbb_i,bbb_j);
+    );
+   );
+  );
+ );
+);
+
+envelope(para,range):=envelope(para,range,[]);
+envelope(para,range,option):=(
+ regional(f,e0,e1,e2,d0,d1,d2,c1,c2,list,elist,u,v,sta1,sto1,sta2,sto2,num,numu,numv,au1,av1,au2,av2,b1,b2,list0,list1,ss,ans,ans1);
+ kaku=mod(arctan2(RY-CRY)-pi/6,pi/2);
+ f(u,v):=parse(para);
+ list=[];num=50;numu=10;numv=10;
+ Color=[0,0,1];size=1;dashtype=0;
+ forall(option,parse(#));
+ sta1=range_1;sto1=range_2;
+ sta2=range_3;sto2=range_4;
+ d0=(sto2-sta2)/num;
+ d2=d0*sin(kaku);
+ d1=d0*cos(kaku);
+ e0=(sto1-sta1)/numu;
+ e2=e0/cos(kaku);
+ e1=e0/sin(kaku);
+ ss=sto2;list1=[];
+ while(ss>=sta2,
+  list0=list1;
+  list1=[];c1=sta1;c2=ss;
+  while(c1<=sto1 & c2<=sto2,
+   list1=append(list1,map3d(f(c1,c2)));
+   c2=c2+d2;c1=c1+d1;
+  );
+  UUU=Uinter23(list0,list1);
+  list=concat(list,UUU);
+  ss=ss-e2;
+ );
+ while(ss<=sto1,
+  list0=list1;
+  list1=[];c1=ss;c2=sta2;
+  while(c1<=sto1 & c2<=sto2,
+   list1=append(list1,map3d(f(c1,c2)));
+   c2=c2+d2;c1=c1+d1;
+  );
+  UUU=Uinter23(list0,list1);
+  list=concat(list,UUU);
+  ss=ss+e1;
+ );
+ ans=[];
+ repeat(length(list),i,
+  ans1=invmap3d(append(list_i_1,(list_i_2+list_i_3)/2));
+  ans=append(ans,ans1);
+ );
+ ans;
+);
+
+spacelist=[
+[[5.5,4.5],"start3d=1;","空間"],
+[[5.5,2.5],"draw(map2d([1,2,3]));","点"],
+[[5.5,1.5],"draw([map2d([1,0,1]),map2d([2,2,2])]);","線"],
+[[7.5,1.5],"ccc=curve3d([DQ][cos(t),sin(t),t][DQ],[-5,5]);"+Cr+"connect(list2d(ccc));","曲線"],
+[[5.5,0.5],"surface3d([DQ][u,v,(u^2-v^2)/6][DQ],[-3,3,-3,3]);","曲面"],
+[[7.5,0.5],"para=[DQ][u,v,(u^2-v^2)/6+0.5][DQ];"+Cr+"range=[-3,3,-3,3];"+Cr+"bbb=border(para,range);"+Cr+"connect(list2d(bbb_1));"+Cr+"connect(list2d(bbb_2));"+Cr+"connect(list2d(bbb_3));"+Cr+"connect(list2d(bbb_4));"+Cr+"e1=envelope(para,range,[[DQ]numu=30[DQ],[DQ]numv=30[DQ]]);"+Cr+"connect(list2d(e1));","ワク"],
+[[5.5,-0.5],"para=[DQ][u,v,(u^2-v^2)/6+0.5][DQ];"+Cr+"range=[-3,3,-3,3];"+Cr+"surface3df(surff,para,range);"+Cr+"//動かして 0 を 1 に","曲面陰線"]
+];
+
+eqlist=[
+[[5.2,4.5],"drawtext([-4,4],[DQ]$
+
+$[DQ]);"],
+[[5.2,1.5],"\dfrac{a}{b}"],
+[[7.2,1.5],"\displaystyle \sum_{n=1}^{\infty}"],
+[[5.2,0.5],"a_1+\cdots+a_n"],
+[[8.2,0.5],"\displaystyle \lim_{x \to \infty}"],
+[[5.2,-0.7],"\displaystyle \int_{a}^{b}"],
+[[7.2,-0.7],"\left[\dfrac{1}{3}x^3 \right]_{a}^{b}"],
+[[5.2,-2],"\dfrac{\partial z}{\partial x}"],
+[[7.2,-2],"\left(\begin{array}{cc}
+a & b \\
+c & d \end{array} \right)"],
+[[5.2,-3],"f(x)=\left\{\begin{array}{cc}
+-x & (x \leq 0) \\
+ x & (x \geq 0) \end{array} \right."],
+[[5.2,-4],"e^{i \theta}=\cos \theta +i \sin \theta"]
+];
+
+sclist=[
+[[5.5,4.5],
+"Ulistplot([[-2,-1],[1,0],[0,2]],[[DQ]do[DQ],[DQ]Thick=3[DQ],[DQ]Color=[0,1,0][DQ]]);",
+"描画"],
+[[5.5,3.5],
+"graph1=Ufunctionlist([DQ]sin(x)[DQ]);"+Cr+"Ulistplot(graph1,[[DQ]do[DQ],[DQ]Thick=3[DQ],[DQ]Color=[0,1,0][DQ]]);",
+"グラフ"],
+[[5.5,2.5],
+"param1=Uparamlist([DQ][2*cos(t),sin(t)][DQ],[DQ][0,2*pi][DQ]);"+Cr+"Ulistplot(param1,[[DQ]Color=[0,0,1][DQ]]);",
+"媒介変数"],
+[[5.5,1.5],
+"param1=Uparamlist([DQ][2*cos(t),sin(t)][DQ],[DQ][0,2*pi][DQ]);"+Cr+"Ulistplot(param1,[[DQ]Shade=0.2[DQ]]);",
+"シェイド"],
+[[8,1.5],
+"param1=Uparamlist([DQ][2*cos(t),sin(t)][DQ],[DQ][0,2*pi][DQ]);"+Cr+"Ulistplot(param1,[]);"+Cr+"walllist=[nesw];"+Cr+"walllist=concat(walllist,param1);"+Cr+"Uhatch(walllist,[1,2],[1,-1],0.3,[[DQ]Thick=0.3[DQ]]);",
+"ハッチ"],
+[[5.5,0.5],
+"line1=Ulinelist([[0,1],[2,2]]);"+Cr+"Ulistplot(line1);",
+"直線"],
+[[7.5,0.5],
+"circle1=Ucirclelist([[1,1],[2,2]]);"+Cr+"Ulistplot(circle1);",
+"円"],
+[[5.5,-0.5],
+"Ubow([[1,1],[2,2]],[[DQ]do[DQ],[DQ]Bowsize=0.5[DQ],[DQ]Expr=a[DQ],[DQ]ExDir=c[DQ],[DQ]ExPos=[0.05,0.06][DQ],[DQ]ExSpace=0.4[DQ]]);",
+"bow"],
+[[7.5,-0.5],
+"spline1=Ubsplinelist([[2,-1],[4,1],[-1,2]]);"+Cr+"Ulistplot(spline1);",
+"スプライン"],
+[[5.5,-1.5],
+"Udrawpt([3,1],0.1);",
+"点"],
+[[7.3,-1.5],
+"param1=Uparamlist([DQ][2*cos(t),sin(t)][DQ],[DQ][0,pi/2][DQ]);"+Cr+"Ulistplot(param1);"+Cr+"Uarrow(param1_1,[[DQ]Size=5[DQ],[DQ]Width=1[DQ],[DQ]Type=0[DQ]]);",
+"矢印"],
+[[5.5,-2.5],
+"Uangle([[1,0],[0,0],[1,2]],[[DQ]Size=0.3[DQ],[DQ]ExDir=ne[DQ],[DQ]Expr=\theta[DQ],[DQ]ExPos=[0.1,0][DQ]]);",
+"角"],
+[[7.3,-2.5],
+"Urect([[1,0],[0,0],[1,2]],[[DQ]Size=0.2[DQ]]);",
+"直角"],
+[[5.5,-3.5],
+"Uaddax();",
+"座標軸"],
+[[7.5,-3.5],
+"Uletter([1,1],[DQ]ne[DQ],[DQ]テキスト[DQ]);",
+"文字表示"]
+];
+
+
+etclist=[
+[[5.5,4.5],
+"realtime=0;",
+"常時実行を停止"],
+[[5.5,3.5],
+"axes=1;",
+"軸"],
+[[5.5,2.5],
+"grid=1;",
+"グリッド"],
+[[5.5,1.5],
+"JSprintln([DQ]テキスト[DQ]);",
+"コンソールに書く"],
+[[5.5,0.5],
+"JSclearconsole();",
+"コンソールを消す"],
+[[5.5,-0.5],
+"JSprintln([DQ]nesw=[DQ]+nesw);",
+"ワク:nesw"],
+[[5.5,-1.5],
+"graph1=Ufunctionlist([DQ]x[DQ]);"+Cr+"graph2=Ufunctionlist([DQ]x^2[DQ]);"+Cr+"ans=Uintersection(graph1,graph2);"+Cr+"JSprintln(ans);",
+"交点"],
+[[5.5,-2.5],
+"create([[DQ]A[DQ]],[DQ]Free[DQ],[[2,3,1]]);",
+"点を作る"],
+[[5.5,-3.5],
+"if(ispoint(A1),,createpoint([DQ]A1[DQ],[2,-4]);A1.visible=false;"+Cr+"createpoint([DQ]A2[DQ],[4,-4]);A2.visible=false;"+Cr+"create([[DQ]L[DQ]],[DQ]Segment[DQ],[A1,A2]);L.labelled=false;"+Cr+"create([[DQ]B[DQ]],[DQ]PointOnSegment[DQ],[L,[3,-4,1]]));"+Cr+"t=10*(B.x-A1.x)/(A2.x-A1.x);"+Cr+"t=SW.x+(NE.x-SW.x)*(B.x-A1.x)/(A2.x-A1.x);"+Cr+"Udrawpt([t,0],0.1);"+Cr+"realtime=1;//他作業時 0 に",
+"スライダー"]
+];
+
+JSinit();
+
+realtime=1;
+
+;
+</script>
+
+<script id="csdraw" type="text/x-cindyscript">
+
+connect(nesw,color->[0,0,1],size->1,dashtype->0);
+
+if(grid==1,
+ regional(i,a1,a2,a3,a4);
+ a1=SW.x;a2=NE.x;a3=SW.y;a4=NE.y;
+ i=floor(a3)+1;
+ while(i<a4,
+  draw([[a1,i],[a2,i]],color->[1,1,1]*0.9);
+  i=i+1;
+ );
+ i=floor(a1)+1;
+ while(i<a2,
+  draw([[i,a3],[i,a4]],color->[1,1,1]*0.9);
+  i=i+1;
+ );
+);
+
+if(axes==1,
+ regional(i,a1,a2,a3,a4);
+ a1=SW.x;a2=NE.x;a3=SW.y;a4=NE.y;
+ if(a3<=0 & a4>=0,
+  draw([[a1,0],[a2,0]],color->[1,1,1]*0.6);
+ );
+ if(a1<=0 & a2>=0,
+  draw([[0,a3],[0,a4]],color->[1,1,1]*0.6);
+ );
+);
+
+if(start3d>0,
+ Ustart3d();
+ CRX2.xy=CRX.xy+[1,0];
+ CRY2.xy=CRY.xy+[1,0];
+ RX.y=CRX.y+sin(arctan2(RX-CRX));
+ RX.x=CRX.x+cos(arctan2(RX-CRX));
+ RY.y=CRY.y+sin(arctan2(RY-CRY));
+ RY.x=CRY.x+cos(arctan2(RY-CRY));
+ if(allback==0,
+  drawtext(map2d([5,0,0]),"x");
+  drawtext(map2d([0,5,0]),"y");
+  drawtext(map2d([0,0,5]),"z");
+  draw([map2d([-5,0,0]),map2d([5,0,0])]);
+  draw([map2d([0,-5,0]),map2d([0,5,0])]);
+  draw([map2d([0,0,-5]),map2d([0,0,5])]);
+ );
+);
+
+if(sample==3,
+ drawtext([6,-5],"数式");
+ drawtext(eqlist_1_1,"1:[-4,4]に書く");
+ drawtext([5.2,3.5],"以下，1 の中に");
+ drawtext([5.2,2.5],"(数式は$と$の間)");
+ repeat(10,i,
+  drawtext(eqlist_(i+1)_1,text(i+1)+": $"+eqlist_(i+1)_2+"$");
+ );
+);
+
+if(sample==1,
+ drawtext([6,-5],"TEXも");
+ repeat(length(sclist),i,
+  drawtext(sclist_i_1,text(i)+": "+sclist_i_3);
+ );
+);
+
+if(sample==4,
+ drawtext([6,-5],"その他");
+ repeat(length(etclist),i,
+  drawtext(etclist_i_1,text(i)+": "+etclist_i_3);
+ );
+);
+
+if(sample==2,
+ drawtext([6,-5],"空間");
+ drawtext([5.5,3.5],"まず 1 を実行");
+ repeat(length(spacelist),i,
+  drawtext(spacelist_i_1,text(i)+": "+spacelist_i_3);
+ );
+);
+
+
+if(realtime==1,Execute());
+
+
+;
+</script>
+
+
+<script type="text/javascript">
+var cdy = CindyJS({
+  scripts: "cs*",
+  defaultAppearance: {
+    dimDependent: 0.7,
+    fontFamily: "sans-serif",
+    lineSize: 1,
+    pointSize: 5.0,
+    textsize: 12.0
+  },
+  angleUnit: "°",
+  geometry: [
+    {name: "Texte", type: "EditableText", pos: [7.4, -5, 1], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0,  minwidth: 15, textsize: 10.0},
+    {name: "WriteData", type: "Button", 
+pos: [8.7,3.8,1], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, script: "WriteData();", text: "データ"},
+    {name: "Reshow", type: "Button", 
+pos: [9,2.8,1], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, script: "Reshow();", text: "再現"},
+    {name: "Sample", type: "Button", 
+pos: [5.3,-5,1], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, script: "Sample();", text: "例"},
+    {name: "WriteSample", type: "Button", 
+pos: [8.2,-5,1], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, script: "WriteSample();", text: "番↓に"},
+    {name: "Execute", type: "Button", 
+pos: [9,5.8,1], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, script: "Execute();", text: "実行"},
+   {name: "Stop", type: "Button", 
+pos: [7.7,5.8,1], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, script: "Stop();", text: "陰線"},
+    {name: "TeX", type: "Button", 
+pos: [9,4.8,1], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, script: "TeX();", text: "TEX"},
+    {name: "RemoveElem", type: "Button", 
+pos: [6.3,5.8,1], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, script: "RemoveElem();", text: "図消"}
+],
+  ports: [{
+    id: "CSCanvas",
+    width: 500,
+    height: 370,
+    transform: [{visibleRect: [-6, 6, 10, -5]}],
+    axes: false,
+    grid: 0,
+    background: "rgb(1000,1000,1000)"
+  }],
+  csconsole: false,
+  use: ["katex"],
+  cinderella: {build: 2017, version: [3, 0, 2017]}
+});
+
+</script>
+</head>
+
+<body>
+
+<table border="1">
+<tr>
+<td><div id="CSCanvas"></div></td>
+<td>
+<p>スクリプト
+<input type="button" onclick="copyDraw()" value="コピー">
+<input type="button" onclick="writeDraw()" value="ファイル">
+<br>
+<textarea  name="comment" cols="40" rows="25" id="input-message" value=""></textarea >
+</p>
+</td> 
+</tr>
+</table>
+<table>
+<tr>
+<td>
+コンソール
+</td>
+<td>
+<textarea  name="comment" cols="60" rows="5" id="kakidashi" value=""></textarea >
+</td>
+<td>
+<input type="button" onclick="copyMessage()" value="コピー">
+<input type="button" onclick="writeMessage()" value="ファイル">
+<input type="button" onclick="pasteDraw()" value="↑に">
+<input type="button" onclick="allMessage()" value="← に ↑ をつなげる">
+</td>
+</tr>
+</table>
+
+<!-- ここならよい 　改行あるとダメ -->
+<script type="text/javascript" src="ato.js"></script>
+
+<script language="javascript" type="text/javascript">
+
+  const copyDraw = () => {
+    const textbox = document.getElementById("input-message");
+    const inputValue = textbox.value;
+    navigator.clipboard.writeText(inputValue);
+  }
+
+  const pasteDraw = () => {
+    const textbox = document.getElementById("kakidashi");
+    const inputValue = textbox.value;
+    document.getElementById("input-message").value += inputValue;
+  }
+
+
+  const writeDraw = () => {
+    const textbox = document.getElementById("input-message");
+    const inputValue = textbox.value;
+    const blob = new Blob([inputValue],{type:"text/plain"});
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'editor.txt';
+    link.click();
+  }
+
+  const copyMessage = () => {
+    const textbox = document.getElementById("kakidashi");
+    const inputValue = textbox.value;
+    navigator.clipboard.writeText(inputValue);
+  }
+
+  const writeMessage = () => {
+    const textbox = document.getElementById("kakidashi");
+    const inputValue = textbox.value;
+    const blob = new Blob([inputValue],{type:"text/plain"});
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'console.txt';
+    link.click();
+  }
+
+  const writeTexfile = () => {
+    const textbox = document.getElementById("kakidashi");
+    const inputValue = textbox.value;
+    const blob = new Blob([inputValue],{type:"text/plain"});
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'fig.tex';
+    link.click();
+  }
+
+  const allMessage = () => {
+    const textbox = document.getElementById("input-message");
+    const inputValue = textbox.value;
+    document.getElementById("kakidashi").value += inputValue;
+  }
+
+
+
+</script>
+
+</body>
+
+</html>
