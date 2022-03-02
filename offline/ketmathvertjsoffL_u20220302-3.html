@@ -3824,8 +3824,8 @@ global_val1 = 0;
 const changeJSbox = () => {
  var area1 = document.getElementById('jsbox');
  var area2 = document.getElementById('jsbox2');
- const text1 = area1.value;
- const text2 = area2.value;
+ const text1 = area1.value.replace("□", "");
+ const text2 = area2.value+"□";
  area1.value = text2;
  area2.value = text1;
 }
