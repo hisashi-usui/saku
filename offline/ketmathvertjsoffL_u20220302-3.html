@@ -47,9 +47,8 @@ JSdrwletter(n):=(
  if(n==2,javascript("textJSbox2()"););
 );
 
-clear():=(
- JSclearconsole();
- JSprint("□");
+JSclear():=(
+ javascript("clearText()");
 );
 
 backspace():=(
@@ -3738,7 +3737,7 @@ script: "rightpos()"//usui "npos=min([npos+1,length(StrL_ch)]);"
 //--- usui AC
     {name: "Text102", type: "Button", 
 pos: [60,-3,1]//usui [4.0, 0.300507614213198, 0.08121827411167512]
-, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, text_fontfamily: "monospace", script:"clear()"//usui "funflg=1;name=\"Allclear()\";"
+, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, text_fontfamily: "monospace", script:"JSclear()"//usui "funflg=1;name=\"Allclear()\";"
 , text: "AC", textsize: 16.0},
 //--- usui AC
     {name: "Text31", type: "Button", pos: [4.0, -1.5843857634902412, 0.07654037504783774], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 0.0], fillalpha: 0.27272728085517883, script: "funflg=1;if(Shift<=1,name=\"lim(\");if(Shift==2,name=\"mat(\");", text: "____", textsize: 14.0},
@@ -3874,6 +3873,12 @@ function backText(){
  area.value = area.value.substr(0, val-1)
 		+ "□"
 		+ area.value.substr(val+1);
+}
+
+function clearText(){
+ var area = document.getElementById('jsbox');
+ area.value = "□";
+ global_val1=0;
 }
 
 function rrightText(){
