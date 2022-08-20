@@ -1,0 +1,61 @@
+create(["Text0"],"EditableText",[[5,5,1]]);
+Seteditable(0,["","Size=18","Width=250"]);
+Text0.xy=[5.5,0.7];
+
+Ucreate(uc1,uc2,uc3,uc4):=(
+ create([uc1],"Text",[[5,5,1]]);
+ parse(uc1+".text=uc2");
+ parse(uc1+".xy=uc3");
+ parse(uc1+".color=[0,0,0]");
+ parse(uc1+".fillalpha=0");
+ inspect(parse(uc1),"text.minwidth",33);
+ inspect(parse(uc1),"textsize",18);
+ inspect(parse(uc1),"textbutton","true");
+ inspect(parse(uc1),"texttoggle","true");
+ inspect(parse(uc1),"button.script",uc4);
+);
+
+a1=6;a2=7.2;a3=8.4;a4=9.6;a5=10.8;
+b1=-0.5;b2=-1.4;b3=-2.3;b4=-3.2;
+b5=-4.1;b6=-5;b7=-5.9;
+
+Ucreate("Text10","Ketjsoff",[3,5],"Button10();");// no ketjs
+Button10():=(Mkketcindyjs(append(KETJSOP,"Web=n")););// no ketjs
+
+Ucreate("Text2","実行",[6.5,5],"Button2();");
+Ucreate("Text3","関数変更",[8.5,5],"Button3();");
+Ucreate("Text11","　　",[a1,b1],"Button11();");
+Ucreate("Text12","　　",[a2,b1],"Button12();");
+Ucreate("Text13","　　",[a3,b1],"Button13();");
+Ucreate("Text14","　　",[a4,b1],"Button14();");
+Ucreate("Text15","　　",[a5,b1],"Button15();");
+Ucreate("Text21","　　",[a1,b2],"Button21();");
+Ucreate("Text22","　　",[a2,b2],"Button22();");
+Ucreate("Text23","　　",[a3,b2],"Button23();");
+Ucreate("Text24","　　",[a4,b2],"Button24();");
+Ucreate("Text25","　　",[a5,b2],"Button25();");
+Ucreate("Text31","　　",[a1,b3],"Button31();");
+Ucreate("Text32","　　",[a2,b3],"Button32();");
+Ucreate("Text33","　　",[a3,b3],"Button33();");
+Ucreate("Text34","　　",[a4,b3],"Button34();");
+Ucreate("Text35","　　",[a5,b3],"Button35();");
+Ucreate("Text41","　　",[a1,b4],"Button41();");
+Ucreate("Text42","　　",[a2,b4],"Button42();");
+Ucreate("Text43","　　",[a3,b4],"Button43();");
+Ucreate("Text44","　　",[a4,b4],"Button44();");
+Ucreate("Text45","　　",[a5,b4],"Button45();");
+Ucreate("Text51","　　",[a1,b5],"Button51();");
+Ucreate("Text52","　　",[a2,b5],"Button52();");
+Ucreate("Text53","　　",[a3,b5],"Button53();");
+Ucreate("Text54","　　",[a4,b5],"Button54();");
+Ucreate("Text55","　　",[a5,b5],"Button55();");
+Ucreate("Text61","　　",[a1,b6],"Button61();");
+Ucreate("Text62","　　",[a2,b6],"Button62();");
+Ucreate("Text63","　　",[a3,b6],"Button63();");
+Ucreate("Text64","　　",[a4,b6],"Button64();");
+Ucreate("Text65","　　",[a5,b6],"Button65();");
+Ucreate("Text71","　　",[a1,b7],"Button71();");
+Ucreate("Text72","　　",[a2,b7],"Button72();");
+Ucreate("Text73","　　",[a3,b7],"Button73();");
+Ucreate("Text74","　　",[a4,b7],"Button74();");
+Ucreate("Text75","　　",[a5,b7],"Button75();");
