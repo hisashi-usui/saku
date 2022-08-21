@@ -1,0 +1,58 @@
+Dq=unicode("0022");
+
+create(["Text0"],"EditableText",[[5,5,1]]);
+Seteditable(0,["","Size=18","Width=250"]);
+Text0.xy=[5.5,0.7];
+
+Ucreate(uc1,uc2,uc3,uc4):=(
+ create([uc1],"Text",[[5,5,1]]);
+ parse(uc1+".text=uc2");
+ parse(uc1+".xy=uc3");
+ parse(uc1+".color=[0,0,0]");
+ parse(uc1+".fillalpha=0");
+ inspect(parse(uc1),"text.minwidth",33);
+ inspect(parse(uc1),"textsize",18);
+ inspect(parse(uc1),"textbutton","true");
+ inspect(parse(uc1),"texttoggle","true");
+ inspect(parse(uc1),"button.script",uc4);
+);
+
+Ucreate("Text10","Ketjsoff",[3,5],"Button10();");// no ketjs
+Button10():=(Mkketcindyjs(append(KETJSOP,"Web=n")););// no ketjs
+
+scriptstr="min=-5;max=5.1;
+ list0=[];x=min;dx=(NE.x-SW.x)/50;
+ while(x<=max,
+  list0=append(list0,[x,g(x)]);
+  x=x+dx;
+ );
+ min=S.x; max=S.x;
+ resetclock();
+ playanimation();
+ Animeflg=1;
+ Dirflg=1;
+ sorg=Current;
+ flg=1;";
+Ucreate("Text2","実行",[6.5,5],scriptstr);
+Ucreate("Text3","関数変更",[8.5,5],"flg=0;");
+
+a=[6,7.2,8.4,9.6,10.8];
+b=[-0.5,-1.4,-2.3,-3.2,-4.1,-5,-5.9];
+ccc=[
+    ["Delete()","Allclear()","Left()","Right()","RRight()"],
+    ["fr(","^(","(",")","|"],
+    ["sq(","x","e^(","pi",","],
+    ["sin(","7","8","9","+"],
+    ["cos(","4","5","6","-"],
+    ["tan(","1","2","3","*"],
+    ["log(","0","."," ","/"]
+  ];
+
+repeat(7,i,
+ repeat(5,j,
+  textstr="Text"+text(i)+text(j);
+  scriptstr="funflg=1;name="+Dq+ccc_i_j+Dq+";";
+  Ucreate(textstr,"　　",[a_j,b_i],scriptstr);
+ );
+);
+
