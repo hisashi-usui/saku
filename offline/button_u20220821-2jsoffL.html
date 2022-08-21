@@ -4232,19 +4232,7 @@ Ucreate(uc1,uc2,uc3,uc4):=(
 );
 
 
-scriptstr="min=-5;max=5.1;
- list0=[];x=min;dx=(NE.x-SW.x)/50;
- while(x<=max,
-  list0=append(list0,[x,g(x)]);
-  x=x+dx;
- );
- min=S.x; max=S.x;
- resetclock();
- playanimation();
- Animeflg=1;
- Dirflg=1;
- sorg=Current;
- flg=1;";
+scriptstr="min=-5;max=5.1;list0=[];x=min;dx=(NE.x-SW.x)/50;while(x<=max,list0=append(list0,[x,g(x)]);x=x+dx;);min=S.x;max=S.x;resetclock();playanimation();Animeflg=1;Dirflg=1;sorg=Current;flg=1;";
 Ucreate("Text2","���s",[6.5,5],scriptstr);
 Ucreate("Text3","�֐��ύX",[8.5,5],"flg=0;");
 
@@ -4430,7 +4418,7 @@ var cdy = CindyJS({
     {name: "NE", type: "Free", pos: [4.0, 4.0, 0.8], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
     {name: "S", type: "Free", pos: [0.38203018945466666, -4.0, 0.6666666666666666], color: [1.0, 0.0, 0.0], labeled: false, size: 7.0, border: true },
     {name: "Text0", type: "EditableText", pos: [4.0, 0.509090909090909, 0.7272727272727273], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, minwidth: 250, textsize: 18.0},
-    {name: "Text2", type: "Button", pos: [4.0, 3.076923076923077, 0.6153846153846154], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "min=-5;max=5.1;\r\n list0=[];x=min;dx=(NE.x-SW.x)/50;\r\n while(x<=max,\r\n  list0=append(list0,[x,g(x)]);\r\n  x=x+dx;\r\n );\r\n min=S.x; max=S.x;\r\n resetclock();\r\n playanimation();\r\n Animeflg=1;\r\n Dirflg=1;\r\n sorg=Current;\r\n flg=1;", text: "実行", textsize: 18.0},
+    {name: "Text2", type: "Button", pos: [4.0, 3.076923076923077, 0.6153846153846154], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "min=-5;max=5.1;list0=[];x=min;dx=(NE.x-SW.x)/50;while(x<=max,list0=append(list0,[x,g(x)]);x=x+dx;);min=S.x;max=S.x;resetclock();playanimation();Animeflg=1;Dirflg=1;sorg=Current;flg=1;", text: "実行", textsize: 18.0},
     {name: "Text3", type: "Button", pos: [4.0, 2.3529411764705883, 0.47058823529411764], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "flg=0;", text: "関数変更", textsize: 18.0},
     {name: "Text11", type: "Button", pos: [4.0, -0.3333333333333333, 0.6666666666666666], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "funflg=1;name=\"Delete()\";", text: "　　", textsize: 18.0},
     {name: "Text12", type: "Button", pos: [4.0, -0.2777777777777778, 0.5555555555555556], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "funflg=1;name=\"Allclear()\";", text: "　　", textsize: 18.0},
@@ -4471,8 +4459,8 @@ var cdy = CindyJS({
   ports: [{
     id: "CSCanvas",
     width: 695,
-    height: 478,
-    transform: [{visibleRect: [-5.989687613240382, 5.9351118718896725, 12.975382506131215, -7.10849031092993]}],
+    height: 482,
+    transform: [{visibleRect: [-5.989687613240382, 5.9351118718896725, 12.975382506131215, -7.217641793631349]}],
     grid: 1.0,
     background: "rgb(247,247,247)"
   }],
