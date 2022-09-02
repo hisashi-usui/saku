@@ -3179,20 +3179,28 @@ Drwxy(add,optionsorg):=(
 Ketcindyjsfigure=0;
 Ketcindyjsscale=1;
 
-ky="";
 
-flg=1;
+Ucreate(uc1,uc2,uc3,uc4):=(
+ create([uc1],"Text",[[5,5,1]]);
+ parse(uc1+".text=uc2");
+ parse(uc1+".xy=uc3");
+ parse(uc1+".color=[0,0,0]");
+ parse(uc1+".fillalpha=0");
+ inspect(parse(uc1),"text.minwidth",33);
+ inspect(parse(uc1),"textsize",14);
+ inspect(parse(uc1),"textbutton","true");
+ inspect(parse(uc1),"texttoggle","true");
+ inspect(parse(uc1),"button.script",uc4);
+);
 
-page=1;
 
-stra="{}^{\to}\!\!\!\!a";
-strb="{}^{\to}\!\!\!\!b";
-;
-
-</script>
-<script id="csdraw" type="text/x-cindyscript">
-Ketinit(2);
-Setketcindyjs(["Sc=1","Label=[]","Color=offwhite","Axes=false"]);
+Ucreate("Text1","�x�N�g���̘a",[-8,4.5],"page=1;do=0;");
+Ucreate("Text2","����",[-8,2.2],"page=2;do=0;");
+Ucreate("Text3","�a�Ɠ���",[-8,0],"page=3;do=0;");
+Ucreate("Text4","�����Ɠ���",[-8,-3],"page=4;do=0;");
+Ucreate("Text5","�x�N�g���ύX",[6,-2.8],"flg=1;");
+Ucreate("Text6","�x�N�g���Œ�",[6,-3.9],"flg=0;");
+Ucreate("Text7","���s",[6,-5],"do=1;resetclock();playanimation();Animeflg=1;Dirflg=1;sorg=Current;");
 
 Uvec(name,pos,str):=(
  Arrowdata(name,[pos,pos+[0.3,0]],[0.7,"dr,0.5"]);
@@ -3230,14 +3238,26 @@ Ubow2red(name,p1,p2,str1,str2):=(
  Uvecred(name+"b",pos+[0.7,0],str2);
 );
 
+
+ky="";
+
+flg=1;
+
+page=1;
+
+;
+
+</script>
+<script id="csdraw" type="text/x-cindyscript">
+Ketinit(2);
+Setketcindyjs(["Sc=1","Label=[]","Color=offwhite","Axes=false"]);
+
 O=[0,0];
 
-Text0.xy=[-8,4.5];
 Uvec("01",[-7.8,4.0],"a+");
 Uvec("02",[-7.1,4.0],"b");
 Uvec("03",[-7.8,1.7],"a\,\cdot");
 Uvec("04",[-7.2,1.7],"b");
-Text5.xy=[-8,0];
 Uvec("05",[-7.8,-0.5],"a\,\cdot\,(");
 Uvec("06",[-6.7,-0.5],"b_1+");
 Uvec("07",[-5.6,-0.5],"b_2\,)");
@@ -3246,13 +3266,10 @@ Uvec("08",[-7.3,-1.2],"a\,\cdot");
 Uvec("09",[-6.7,-1.2],"b_1+");
 Uvec("010",[-5.8,-1.2],"a\,\cdot");
 Uvec("011",[-5.2,-1.2],"b_2");
-Text6.xy=[-8,-3];
 Uvec("012",[-7.8,-3.5],"a\,\cdot");
 Uvec("013",[-7.2,-3.5],"b");
 Expr([-7.8,-4.2],"se","=a_1\,b_1+a_2\,b_2");
-Text7.xy=[6,-2.8];
-Text8.xy=[6,-3.9]; Letter([9,-3.8],"e","表示位置は動かせる");
-Text9.xy=[6,-5];
+Letter([9,-3.8],"e","表示位置は動かせる");
 
 A.labelled=false;A.size=1;
 B.labelled=false;B.size=1;
@@ -3652,21 +3669,21 @@ var cdy = CindyJS({
   },
   angleUnit: "°",
   geometry: [
+    {name: "SW", type: "Free", pos: [4.0, 4.0, -0.8], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
     {name: "NE", type: "Free", pos: [4.0, 4.0, 0.8], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
-    {name: "A", type: "Free", pos: [4.0, -3.8230088495575236, -1.1340135543222025], color: [1.0, 0.0, 0.0], size: 1.0, border: true },
-    {name: "C", type: "Free", pos: [-3.1773049645390072, -4.0, 0.9088193733220488], color: [1.0, 0.0, 0.0], size: 1.0, border: true },
-    {name: "E", type: "Free", pos: [3.3103448275862055, -4.0, 0.8837484940579922], color: [1.0, 0.0, 0.0], visible: false, size: 1.0, border: true },
-    {name: "SW", type: "Free", pos: [-3.8765432098765427, -4.0, 0.7910094545580795], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
-    {name: "B", type: "Free", pos: [2.0, -4.0, -1.0678627636534073], color: [1.0, 0.0, 0.0], size: 1.0, border: true },
-    {name: "D", type: "Free", pos: [-3.1627906976744176, -4.0, 2.9800821311257875], color: [1.0, 0.0, 0.0], size: 1.0, border: true },
-    {name: "F", type: "Free", pos: [2.9259259259259256, -4.0, 1.186514181837119], color: [1.0, 0.0, 0.0], visible: false, size: 1.0, border: true },
-    {name: "Text4", type: "Button", pos: [4.0, -1.1, -0.5], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "page=2;\ndo=0;", text: "内積"},
-    {name: "Text5", type: "Button", pos: [4.0, -0.0, -0.5], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "page=3;\ndo=0;", text: "和と内積"},
-    {name: "Text6", type: "Button", pos: [4.0, 1.5, -0.5], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "page=4;\ndo=0;", text: "成分と内積"},
-    {name: "Text7", type: "Button", pos: [4.0, -1.8666666666666663, 0.6666666666666666], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "flg=1;\n", text: "ベクトル変更"},
-    {name: "Text8", type: "Button", pos: [4.0, -2.5999999999999996, 0.6666666666666666], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "flg=0;", text: "ベクトル固定"},
-    {name: "Text9", type: "Button", pos: [4.0, -3.3333333333333335, 0.6666666666666666], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "do=1;\nresetclock();\nplayanimation();\nAnimeflg=1;\nDirflg=1;\nsorg=Current;", text: "実行"},
-    {name: "Text0", type: "Button", pos: [4.0, -2.25, -0.5], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "do=0;\npage=1;\n", text: "ベクトルの和"}
+    {name: "Text1", type: "Button", pos: [4.0, -2.25, -0.5], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "page=1;do=0;", text: "ベクトルの和", textsize: 14.0},
+    {name: "Text2", type: "Button", pos: [4.0, -1.1, -0.5], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "page=2;do=0;", text: "内積", textsize: 14.0},
+    {name: "Text3", type: "Button", pos: [4.0, -0.0, -0.5], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "page=3;do=0;", text: "和と内積", textsize: 14.0},
+    {name: "Text4", type: "Button", pos: [4.0, 1.5, -0.5], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "page=4;do=0;", text: "成分と内積", textsize: 14.0},
+    {name: "Text5", type: "Button", pos: [4.0, -1.8666666666666663, 0.6666666666666666], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "flg=1;", text: "ベクトル変更", textsize: 14.0},
+    {name: "Text6", type: "Button", pos: [4.0, -2.5999999999999996, 0.6666666666666666], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "flg=0;", text: "ベクトル固定", textsize: 14.0},
+    {name: "Text7", type: "Button", pos: [4.0, -3.3333333333333335, 0.6666666666666666], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "do=1;resetclock();playanimation();Animeflg=1;Dirflg=1;sorg=Current;", text: "実行", textsize: 14.0},
+    {name: "A", type: "Free", pos: [4.0, -3.12781954887218, -0.9634852002887885], color: [1.0, 0.0, 0.0], size: 1.0, border: true },
+    {name: "B", type: "Free", pos: [2.833333333333333, -4.0, -1.0678627636534073], color: [1.0, 0.0, 0.0], size: 1.0, border: true },
+    {name: "C", type: "Free", pos: [-3.9076923076923067, -4.0, 0.9857194741416064], color: [1.0, 0.0, 0.0], size: 1.0, border: true },
+    {name: "D", type: "Free", pos: [4.0, 2.6885245901639343, -2.100713633416539], color: [1.0, 0.0, 0.0], size: 1.0, border: true },
+    {name: "E", type: "Free", pos: [3.2333333333333334, -4.0, 1.0678627636534073], color: [1.0, 0.0, 0.0], visible: false, size: 1.0, border: true },
+    {name: "F", type: "Free", pos: [2.4941176470588244, -4.0, 1.5075709604518692], color: [1.0, 0.0, 0.0], visible: false, size: 1.0, border: true }
   ],
   ports: [{
     id: "CSCanvas",
