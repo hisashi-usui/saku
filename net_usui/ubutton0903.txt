@@ -1,0 +1,85 @@
+create(["A"],"FreePoint",[[-4,3,1]]);
+create(["B"],"FreePoint",[[-2.5,3.5,1]]);
+create(["C"],"FreePoint",[[-4,-4,1]]);
+create(["D"],"FreePoint",[[-2,-1,1]]);
+create(["E"],"FreePoint",[[3,-4,1]]);
+create(["F"],"FreePoint",[[2,-3,1]]);
+create(["R1"],"FreePoint",[[-8.5,4.5,1]]);
+R1.labelled=false;R1.size=5;
+create(["R2"],"FreePoint",[[5.5,-3,1]]);
+R2.labelled=false;R2.size=5;
+
+Ucreate(uc1,uc2,uc3,uc4):=(
+ create([uc1],"Text",[[5,5,1]]);
+ parse(uc1+".text=uc2");
+ parse(uc1+".xy=uc3");
+ parse(uc1+".color=[0,0,0]");
+ parse(uc1+".fillalpha=0");
+ inspect(parse(uc1),"text.minwidth",33);
+ inspect(parse(uc1),"textsize",14);
+ inspect(parse(uc1),"textbutton","true");
+ inspect(parse(uc1),"texttoggle","true");
+ inspect(parse(uc1),"button.script",uc4);
+);
+
+Ucreate("Text10","Ketjsoff",[3,5],"Button10();");// no ketjs
+Button10():=(Mkketcindyjs(append(KETJSOP,"Web=n")););// no ketjs
+
+Ucreate("Text1","ベクトルの和",[-8,4.5],"page=1;do=0;");
+Ucreate("Text2","内積",[-8,2.2],"page=2;do=0;");
+Ucreate("Text3","和と内積",[-8,0],"page=3;do=0;");
+Ucreate("Text4","成分と内積",[-8,-3],"page=4;do=0;");
+Ucreate("Text5","ベクトル変更",[6,-2.8],"flg=1;");
+Ucreate("Text6","ベクトル固定",[6,-3.9],"flg=0;");
+Ucreate("Text7","実行",[6,-5],"do=1;resetclock();playanimation();Animeflg=1;Dirflg=1;sorg=Current;");
+
+Uvec(name,pos,str):=Uvec(name,pos,str,1.2);
+Uvec(name,pos,str,size):=(
+ Arrowdata(name,[pos,pos+[0.3,0]*size],[0.7*size,"dr,0.5*size"]);
+ Expr(pos,"se",str,["Size="+size]);
+);
+
+Ubow(name,p1,p2,str):=(
+ uuu0=p1+(p2-p1)/2;
+ uuu1=[(p2-p1).y,-(p2-p1).x];
+ uuu2=uuu1/|uuu1|;
+ pos=uuu0+[-0.2,0.2]+uuu2*0.4;
+ Uvec(name,pos,str,1);
+);
+
+Uvecred(name,pos,str):=(
+ Arrowdata(name,[pos,pos+[0.3,0]],[0.7,"dr,0.5","color=red"]);
+ Expr(pos,"se","{\color{red}{"+str+"}}");
+);
+
+Ubow2(name,p1,p2,str1,str2):=(
+ uuu0=(p1+p2)/2;
+ kaku1=arctan2(p1+p2);
+ if(ubowpos==1, 
+  if(kaku1>=0 & kaku1<pi/2,hosei=[-1.2,0.4]);
+  if(kaku1>=pi/2 & kaku1<pi,hosei=[-1.2,0]);
+  if(kaku1>=-pi & kaku1<-pi/2,hosei=[0,0]);
+  if(kaku1>=-pi/2 & kaku1<0,hosei=[0,0.4]);
+ ,
+  if(kaku1>=0 & kaku1<pi,hosei=[0,0]);
+  if(kaku1>=pi/2 & kaku1<pi,hosei=[0,0.4]);
+  if(kaku1>=-pi & kaku1<-pi/2,hosei=[-1.2,0.4]);
+  if(kaku1>=-pi/2 & kaku1<0,hosei=[-1.2,0]);
+ );
+ pos=uuu0+hosei;
+ Uvec(name,pos,str1+"+",1);
+ Uvec(name+"b",pos+[0.8,0],str2,1);
+);
+
+Ubow2red(name,p1,p2,str1,str2):=(
+ uuu0=(p1+p2)/2;
+ kaku1=arctan2(p1+p2);
+ if(kaku1>=0 & kaku1<pi/2,hosei=[0,0]);
+ if(kaku1>=pi/2 & kaku1<pi,hosei=[0,0.4]);
+ if(kaku1>=-pi & kaku1<-pi/2,hosei=[0,0]);
+ if(kaku1>=-pi/2 & kaku1<0,hosei=[0,0.4]);
+ pos=uuu0+hosei;
+ Uvecred(name,pos,str1+"+");
+ Uvecred(name+"b",pos+[0.7,0],str2);
+);
+
