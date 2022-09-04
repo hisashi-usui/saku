@@ -1,0 +1,143 @@
+Dq=unicode("0022");
+
+create(["R1"],"FreePoint",[[1,1,1]]);
+R1.labelled=false;R1.size=5;
+
+create(["Text10"],"EditableText",[[5,5,1]]);
+Seteditable(0,["","Size=18","Width=300"]);
+Text10.xy=[0,-1];
+
+Ucreate(uc1,uc2,uc3,uc4):=(
+ create([uc1],"Text",[[5,5,1]]);
+ parse(uc1+".text=uc2");
+ parse(uc1+".xy=uc3");
+ parse(uc1+".color=[0,0,0]");
+ parse(uc1+".fillalpha=0");
+ inspect(parse(uc1),"text.minwidth",33);
+ inspect(parse(uc1),"textsize",18);
+ inspect(parse(uc1),"textbutton","true");
+ inspect(parse(uc1),"texttoggle","true");
+ inspect(parse(uc1),"button.script",uc4);
+);
+
+Ucreate("Text3","Ketjsoff",[1,8],"Button3();");//no ketjs
+Button3():=(Mkketcindyjs(append(KETJSOP,"Web=n")););// no ketjs
+
+Ucreate("Text100","èoëË",[-2,8.4],"Button100();");
+Button100():=(
+ pbflg=1;ansflg=0;
+ funflg=1;name="Allclear()";
+ pbno=mod(pbno+1,4);
+);
+
+Ucreate("Text101","A1",[-2,7.2],"Button101();");
+Button101():=(
+ ansflg=1;
+// funflg=1;name="Allclear()";
+ Subsedit(10,M1strnq);
+);
+
+Ucreate("Text102","A2",[-2,6],"Button102();");
+Button102():=(
+ ansflg=2;
+//funflg=1;name="Allclear()";
+ Subsedit(10,M2strnq);
+);
+
+Ucreate("Text103","A3",[-2,4.8],"Button103();");
+Button103():=(
+ ansflg=3;
+ funflg=1;name="Allclear()";
+ Subsedit(10,text(Astr3));
+);
+
+Ucreate("Text104","A4",[-2,3.5],"Button104();");
+Button104():=(
+ ansflg=4;
+ funflg=1;name="Allclear()";
+ Subsedit(10,A123B_1_2);
+);
+
+Ucreate("Text106","ìöÇ¶çáÇÌÇπ",[-2,-3],"caflg=1;");
+
+Ucreate("Text107","ä‘à·Ç¡ÇΩÇ∆Ç±ÇÎ",[-2,-4.5],"hintflg=1;");
+
+Ucreate("Text4","Å®",[7.5,-7],"Button4();");
+Button4():=(
+ if(ansflg==4,
+  A123B_QR_(QL+1)=Strnq;
+  R123L_QR_(QL+1)=RLstr;
+  if(QL<Lnum,
+   QL=QL+1;
+   Subsedit(10,A123B_QR_(QL+1));
+  );
+ );
+);
+
+Ucreate("Text5","Å©",[5.5,-7],"Button5();");
+Button5():=(
+ if(ansflg==4,
+  A123B_QR_(QL+1)=Strnq;
+  R123L_QR_(QL+1)=RLstr;
+  if(QL>1,
+   QL=QL-1;
+   Subsedit(10,A123B_QR_(QL+1));
+  );
+ );
+);
+
+Ucreate("Text6","Å™",[6.5,-6],"Button6();");
+Button6():=(
+ if(ansflg==4,
+  A123B_QR_(QL+1)=Strnq;
+  R123L_QR_(QL+1)=RLstr;
+  if(QR>1,
+   QR=QR-1;
+   Subsedit(10,A123B_QR_(QL+1));
+  );
+ );
+);
+
+Ucreate("Text7","Å´",[6.5,-8],"Button7();");
+Button7():=(
+ if(ansflg==4,
+  A123B_QR_(QL+1)=Strnq;
+  R123L_QR_(QL+1)=RLstr;
+  if(QR<3,
+   QR=QR+1;
+   Subsedit(10,A123B_QR_(QL+1));
+  );
+ );
+);
+
+nameL1=[["BS","AC","<",">"]];
+nameL2=[
+    ["fr(","^(",",",")"],
+    ["sq(","$x$","$y$","$y'$"],
+    ["7","8","9","$\cdots$"],
+    ["4","5","6","$\nearrow$"],
+    ["1","2","3","$\searrow$"],
+    ["0","$+$","$-$","$=$"]
+  ];
+
+a=[9.1,10.3,11.5,12.7];
+b=[-1.1,-2.3,-3.5,-4.7,-5.9,-7.1,-8.3];
+ccc=[
+    ["Delete()","Allclear()","Left()","Right()"],
+    ["fr(","^(",",",")"],
+    ["sq(","x","y","y'"],
+    ["7","8","9","\cdots"],
+    ["4","5","6","NE"],
+    ["1","2","3","SE"],
+    ["0","+","-","="]
+  ];
+
+repeat(7,i,
+ repeat(4,j,
+  textstr="Text"+text(i)+text(j);
+  scriptstr="funflg=1;name="+Dq+ccc_i_j+Dq+";";
+  Ucreate(textstr,"Å@Å@",[a_j,b_i],scriptstr);
+ );
+);
+
+
