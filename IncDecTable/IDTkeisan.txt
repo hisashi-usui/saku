@@ -1,0 +1,234 @@
+Umakelist(str):=(
+ str=replace(str,"+x","+1x");
+ j=4;i=[0,0,0,0];a=[0,0,0,0,0];ustr=["","","","",str];
+ while(j>1,
+  i_j=indexof(ustr_(j+1),"x^"+j);
+  if(i_j==0,
+   a_(j+1)=0;ustr_j=ustr_(j+1);
+   ,
+   if(i_j==1,
+    a_(j+1)=1;    
+    ,
+    aa=substring(ustr_(j+1),0,i_j-1);
+    if(aa=="-",a_(j+1)=-1,
+     a_(j+1)=parse(aa);
+    );
+   ); 
+   ustr_j=substring(ustr_(j+1),i_j+2,length(ustr_(j+1)));
+  );
+  j=j-1;
+ );
+ i_1=indexof(ustr_2,"x");
+ if(i_1==0,
+  a_2=0;ustr_1=ustr_2;
+  ,
+  if(i_1==1,a_2=1,
+   aa=substring(ustr_2,0,i_1-1);
+   if(aa=="-",a_2=-1,
+    a_2=parse(aa);
+   );
+   if(i_1==length(ustr_2),
+    ustr_1="0";
+    ,
+    ustr_1=substring(ustr_2,i_1,length(ustr_2));
+   );
+   a_1=parse(ustr_1);
+   );
+  );
+ a;
+);
+
+Usgn(a):=(
+ if(a>0,ans=1,ans=-1);
+ if(a==0,ans=0);
+ ans;
+);
+
+Ugcd(a,b):=(
+ p=a*Usgn(a);q=b*Usgn(b);r=q;
+ while(r>0,
+  r=mod(p,q);
+  p=q;q=r; 
+ );
+ p;
+);
+
+Uyakubun(a,b):=(
+ sa=Usgn(a);aa=a*sa;
+ sb=Usgn(b);bb=b*sb;
+ c=Ugcd(aa,bb);
+ alist=[a*sb/c,bb/c];
+ alist;
+);
+
+Uyakubun2(a,b,c):=(
+ sa=Usgn(a);aa=a*sa;
+ sb=Usgn(b);bb=b*sb;
+ d=Ugcd(aa,bb);
+ sc=Usgn(c);cc=c*sc;
+ f=Ugcd(d,cc);
+ alist=[a*sc/f,b*sc/f,c*sc/f];
+ alist;
+);
+
+Ubibun(list):=(
+ alist=[];
+ i=2;
+ while(i<=length(list),
+  alist=append(alist,(i-1)*list_i);
+  i=i+1;
+ );
+ alist;
+);
+
+Usqrt(n):=(
+ p=1;q=n;r=2;
+ while(r<=sqrt(q),
+  if(mod(q,r)==0,flg=1);
+  while(flg==1,
+   if(mod(q,r)==0,
+    if(mod(q/r,r)==0,p=p*r;q=q/r/r,flg=0);
+    ,
+    flg=0;
+   );
+  );
+  r=r+1;
+ );
+ [p,q];
+);
+
+Ukai2(list):=(
+ a=list_3;
+ b=list_2;
+ c=list_1;
+ d=b^2-4*a*c;
+ if(d<0,ans=["none"],
+ if(d==0,
+  tofr=Uyakubun(-b,2*a);
+  if(tofr_2==1,
+   str=tofr_1;
+   ,
+   t1=tofr_1;
+   st1=Usgn(t1);
+   if(st1==1,
+    str="\dfrac{"+t1+"}{"+tofr_2+"}"
+    ,
+    str="-\dfrac{"+t1*st1+"}{"+tofr_2+"}"
+   );
+  );
+  ans=[str];
+  ,
+  sqrtd=Usqrt(d);
+  if(sqrtd_2==1,
+   tofr1=Uyakubun(-b+sqrtd_1,2*a);
+   if(tofr1_2==1,
+    str1=tofr1_1;
+    ,
+    t1=tofr1_1;
+    st1=Usgn(t1);
+    if(st1==1,
+     str1="\dfrac{"+t1+"}{"+tofr1_2+"}";
+     ,
+     str1="-\dfrac{"+t1*st1+"}{"+tofr1_2+"}";
+    );
+   );
+   tofr2=Uyakubun(-b-sqrtd_1,2*a);
+   if(tofr2_2==1,
+    str2=tofr2_1;
+    ,
+    t2=tofr2_1;
+    st2=Usgn(t2);
+    if(st2==1,
+     str2="\dfrac{"+t2+"}{"+tofr2_2+"}";
+     ,
+     str2="-\dfrac{"+t2*st2+"}{"+tofr2_2+"}";
+    );
+   );
+   if(a>0,
+    ans=[str2,str1];
+    ,
+    ans=[str1,str2];
+   );
+  ,
+   if(b==0,
+    tofr=Uyakubun(sqrtd_1,2*a*Usgn(a));
+    if(tofr_2==1,
+     if(tofr_1==1,tofr_1="");
+     if(tofr_1==-1,tofr_1="-");
+     str1=tofr_1+"\sqrt{"+sqrtd_2+"}",
+     str1="\dfrac{"+tofr_1+"\sqrt{"+sqrtd_2+"}{"+tofr1_2+"}");
+    ans=["-"+str1,str1];
+   , 
+    tofr=Uyakubun2(-b,sqrtd_1,2*a);
+    if(tofr_2==1,tofr_2="");
+    if(tofr_3==1,
+     str1=tofr_1+"+"+tofr_2+"\sqrt{"+sqrtd_2+"}";
+     str2=tofr_1+"-"+tofr_2+"\sqrt{"+sqrtd_2+"}";
+     ans=[str2,str1];
+    ,
+     str1="\dfrac{"+tofr_1+"+"+tofr_2+"\sqrt{"+sqrtd_2+"}}{"+tofr_3+"}";
+     str2="\dfrac{"+tofr_1+"-"+tofr_2+"\sqrt{"+sqrtd_2+"}}{"+tofr_3+"}";
+     ans=[str2,str1];
+    );
+   );
+  );
+ );
+ );
+ ans;
+);
+
+Ukai1(list):=(
+ tofr=Uyakubun(-list_1,list_2);
+ if(tofr_2==1,
+  str=tofr_1;
+  ,
+  t1=tofr_1;
+  st1=Usgn(t1);
+  if(st1==1,
+   str="\dfrac{"+t1+"}{"+tofr_2+"}"
+   ,
+   str="-\dfrac{"+t1*st1+"}{"+tofr_2+"}"
+  );
+ ); 
+ [str];
+);
+
+Utable(str):=(
+ list=Umakelist(str);
+ blist=Ubibun(list);
+ if(blist_4==0,
+  if(blist_3==0,
+   a=Ukai1(blist)_1;
+   if(blist_2>0,
+    ans=[["x","\cdots",text(a),"\cdots"],["y'","-","0","+"],["y","\searrow","","\nearrow"]];
+   ,
+    ans=[["x","\cdots",text(a),"\cdots"],["y'","+","0","-"],["y","\nearrow","","\searrow"]];
+   );
+  ,
+   kai=Ukai2(blist);
+   if(kai_1=="none",
+    if(blist_3>0,   
+     ans=[["x","\cdots"],["y'","+"],["y","\nearrow"]];
+    ,
+     ans=[["x","\cdots"],["y'","-"],["y","\searrow"]];
+    );
+   ,
+    if(length(kai)==1,
+     a=kai_1;
+     if(blist_3>0,
+      ans=[["x","\cdots",text(a),"\cdots"],["y'","+","0","+"],["y","\searrow",,"\nearrow"]];
+     ,
+      ans=[["x","\cdots",text(a),"\cdots"],["y'","-","0","-"],["y","\nearrow",,"\searrow"]];
+     );
+    ,
+     a1=kai_1;a2=kai_2;
+     if(blist_3>0,
+      ans=[["x","\cdots",text(a1),"\cdots",text(a2),"\cdots"],["y'","+","0","-","0","+"],["y","\nearoow","","\searrow","","\nearrow"]];
+     ,
+      ans=[["x","\cdots",text(a1),"\cdots",text(a2),"\cdots"],["y'","-","0","+","0","-"],["y","\searoow","","\nearrow","","\searrow"]];
+     );
+    );
+   );
+  );
+ ); 
+);
