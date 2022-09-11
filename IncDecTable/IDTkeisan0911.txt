@@ -1,0 +1,672 @@
+
+// "a4x^4+a3x^3+a2x^2+a1x+a0" -> [a0,a1,a2,a3,a4]
+Umakelist(str):=(
+ regional(str1,j,i,a,ustr,aa);
+ str1=replace(str,"+x","+1x");
+ j=4;i=[0,0,0,0];a=[0,0,0,0,0];ustr=["","","","",str1];
+ while(j>1,
+  i_j=indexof(ustr_(j+1),"x^"+j);
+  if(i_j==0,
+   a_(j+1)=0;ustr_j=ustr_(j+1);
+   ,
+   if(i_j==1,
+    a_(j+1)=1;    
+    ,
+    aa=substring(ustr_(j+1),0,i_j-1);
+    if(aa=="-",a_(j+1)=-1,
+     a_(j+1)=parse(aa);
+    );
+   ); 
+   ustr_j=substring(ustr_(j+1),i_j+2,length(ustr_(j+1)));
+  );
+  j=j-1;
+ );
+ i_1=indexof(ustr_2,"x");
+ if(i_1==0,
+  a_2=0;
+  ustr_1=ustr_2;
+ ,
+  if(i_1==1,
+   a_2=1;
+  ,
+   aa=substring(ustr_2,0,i_1-1);
+   if(aa=="-",
+    a_2=-1;
+   ,
+    a_2=parse(aa);
+   );
+   if(i_1==length(ustr_2),
+    ustr_1="0";
+    ,
+    ustr_1=substring(ustr_2,i_1,length(ustr_2));
+   );
+  );
+ );
+ if(ustr_1=="",a_1=0,a_1=parse(ustr_1));
+ a;
+);
+
+// [a0,a1,a2,a3,a4]"
+// -> a4x^{4}+a3x^{3}+a2x^{2}+a1x+a0"
+Umakepoly(list):=(
+ regional(a0,a1,a2,a3,a4,len,astr);
+ len=length(list);
+ a0=0;a1=0;a2=0;a3=0;a4=0;
+ if(len>4,a4=list_5);
+ if(len>3,a3=list_4);
+ if(len>2,a2=list_3);
+ if(len>1,a1=list_2);
+ a0=list_1;
+ astr="";
+ astr=astr+Umpsub(astr,a4,4);
+ astr=astr+Umpsub(astr,a3,3);
+ astr=astr+Umpsub(astr,a2,2);
+ astr=astr+Umpsub(astr,a1,1);
+ astr=astr+Umpsub(astr,a0,0);
+ astr;
+);
+
+Umpsub(str,c,n):=(
+ regional(sub,xn,tc);
+ if(n>1,xn="x^{"+n+"}");
+ if(n==1,xn="x");
+ if(n==0,xn="");
+ if(c==1,
+  tc="";
+  if(n==0,tc="1");
+ ,
+  if(c==-1,
+   tc="-";
+   if(n==0,tc="-1");
+  ,
+   tc=text(c);
+  );
+ );
+ if(c==0,
+  sub="";
+ ,
+  if((str=="")%(c<0),
+   sub=tc+xn;  
+  ,
+   sub="+"+tc+xn;
+  );
+ ); 
+ sub;
+);
+
+// integer a -> 1, -1, 0
+Usgn(a):=(
+ regional(ans);
+ if(a>0,ans=1,ans=-1);
+ if(a==0,ans=0);
+ ans;
+);
+
+// integer a,b -> gcd(a,b)
+// 0,a or a,0 -> 0
+Ugcd(a,b):=(
+ regional(ans,p,q,r);
+ if(a==0,
+  ans=b;
+ ,
+  if(b==0,
+   ans=a;
+  ,
+   p=a*Usgn(a);q=b*Usgn(b);r=q;
+   while(r>0,
+    r=mod(p,q);
+    p=q;q=r; 
+   );
+   ans=p;
+  );
+ );
+);
+
+// [1,n]=sq(n) -> [p,q]=p*sq(q)=sq(n)
+Usqrt(n):=(
+ regional(p,q,r,flg);
+ p=1;q=n;r=2;
+ while(r<=sqrt(q),
+  if(mod(q,r)==0,flg=1);
+  while(flg==1,
+   if(mod(q,r)==0,
+    if(mod(q/r,r)==0,p=p*r;q=q/r/r,flg=0);
+    ,
+    flg=0;
+   );
+  );
+  r=r+1;
+ );
+ [p,q];
+);
+
+// [ka,kb]=fr(ka,kb)
+// -> [a,b]=fr(a,b) gcd(a,b)=1
+Uyakubun(list):=(
+ regional(a,b,sa,aa,sb,bb,c,alist);
+ a=list_1;b=list_2;
+ sa=Usgn(a);aa=a*sa;
+ sb=Usgn(b);bb=b*sb;
+ c=Ugcd(aa,bb);
+ alist=[a*sb/c,bb/c];
+ alist;
+);
+
+// -> [ka,kb,c,kd]=fr(ka+kb*sq(c),kd)
+// -> [a,b,c,d]=fr(a+b*sq(c),d) gcd(gcd(a,b),d)=1
+// if c==1 -> [a+b,0,1,d] gcd(a+b,d)=1
+Uyakubun2(list):=(
+ regional(a,b,c,d,usq,a1,b1,b2,c1,g,h,sd);
+ a=list_1;b=list_2;c=list_3;d=list_4;
+ usq=Usqrt(c);
+ b1=b*usq_1;c1=usq_2;
+ if(c1<2,a=a+b1;b1=0;);
+ g=Ugcd(a,b1);
+ h=Ugcd(g,d);
+ sd=Usgn(d); 
+ [a*sd/h,b1*sd/h,c1,d*sd/h];
+);
+
+// [a1,a2]=fr(a1,a2)=a,
+// [b1,b2]=fr(b1,b2)=b
+// -> [c1,c2]=fr(c1,c2)=a+b
+Usum(list1,list2):=(
+ regional(a1,a2,b1,b2);
+ a1=list1_1;a2=list1_2;
+ b1=list2_1;b2=list2_2;
+ Uyakubun([a1*b2+a2*b1,a2*b2]);
+);
+
+// [a1,a2]=fr(a1,a2)=a,
+// [b1,b2,b3,b4]=fr(b1+b2*sq(b3),b4)=b
+// -> [c1,c2,c3,c4]=fr(c1+c2*sq(c3),c4)=a+b
+Usum2(list1,list2):=(
+ regional(a1,a2,b1,b2,b3,b4);
+ a1=list1_1;a2=list1_2;
+ b1=list2_1;b2=list2_2;b3=list2_3;b4=list2_4;
+ Uyakubun2([a1*b4+a2*b1,a2*b2,b3,a2*b4]);
+);
+
+// [a1,a2,aa,a4]=fr(a1+a2*sq(aa),a4)=a
+// [b1,b2,aa,b4]=fr(b1+b2*sq(aa),b4)=b
+// -> [c1,c2,aa,c4]=fr(c1+c2*sq(aa),c4)=a+b
+Usum3(list1,list2):=(
+ regional(a1,a2,a3,a4,b1,b2,b3,b4);
+ a1=list1_1;a2=list1_2;a3=list1_3;a4=list1_4;
+ b1=list2_1;b2=list2_2;b3=list2_3;b4=list2_4;
+ Uyakubun2([a1*b4+a4*b1,a2*b4+a4*b2,a3,a4*b4]);
+);
+
+// [a1,a2]=fr(a1,a2)=a,
+// [b1,b2]=fr(b1,b2)=b
+// -> [c1,c2]=fr(c1,c2)=a*b
+Uprod(list1,list2):=(
+ regional(a1,a2,b1,b2,b3,b4);
+ a1=list1_1;a2=list1_2;
+ b1=list2_1;b2=list2_2;b3=list2_3;b4=list2_4;
+ Uyakubun([a1*b1,a2*b2]);
+);
+
+// [a1,a2]=fr(a1,a2)=a,
+// [b1,b2,b3,b4]=fr(b1+b2*sq(b3),b4)=b
+// -> [c1,c2,c3,c4]=fr(c1+c2*sq(c3),c4)=a*b
+Uprod2(list1,list2):=(
+ regional(a1,a2,b1,b2,b3,b4);
+ a1=list1_1;a2=list1_2;
+ b1=list2_1;b2=list2_2;b3=list2_3;b4=list2_4;
+ Uyakubun2([a1*b1,a1*b2,b3,a2*b4]);
+);
+
+// [a1,a2,a3,a4]=fr(a1+a2*sq(a3),a4)=a
+// -> [c1,c2,c3,c4]=fr(c1+c2*sq(c3),c4)=a^2
+Uprod3(list):=(
+ regional(a1,a2,a3,a4);
+ a1=list_1;a2=list_2;a3=list_3;a4=list_4;
+ Uyakubun2([a1^2+a2^2*a3,2*a1*a2,a3,a4^2]);
+);
+
+// [a0,a1,...]=f(x) -> f'(x)
+Ubibun(list):=(
+ regional(alist,i);
+ alist=[];
+ i=2;
+ while(i<=length(list),
+  alist=append(alist,(i-1)*list_i);
+  i=i+1;
+ );
+ alist;
+);
+
+// [b,a]=ax+b -> [-b,a]=fr(-b,a)
+Ukai1(list):=(
+ Uyakubun([-list_1,list_2]);
+);
+
+// [c,b,a]=ax^2+bx+c -> kai
+Ukai2(list):=(
+ regional(a,b,c,d,sa,ans);
+ a=list_3;sa=Usgn(a);
+ b=list_2;
+ c=list_1;
+ d=b^2-4*a*c;
+ if(d<0,ans=["none"],
+  if(d<1,
+   ans=[Uyakubun2([-b,0,1,2*a])];
+  ,
+   ans=[Uyakubun2([-b*sa,-1,d,2*a*sa]),Uyakubun2([-b*sa,1,d,2*a*sa])];
+  );
+ ); 
+ ans;
+);
+
+// [d,c,b,a]=ax^3+bx^2+cx+d -> kai
+Ukai3(list):=(
+ regional(a,b,c,d,ans,kai,clist,r1,r2,r3,rrr,k1);
+ rrr=roots(list);
+ r1=parse(text(parse(guess(rrr_1))));
+ r2=parse(text(parse(guess(rrr_2))));
+ r3=parse(text(parse(guess(rrr_3))));
+ if(isinteger(r1),
+  k1=r1;
+ ,
+  if(isinteger(r2),
+   k1=r2;
+  ,
+   if(isinteger(r3),
+    k1=r3;
+   ,
+    ans=["none3"];
+   );
+  );
+ );
+ a=list_4;b=list_3;c=list_2;d=list_1;
+ clist=[a*k1^2+b*k1+c,a*k1+b,a];
+ kai=Ukai2(clist);
+ if(kai_1=="none",
+  ans=[[k1,0,1,1]];
+ ,
+  ans=append(kai,[k1,0,1,1]);
+ );
+ ans;
+);
+
+// [a,b]=fr(a,b) -> "\dfrac{a}{b}"
+Utotex1(list):=(
+ regional(t1,st1,str);
+ if(list_2==1,
+  str=text(list_1);
+ ,
+  t1=list_1;
+  st1=Usgn(t1);
+  if(st1==1,
+   str="\dfrac{"+t1+"}{"+list_2+"}"
+   ,
+   str="-\dfrac{"+t1*st1+"}{"+list_2+"}"
+  );
+ ); 
+ str;
+);
+
+// [a1,a2,a3,a4]=fr(a1+a2*sq(a3),a4)
+// -> "\dfrac{a1+a2 \sqrt{a3}}{a4}"
+Utotex2(list):=(
+ regional(a,b,c,d,astr,rstr,dstr);
+ a=list_1;b=list_2;c=list_3;d=list_4;
+ if((b==0)%(c==0),
+  astr=Utotex1([a,d]);
+ ,
+//  if(c==1,
+//   astr=Utotex1([a+b,d]);
+//  ,
+   if(b==1,
+    rstr="\sqrt{"+c+"}";
+   ,
+    if(b==-1,
+     rstr="-\sqrt{"+c+"}";
+    ,
+     rstr=text(b)+"\sqrt{"+c+"}";
+    );
+   );
+   if(a==0,
+    dstr=rstr;
+   ,
+    if(b>0,
+     dstr=text(a)+"+"+rstr;
+    ,
+     dstr=text(a)+rstr;
+    );
+   );
+   if(d==1,
+    astr=dstr;
+   ,
+    astr="\dfrac{"+dstr+"}{"+d+"}";
+   );
+  );
+// ); 
+ astr;
+);
+
+Utable2(list):=(
+ regional(a2,a1,a0,blist,kai.kaitext,B1,B2,B3,ans1,ans2,ans3,ytext,);
+ a2=list_3;a1=list_2;a0=list_1;
+ blist=Ubibun(list);
+ B1="y'="+Umakepoly(blist);
+ kai=Ukai1(blist);
+ kaitext=Utotex1(kai);
+ B2=["="+blist_2+Ufactor(kaitext)];
+ B3=["x="+kaitext];
+ ytext=Utotex1(Uyakubun([4*a2*a0-a1^2,4*a2]));
+ ans1=["x","\cdots",kaitext,"\cdots"];
+ ans2=["y'","-","0","+"];
+ ans3=["y","\searrow",ytext,"\nearrow"];
+ if(blist_2<0,
+  ans2_2="+";ans3_2="\nearrow";
+  ans2_4="-";ans3_4="\searrow";
+ );
+ anslist=[B1,B2,B3,[ans1,ans2,ans3]];
+);
+
+Utable3(list):=(
+ regional(a3,a2,a1,a0,y1,y2,kai,B1,B2,B2,ans,ans2,ans3,blist,kaitext,ytext,kaitexy1,kaitext2,ytext1,ytext2);
+ a3=list_4;a2=list_3;a1=list_2;a0=list_1;
+ y1=Uyakubun([6*a3*a1-2*a2^2,9*a3]);
+ y2=Uyakubun([9*a3*a0-a2*a1,9*a3]);
+ blist=Ubibun(list);
+ B1="y'="+Umakepoly(blist);
+ kai=Ukai2(blist);
+ if(kai_1=="none",
+  B2=["="+blist_3+Ufactor2(blist)];
+  B3=[Unone];
+  ans1=["x","\cdots"];
+  ans2=["y'","+"];
+  ans3=["y","\nearrow"];
+  if(blist_3<0,
+   ans2_2="-";ans3_2="\searrow";
+  );
+  anslist=[B1,B2,B3,[ans1,ans2,ans3]];
+ ,
+  if(length(kai)==1,
+   kaitext=Utotex2(kai_1);
+   B2=["="+blist_3+Ufactor(kaitext)+"^{2}"];
+   B3=["x="+kaitext];
+   ytext=Utotex2(Usum2(y2,Uprod2(y1,kai_1)));
+   ans1=["x","\cdots",kaitext,"\cdots"];
+   ans2=["y'","+","0","+"];
+   ans3=["y","\nearrow",ytext,"\nearrow"];
+   if(blist_3<0,
+    ans2_2="-";ans3_2="\searrow";
+    ans2_4="-";ans3_4="\searrow";
+   );
+   anslist=[B1,B2,B3,[ans1,ans2,ans3]];
+  ,
+   kaitext1=Utotex2(kai_1);
+   kaitext2=Utotex2(kai_2);
+   B2a="="+blist_3+Ufactor(kaitext1)+Ufactor(kaitext2);
+   B2b="="+blist_3+Ufactor(kaitext2)+Ufactor(kaitext1);
+   B2=[B2a,B2b];
+   B3a="x="+kaitext1+","+kaitext2;
+   B3b="x="+kaitext2+","+kaitext1;
+   B3=[B3a,B3b];
+   ytext1=Utotex2(Usum2(y2,Uprod2(y1,kai_1)));
+   ytext2=Utotex2(Usum2(y2,Uprod2(y1,kai_2)));
+   ans1=["x","\cdots",kaitext1,"\cdots",kaitext2,"\cdots"];
+   ans2=["y'","+","0","-","0","+"];
+   ans3=["y","\nearrow",ytext1,"\searrow",ytext2,"\nearrow"];
+   if(blist_3<0,
+    ans2_2="-";ans3_2="\searrow";
+    ans2_4="+";ans3_4="\nearrow";
+    ans2_6="-";ans3_6="\searrow";
+   );
+   anslist=[B1,B2,B3,[ans1,ans2,ans3]];
+  );
+ );
+ anslist;
+);
+
+Utable4(list):=(
+ regional(a4,a3,a2,a1,a0,z1,z2,z3,blist,B1,B2,B3,kai,anslist,kaitext,kaitext1,kaitext2,kaitext3,kai0text,kai0text1,kai0text2,kai0text3,ytext1,ytext2,ytext3,y0text1,y0text2,y0text3);
+ a4=list_5;
+ a3=list_4;a2=list_3;a1=list_2;a0=list_1;
+ z1=Uyakubun([8*a4*a2-3*a3^2,16*a4]);
+ z2=Uyakubun([6*a4*a1-a3*a2,8*a4]);
+ z3=Uyakubun([16*a4*a0-a3*a1,16*a4]);
+ blist=Ubibun(list);
+ B1="y'="+Umakepoly(blist);
+ kai=Ukai3(blist);
+ //-------------------------------length==1
+ if(length(kai)==1,
+  if(kai_1=="none3",
+   anslist=["none3"];
+  ,
+   kaitext=Utotex2(kai_1);k1=kai_1_1;
+   ytext=Uzv(z1,z2,z3,kai_1);
+   bb0=blist_1;bb1=blist_2;bb2=blist_3;bb3=blist_4;
+   B2=["="+blist_4+Ufactor(kaitext)+Ufactor2([bb3*k1^2+bb2*k1+bb1,bb3*k1+bb2,bb3])];
+   B3=["x="+kaitext];
+   ytext=Uzv(z1,z2,z3,kai_1);;
+   ans1=["x","\cdots",kaitext,"\cdots"];
+   ans2=["y'","+","0","+"];
+   ans3=["y","\searrow",ytext,"\nearrow"];
+   if(blist_4<0,
+    ans2_2="-";ans3_2="\searrow";
+    ans2_4="-";ans3_4="\searrow";
+   );
+   anslist=[B1,B2,B3,[ans1,ans2,ans3]];
+  );  
+ );
+ //-------------------------------length==2
+ if(length(kai)==2,
+  kaitext1=Utotex2(kai_1);//juukai
+  kaitext2=Utotex2(kai_2);
+  ytext1=Uzv(z1,z2,z3,kai_1);
+  ytext2=Uzv(z1,z2,z3,kai_2);
+  if(Uminus(kai_1,kai_2)==0,//3juukai
+   B2=["="+blist_4+Ufactor(kaitext1)+"^{3}"];
+   B3=["x="+kaitext1];
+   kaitext=kaitext1;
+   ytext=ytext1;
+   ans1=["x","\cdots",kaitext,"\cdots"];
+   ans2=["y'","-","0","+"];
+   ans3=["y","\searrow",ytext,"\nearrow"];
+   if(blist_4<0,
+    ans2_2="+";ans3_2="\nearrow";
+    ans2_4="-";ans3_4="\searrow";
+   );
+  ,             //2juukai
+   B2a="="+blist_4+Ufactor(kaitext2)+Ufactor(kaitext1)+"^{2}";
+   B2b="="+blist_4+Ufactor(kaitext1)+"^{2}"+Ufactor(kaitext2);
+   B2=[B2a,B2b];
+   B3a="x="+kaitext1+","+kaitext2;
+   B3b="x="+kaitext2+","+kaitext1;
+   B3=[B3a,B3b];
+   ans1=["x","\cdots",kaitext1,"\cdots",kaitext2,"\cdots"];
+   ans2=["y'","-","0","-","0","+"];
+   ans3=["y","\searrow",ytext1,"\searrow",ytext2,"\nearrow"];
+   if(blist_4<0,
+    ans2_2="+";ans3_2="\nearrow";
+    ans2_4="+";ans3_4="\nearrow";
+    ans2_6="-";ans3_6="\searrow";
+   );
+   if(Uminus(kai_1,kai_2)>0,
+    B3=[B3b,B3a];
+    ans1_3=kaitext2;ans3_3=ytext2;
+    ans1_5=kaitext1;ans3_5=ytext1;
+    ans2_4="+";ans3_4="\nearrow";
+    if(blist_4<0,
+     ans2_2="+";ans3_2="\nearrow";
+     ans2_4="-";ans3_4="\searrow";
+     ans2_6="-";ans3_6="\searrow";
+    );
+   );
+  );
+  anslist=[B1,B2,B3,[ans1,ans2,ans3]];
+ );
+ //-------------------------------length==3
+ if(length(kai)==3,
+  kai0text1=Utotex2(kai_1);
+  kai0text2=Utotex2(kai_2);
+  kai0text3=Utotex2(kai_3);
+  y0text1=Uzv(z1,z2,z3,kai_1);
+  y0text2=Uzv(z1,z2,z3,kai_2);
+  y0text3=Uzv(z1,z2,z3,kai_3);
+  kaitext1=kai0text1;ytext1=y0text1;
+  kaitext2=kai0text2;ytext2=y0text2;
+  kaitext3=kai0text3;ytext3=y0text3;
+  if((Uminus(kai_1,kai_3)==0)%(Uminus(kai_2,kai_3)==0),
+   B2a="="+blist_4+Ufactor(kaitext2)+Ufactor(kaitext1)+"^{2}";
+   B2b="="+blist_4+Ufactor(kaitext1)+"^{2}"+Ufactor(kaitext2);
+   B2=[B2a,B2b];
+   B3a="x="+kaitext1+","+kaitext2;
+   B3b="x="+kaitext2+","+kaitext1;
+   B3=[B3a,B3b];
+   ans1=["x","\cdots",kaitext1,"\cdots",kaitext2,"\cdots"];
+   ans2=["y'","-","0","-","0","+"];
+   ans3=["y","\searrow",ytext1,"\searrow",ytext2,"\nearrow"];
+   if(blist_4<0,
+    ans2_2="+";ans3_2="\nearrow";
+    ans2_4="+";ans3_4="\nearrow";
+    ans2_6="-";ans3_6="\searrow";
+   );
+  ,
+   if(Uminus(kai_2,kai_3)==0,
+    B2a="="+blist_4+Ufactor(kaitext1)+Ufactor(kaitext2)+"^{2}";
+    B2b="="+blist_4+Ufactor(kaitext2)+"^{2}"+Ufactor(kaitext1);
+    B2=[B2a,B2b];
+    ans2_4="+";ans3_4="\nearrow";
+    if(blist_4<0,
+     ans2_2="+";ans3_2="\nearrow";
+     ans2_4="-";ans3_4="\searrow";
+     ans2_6="-";ans3_6="\searrow";
+    );
+   ,
+    B212="="+blist_4+Ufactor(kaitext1)+Ufactor(kaitext2)+Ufactor(kaitext3);
+    B213="="+blist_4+Ufactor(kaitext1)+Ufactor(kaitext3)+Ufactor(kaitext2);
+    B221="="+blist_4+Ufactor(kaitext2)+Ufactor(kaitext1)+Ufactor(kaitext3);
+    B223="="+blist_4+Ufactor(kaitext2)+Ufactor(kaitext3)+Ufactor(kaitext1);
+    B231="="+blist_4+Ufactor(kaitext3)+Ufactor(kaitext1)+Ufactor(kaitext2);
+    B232="="+blist_4+Ufactor(kaitext3)+Ufactor(kaitext2)+Ufactor(kaitext1);
+    B312="x="+kaitext1+","+kaitext2+","+kaitext3;
+    B313="x="+kaitext1+","+kaitext3+","+kaitext2;
+    B321="x="+kaitext2+","+kaitext1+","+kaitext3;
+    B323="x="+kaitext2+","+kaitext3+","+kaitext1;
+    B331="x="+kaitext3+","+kaitext1+","+kaitext2;
+    B332="x="+kaitext3+","+kaitext2+","+kaitext1;
+    if(Uminus(kai_3,kai_1)<0,
+     kaitext1=kai0text3;ytext1=y0text3;
+     kaitext2=kai0text1;ytext2=y0text1;
+     kaitext3=kai0text2;ytext3=y0text2;
+     B2=[B231,B232,B213,B212,B223,B221];
+     B3=[B331,B332,B313,B312,B323,B321];
+    ,
+     if(Uminus(kai_2,kai_3)<0,
+      kaitext1=kai0text1;ytext1=y0text1;
+      kaitext2=kai0text2;ytext2=y0text2;
+      kaitext3=kai0text3;ytext3=y0text3;
+      B2=[B212,B213,B221,B223,B231,B232];
+      B3=[B312,B313,B321,B323,B331,B332];
+     ,
+      kaitext1=kai0text1;ytext1=y0text1;
+      kaitext2=kai0text3;ytext2=y0text3;
+      kaitext3=kai0text2;ytext3=y0text2;
+      B2=[B213,B212,B231,B232,B221,B223];
+      B3=[B313,B312,B331,B332,B321,B323];
+     );
+    );
+    ans1=["x","\cdots",kaitext1,"\cdots",kaitext2,"\cdots",kaitext3,"\cdots"];
+    ans2=["y'","-","0","+","0","-","0","+"];
+    ans3=["y","\searrow",ytext1,"\nearrow",ytext2,"\searrow",ytext3,"\nearrow"];
+    if(blist_4<0,
+     ans2_2="+";ans3_2="\nearrow";
+     ans2_4="-";ans3_4="\searrow";
+     ans2_6="+";ans3_6="\nearrow";
+    );
+   );
+  ); 
+  anslist=[B1,B2,B3,[ans1,ans2,ans3]];
+ );
+ anslist;
+);
+
+Utable(str):=(
+ regional(list,ans);
+ list=Umakelist(str);
+ if(list_5==0,
+  if(list_4==0,
+   ans=Utable2(list);
+  ,
+   ans=Utable3(list);
+  );
+ ,
+  ans=Utable4(list);
+ );
+ ans;
+);
+
+
+// [a1,a2,aa,a4]=(a1+a2*sqrt(aa))/a4=a
+// [b1,b2,aa,b4]=(b1+b2*sqrt(aa))/b4=b
+// -> a-b : value
+Uminus(list1,list2):=(
+ regional(a1,a2,a3,a4,b1,b2,b3,b4,a,b,ueps,ans);
+ ueps=0.01; 
+ a1=list1_1;a2=list1_2;a3=list1_3;a4=list1_4;
+ b1=list2_1;b2=list2_2;b3=list2_3;b4=list2_4;
+ a=(a1+a2*sqrt(a3))/a4;
+ b=(b1+b2*sqrt(b3))/b4;
+ ans=a-b;
+);
+
+// a -> "(x-a)"
+Ufactor(a):=(
+ regional(astr,as);
+ as=text(a);
+ if(as=="0",
+  astr="x"
+ ,
+  if(as_1=="-",
+   astr="(x+"+substring(as,1,length(as))+")";
+  ,
+   astr="(x-"+as+")";
+  );
+ ); 
+ astr;
+);
+
+// [c,b,a]=ax^2+bx+c
+// -> "(x^2+\dfrac{b}{a}x+\dfrac{c}{a})"
+Ufactor2(list):=(
+ regional(a,b,c,bstr,cstr,b1,c1);
+ a=list_3;b=list_2;c=list_1;
+ b1=Utotex1(Uyakubun([b,a]));
+ if(b1_1=="-",
+  b2=b1;
+ ,
+  b2="+"+b1;
+ );
+ if(b1=="1",b2="+");
+ if(b1=="-1",b2="-");
+ bstr=b2+"x";
+ if(b1=="0",bstr="");
+ c1=Utotex1(Uyakubun([c,a]));
+ if(c1=="0",
+  cstr="";
+ ,
+  if(c1_1=="-",
+    cstr=c1;
+   ,
+    cstr="+"+c1;
+  );
+ );
+ astr="(x^{2}"+bstr+cstr+")";
+);
+
+// [a1,a2]=fr(a1,a2)=z1
+// [b1,b2]=fr(b1,b2)=z2
+// [c1,c2]=fr(c1,c2)=z3
+// [k1,k2,k3,k4]=fr(k1+k2*sq(k3),k4)=k
+// -> [d1,d2,d3,d4]=fr(d1+d2*sq(d3),d4)
+//                 =z1*k^2+z2*k+z3
+Uzv(z1,z2,z3,k):=(
+ Utotex2(Usum2(z3,Usum3(Uprod2(z1,Uprod3(k)),Uprod2(z2,k))));
+);
+
