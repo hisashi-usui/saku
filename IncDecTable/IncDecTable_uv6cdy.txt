@@ -1,0 +1,485 @@
+Ketinit(1);
+Addax(0);
+//poy=4.5;
+
+Keytable(4,12,1,12,[6,-3.75],[0,1,0],nameL1,[0,-0.2],22);
+Keytable(4,12,4,12,[6,-8.55],[1,1,0],nameL2,[0,-0.2],22);
+Keytable(3,12,1,12,[1.9,-7.35],[1,1,0],nameL5,[0,-0.2],22);
+Keytable(3,12,1,12,[1.9,-6.15],[1,1,0],nameL4,[0,-0.2],22);
+
+if(ansflg==0,R1.xy=Text100.xy+[1.2,0.2];Qstr="";);
+if(ansflg==1,Qstr="y'=";);
+if(ansflg==-1,R1.xy=Text99.xy+[1.2,0.2];Qstr="y=";);
+if(ansflg==2,Qstr="y'=");
+if(ansflg==3,Qstr="x=";);
+if(ansflg==4,R1.xy=Text104.xy+[1.2,0.2];Qstr="?=";);
+if(ansflg==5,R1.xy=Text105.xy+[1.2,0.2];Qstr="?=";);
+if(ansflg==6,R1.xy=Text106.xy+[1.2,0.2];Qstr="?=";);
+if(ansflg==8,R1.xy=Text99.xy+[-0.4,-1];Qstr="";);
+if(ansflg==9,R1.xy=Text99.xy+[-0.4,-1];Qstr="";);
+if(ansflg==10,R1.xy=Text99.xy+[-0.4,-1];Qstr="";);
+if(ansflg==12,R1.xy=Text99.xy+[-0.4,-1];Qstr="";);
+if(ansflg==11,R1.xy=Text112.xy+[2,0.2];Qstr="データ";);
+//Letter(Text10.xy+[-0.5,0.2],"w",Qstr,["Size=1.2"]);
+
+ichi=[0,-0.5];
+
+if(ansflg==1,
+ Letter(ichi,"se","微分する",["Size=1.2","Color=red"]);
+);
+if(ansflg==2,
+ Letter(ichi,"se","因数分解する",["Size=1.2","Color=red"]);
+// Letter(ichi-[0,0.8],"se","各因数が $x$ で始まる形に",["Size=1.2","Color=red"]);
+// Letter([7,6.2],"se","解の公式で(3)を先に",["Size=1.2","Color=red"]);
+// Letter([7,5.3],"se","求めてからでもよい",["Size=1.2","Color=red"]);
+// Letter(ichi-[0,1.6],"se","(3)を先に求めてもよい",["Size=1.2","Color=red"]);
+);
+if(ansflg==3,
+ Letter(ichi,"se","$y'=0$ となる $x$ の値",["Size=1.2","Color=red"]);
+// Letter(ichi,"se","(2)のそれぞれの因子",["Size=1.2","Color=red"]);
+// Letter(ichi-[0,0.8],"se","を 0 にする $x$ の値",["Size=1.2","Color=red"]);
+// Letter(ichi-[0,1.6],"se","解の公式で求めてもよい",["Size=1.2","Color=red"]);
+);
+if(ansflg==4,
+ Letter(ichi,"se","表の1行目",["Size=1.2","Color=red"]);
+// Letter(ichi,"se","まず，(3)の答え",["Size=1.2","Color=red"]);
+// Letter(ichi-[0,0.8],"se","前後と間に「$\cdots$」",["Size=1.2","Color=red"]);
+);
+if(ansflg==5,
+ Letter(ichi,"se","表の2行目",["Size=1.2","Color=red"]);
+ if(Stagenum>4,
+// Letter(ichi,"se","(3)の答えの下は 0",["Size=1.2","Color=red"]);
+// Letter(ichi-[0,0.8],"se","それ以外は $+$ か $-$",["Size=1.2","Color=red"]);
+// Letter(ichi-[0,1.6],"se","(2)を使って符号を求める",["Size=1.2","Color=red"]);
+,
+ if(zero2flg==1,
+// Letter(ichi,"se","$+$ か $-$",["Size=1.2","Color=red"]);
+// Letter(ichi-[0,0.8],"se","(2)を使って符号を求める",["Size=1.2","Color=red"]);
+ ,
+// Letter(ichi,"se","(3)の答えの下は 0",["Size=1.2","Color=red"]);
+ A123B_2_2="";A123B_2_4="";A123B_2_6="";A123B_2_8="";
+ R123L_2_2="";R123L_2_4="";R123L_2_6="";R123L_2_8="";
+ );
+ );
+);
+if(ansflg==6,
+ Letter(ichi,"se","表の3行目",["Size=1.2","Color=red"]);
+// Letter(ichi,"se","$+$ の下は $\nearrow$",["Size=1.2","Color=red"]);
+// Letter(ichi+[3,0],"se" ,"$-$ の下は $\searrow$",["Size=1.2","Color=red"]);
+// Letter(ichi-[0,0.8],"se","(3)の答えの欄は",["Size=1.2","Color=red"]);
+// Letter(ichi-[0,1.6],"se","値を計算する",["Size=1.2","Color=red"]);
+// Letter(ichi-[0,0.8],"se","(3)の答えを書いた列の",["Size=1.2","Color=red"]);
+// Letter(ichi-[0,1.6],"se","ところは値を計算する",["Size=1.2","Color=red"]);
+);
+
+if(ansflg==8,
+ if(Stagenum==1.5,str="(3)");
+ if(Stagenum==2.5,str="(2)");
+ if(Stagenum==1,str="(2),(3)");
+ Letter(ichi,"se",str+"が違っています",["Size=1.2","Color=red"]);
+);
+if(ansflg==9,Letter(ichi,"se","(4)が違っています",["Size=1.2","Color=red"]););
+if(ansflg==10,Letter(ichi,"se","(5)が違っています",["Size=1.2","Color=red"]););
+if(ansflg==12,Letter(ichi,"se","(1)が違っています",["Size=1.2","Color=red"]););
+
+
+
+if(funflg==1,
+//if(name=="UB()",Str=substring(Str,1,length(Str)));
+  if(contains(Manifun,name),
+    parse(name+";");
+  ,
+    tmp=indexof(Str,"?");
+    if(tmp>0,npos=tmp,npos=length(Str));
+    out=Addfunstr(name,npos,Str);
+    tmp=length(out_1)-length(Str);
+    npos=npos+tmp;
+    Str=out_1; //npos=out_2;
+    if(npos<length(Str),
+      tmp=replace(Str,"?","");
+      tmp1=substring(tmp,0,npos-1)+"?";
+      Str=tmp1+substring(tmp,npos-1,length(tmp));
+    );
+  );
+  Subsedit(10,Str);
+  funflg=0;
+);
+
+Str=Textedit(10,"","");
+Str=replace(Str,"frfr","tfr");
+Strnq=replace(Ustr+Str,"?","");
+//Tstr=Gettexform(Strnq);
+Tstr="$"+Totexform(Strnq)+"$";
+Tstr2=Totexform(Strnq);
+if(Tstr2=="" % ansflg==11,,
+// Letter([-2.3,-0.5],"e","TeX形式",["Size=1.0"]);
+ Expr([6.1,-0.5],"e",Qstr+Tstr2,["Size=1.2"]);
+// Expr([6.1,0.5],"e",Ustr,["Size=1.2"]);
+// Expr([6.1,-0.5],"e",Qstr+Ustr+Tstr2,["Size=1.2"]);
+);
+
+RLstr=Strnq;
+RLstr=Totexform(RLstr);
+RLstr=replace(RLstr,"NE","\nearrow");
+RLstr=replace(RLstr,"SE","\searrow");
+
+////////////// 出題 ////////////
+if(pbflg==1,
+  if(pbno==0,
+    Prbstr="y=2x^3-3x^2-12x+6";
+  );
+  if(pbno==1,
+    Prbstr="y=-x^3-4x^2+3x+2";
+  );
+  if(pbno==2,
+    Prbstr="y=x^3+3x^2+3x-4";
+  );
+  if(pbno==3,
+    Prbstr="y=-x^3+9x";
+  );
+  if(pbno==4,
+    Prbstr="y=x^3+9x";
+  );
+  if(ansflg==0,
+    caflg=0;
+    M1strnq="";
+    M2strnq="";
+    M3strnq="";
+    BM1strnq="";
+    Astr1="y'=";
+    Astr2="=";
+    Astr3="x=";
+    Bstr1="=";
+    xL=[15];
+    yL=[15,15,15];
+    A3xL=[15,15];
+    R123L=[["x",""],["y'",""],["y",""]];
+    A123B=[["x",""],["y'",""],["y",""]];
+    Stagenum=0;
+    withcheck=1;
+    Showans=1;
+  );
+
+  if(ansflg==-1,
+    BM1strnq=Strnq;
+    Bstr1="="+Totexform(BM1strnq);
+    Prbstr="y="+Totexform(BM1strnq);
+    pbno=4;
+    Stagenum=10;
+    withcheck=0;
+    Showans=0;
+  );
+
+  if(ansflg==1,
+    M1strnq=Strnq;
+    Astr1="y'="+Totexform(M1strnq);
+    if(Stagenum<10,
+     if(Astr1==Castr1,Stagenum=1,Stagenum=0);
+    );
+  );
+
+  if(ansflg==2,
+    M2strnq=Strnq;
+    Astr2="y'="+Totexform(M2strnq);
+     if(Stagenum<10,
+      if((Astr2==Castr2a)%(Astr2==Castr2b),
+       if((Astr3==Castr3a)%(Astr3==Castr3b),
+        Stagenum=3;
+       ,
+        Stagenum=1.5;
+       );
+      ,
+       if((Astr3==Castr3a)%(Astr3==Castr3b),
+        Stagenum=2.5;
+       ,
+        Stagenum=1;
+       );
+      );
+     );
+  );
+
+  if(ansflg==3,
+    M3strnq=Strnq;
+    Ustr3=Totexform(M3strnq);
+    Astr3="x="+Ustr3;
+    Vstr3=Strsplit(Ustr3,",");
+    Lnum=length(Vstr3)*2+2;
+
+if(M3strnq==".",
+ Astr3=Unone;
+ Lnum=2;
+);
+    if(Stagenum<10,
+     if((Astr2==Castr2a)%(Astr2==Castr2b),
+      if((Astr3==Castr3a)%(Astr3==Castr3b),
+       Stagenum=3;
+      ,
+       Stagenum=1.5;
+      );
+     ,
+      if((Astr3==Castr3a)%(Astr3==Castr3b),
+       Stagenum=2.5;
+      ,
+       Stagenum=1;
+      );
+     );
+    );
+  );
+
+  if(ansflg==4,
+   if(length(xL)==Lnum,,
+    xL=[15];
+    yL=[15,15,15];
+    A3xL=[15,15];
+    R123L=[["x",""],["y'",""],["y",""]];
+    A123B=[["x",""],["y'",""],["y",""]];
+    forall(1..Lnum-2,
+     A3xL=append(A3xL,15);
+     A123B_1=append(A123B_1,"");
+     A123B_2=append(A123B_2,"");
+     A123B_3=append(A123B_3,"");
+     R123L_1=append(R123L_1,"");
+     R123L_2=append(R123L_2,"");
+     R123L_3=append(R123L_3,"");
+    );
+    xL=A3xL;
+    yL=[15,15,15];
+    ); 
+    QR=1;
+    Letter([0.5+QL*1.5,5.5-QR*1.5],"se","?",["Size=1.5"]);
+    if(Stagenum<10,
+     if(R123L_1==Car1L,Stagenum=4,Stagenum=3);
+    );
+   );
+
+  if(ansflg==5,
+    QR=2;
+    Letter([0.5+QL*1.5,5.5-QR*1.5],"se","?",["Size=1.5"]);
+    ui=3;zero2flg=1;
+    while(ui<Lnum,
+     if(R123L_2_ui=="0",,zero2flg=0;);
+     ui=ui+2;
+    );
+    if(Stagenum<10,
+     if(R123L_2==Car2L,Stagenum=5,Stageflg=4);
+    );
+  );
+
+  if(ansflg==6,
+    QR=3;
+    Letter([0.5+QL*1.5,5.5-QR*1.5],"se","?",["Size=1.5"]);
+  );
+
+
+
+
+
+
+  posy1=(Text221.xy)_2+0.2;
+  posy2=(Text222.xy)_2+0.2;
+  Ushowstr=[Prbstr,Astr1,Astr2,Astr3];
+  Expr([0,posy1],"e",Ushowstr_(Ushownum+1),["Size=1.2"]);
+  Expr([0,posy2],"e",Ushowstr_(Ushownum+2),["Size=1.2"]);
+  Expr(Text221.xy+[0.5,0.2],"e",Ushownum,["Size=1.2"]);
+  Expr(Text222.xy+[0.5,0.2],"e",Ushownum+1,["Size=1.2"]);
+//  if(Astr3==Unone,AAstr3=Astr3,AAstr3="$"+Astr3+"$");
+//  Letter([0,posy3],"e","$y'=0$ となる $x$ の値は "+AAstr3,["Size=1.2"]);
+  Tabledata("1",xL,yL,[""],[0]);
+  Putrowexpr(1,"c",R123L_1);
+  Putrowexpr(2,"c",R123L_2);
+  Putrowexpr(3,"c",R123L_3); 
+  prbflg=0;
+);
+
+////////////// 正解 ////////////
+//if(caflg==1,
+  if(pbno==0,
+    Castr1="y'=6x^{2}-6x-12";
+    Castr2a="=6(x+1)(x-2)"; Castr2b="=6(x-2)(x+1)";
+    Castr3a="x=-1,2"; Castr3b="x=2,-1";
+    Car1L=["x","\cdots","-1","\cdots","2","\cdots"];
+    Car2L=["y'","+","0","-","0","+"];
+    Car3L=["y","\nearrow","13","\searrow","-14","\nearrow"];
+  );
+  if(pbno==1,
+    Castr1="y'=-3x^{2}-8x+3";
+    Castr2a="=-3(x+3)(x-\dfrac{1}{3})"; Castr2b="=-3(x-\dfrac{1}{3})(x+3)";
+    Castr3a="x=-3,\dfrac{1}{3}"; Castr3b="x=\dfrac{1}{3},-3";
+    Car1L=["x","\cdots","-3","\cdots","\dfrac{1}{3}","\cdots"];
+    Car2L=["y'","-","0","+","0","-"];
+    Car3L=["y","\searrow","-16","\nearrow","\dfrac{68}{27}","\searrow"];
+  );
+  if(pbno==2,
+    Castr1="y'=3x^{2}+6x+3";
+    Castr2a="=3(x+1)^{2}";Castr2b="=3(x+1)^{2}";
+    Castr3a="x=-1";Castr3b="x=-1";
+    Car1L=["x","\cdots","-1","\cdots"];
+    Car2L=["y'","+","0","+"];
+    Car3L=["y","\nearrow","-5","\nearrow"];
+  );
+  if(pbno==3,
+    Castr1="y'=-3x^{2}+9";
+    Castr2a="=-3(x-\sqrt{3})(x+\sqrt{3})"; Castr2b="=-3(x+\sqrt{3})(x-\sqrt{3})";
+    Castr3a="x=-\sqrt{3},\sqrt{3}"; Castr3b="x=\sqrt{3},-\sqrt{3}";
+    Car1L=["x","\cdots","-\sqrt{3}","\cdots","\sqrt{3}","\cdots"];
+    Car2L=["y'","-","0","+","0","-"];
+    Car3L=["y","\searrow","-6\sqrt{3}","\nearrow","6\sqrt{3}","\searrow"];
+  );
+
+   Castr2=[Castr2a,Castr2b];
+   Castr3=[Castr3a,Castr3b];
+   Car123L=[Car1L,Car2L,Car3L];
+
+if(caflg==1,
+ if(Showans==0,ansstring="できません",
+//  if((Astr1==Castr1)&((Astr2==Castr2a)%(Astr2==Castr2b))&((Astr3==Castr3a)%(Astr3==Castr3b))&(R123L_1==Car1L)&(R123L_2==Car2L)&(R123L_3==Car3L),
+//  if((Astr1==Castr1)&contains([Castr2a,Castr2b],Astr2)&contains([Castr3a,Castr3b],Astr3)&R123L==[Car1L,Car2L,Car3L],
+  if((Astr1==Castr1)&contains(Castr2,Astr2)&contains(Castr3,Astr3)&(R123L==Car123L),
+   ansstring="　正解";
+  ,
+   ansstring="　間違い";
+   Button113();
+  );
+ );
+ Letter(Text111.xy+[0,-0.8],"e",ansstring,["Size=1.2","Color=red"]);
+);
+
+if(withcheck==1,
+ withstr="あり";
+,
+ withstr="なし";
+);
+Letter(Text110.xy+[0.5,-0.8],"e",withstr,["Size=1.2"]);
+
+Button110():=(
+ withcheck=0;
+ Stagenum=10;
+);
+
+Button102():=(
+ if(Stagenum<1,
+  ansflg=12;
+ ,
+ ansflg=2;
+ Subsedit(10,M2strnq);
+);
+);
+
+Button103():=(
+ if(Stagenum<1,
+  ansflg=12;
+ ,
+ ansflg=3;
+ Subsedit(10,M3strnq);
+);
+);
+
+Button104():=(
+ if(Stagenum<1,
+  ansflg=12;
+ ,
+  if(Stagenum<3,
+   ansflg=8;
+  ,
+   ansflg=4;QL=1;
+   Subsedit(10,A123B_1_2);
+  );
+ );
+);
+
+Button105():=(
+ if(Stagenum<1,
+  ansflg=12;
+ ,
+  if(Stagenum<3,
+   ansflg=8;
+  ,
+   if(Stagenum<4,
+    ansflg=9;
+   ,
+    ansflg=5;QL=1;
+    Subsedit(10,A123B_2_2);
+   );
+  );
+ );
+);
+
+
+Button106():=(
+ if(Stagenum<1,
+  ansflg=12;
+ ,
+  if(Stagenum<3,
+   ansflg=8;
+  ,
+   if(Stagenum<4,
+    ansflg=9;
+   ,
+    if(Stagenum<5,
+     ansflg=10;
+    ,
+     ansflg=6;QL=1;
+     Subsedit(10,A123B_3_2);
+    );
+   );
+  );
+ );
+);
+
+Button113():=(
+pos1=Text111.xy;
+ if(ansflg==11,
+  Udata=parse(replace(Str," ",""));
+  Car1L=Strsplit(Udata_2_1,",");
+  Car2L=Strsplit(Udata_2_2,",");
+  Car3L=Strsplit(Udata_2_3,",");
+  Car123L=Udata_2;
+Letter([5,3],"e","Car1L="+Car1L,["Size=1"]);
+Letter([5,3],"e","Car1L="+Car1L,["Size=1"]);
+Letter([5,2],"e","R123L_1="+R123L_1,["Size=1"]);
+ );
+
+
+
+// Letter(pos1+[0,-0.8],"e","間違い",["Size=1.2","Color=red"]);
+ if(Astr1==Castr1,,
+  Letter(pos1+[0,-1.5],"e","(1)",["Size=1.2","Color=red"]));
+ if((Astr2==Castr2a)%(Astr2==Castr2b),,
+  Letter(pos1+[1,-1.5],"e","(2)",["Size=1.2","Color=red"]));
+ if((Astr3==Castr3a)%(Astr3==Castr3b),,
+  Letter(pos1+[2,-1.5],"e","(3)",["Size=1.2","Color=red"]));
+ if(R123L_1==Car1L,,
+  Letter(pos1+[0,-2.2],"e","(4)",["Size=1.2","Color=red"]));
+ if(R123L_2==Car2L,,
+  Letter(pos1+[1,-2.2],"e","(5)",["Size=1.2","Color=red"]));
+ if(R123L_3==Car3L,, 
+   ui=2;zero3flg=1;
+   while(ui<Lnum+1,
+    if(R123L_3_ui==Car3L_ui,,zero3flg=0;);
+    ui=ui+2;
+   );
+   if(zero3flg==1,checkstr="(6)の値",checkstr="(6)");
+   Letter(pos1+[2,-2.2],"e",checkstr,["Size=1.2","Color=red"]);
+ );
+);
+
+//Letter([2.2,-2],"e","表の？",["Size=1.2"]);
+Letter(Text99.xy+[2.5,0.1],"e","2～4次関数",["Size=1.2"]);
+
+Letter([2.5,1.1],"e","ansflg="+ansflg,["Size=1.2"]);
+Letter([2.5,0.1],"e","Ushownum="+Ushownum,["Size=1.2"]);
+
+
+
+//els=inspect(Text10);
+//data=apply(els,([#,inspect(Text10,#)]));
+//println(data);
+
+println("Ushownum="+Ushownum);
+println("ansflg="+ansflg);
+println(ansflg==Ushownum);
+println(ansflg==Ushownum+1);
+
+Windispg();
+
+//Help("Textedit");

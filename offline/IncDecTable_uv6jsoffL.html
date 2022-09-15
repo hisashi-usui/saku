@@ -121,77 +121,114 @@ Toupper(str):=(
   );
   out;
 );
-Listplot(list):=Listplot(list,[]);
-Listplot(Arg1,Arg2):=(
-  regional(name,list,options,str);
-  if(isstring(Arg1),
-    name=Arg1;
-    list=Arg2;
-    Listplot(name,list,[]);
+Shade(plist):=Shade(plist,[]); 
+Shade(Arg1,Arg2):=(
+  if(!isstring(Arg1),
+    Shade(text(SHADECTR),Arg1,Arg2); //190222
   ,
-    list=Arg1;
-    options=Arg2;
-    name="";
-    forall(list, // 16.10.07from
-       name=name+#.name;
-    );// 16.10.07until
-    Listplot(name,list,options);
+    Shade(Arg1,Arg2,[]);
   );
 );
-Listplot(nm,list,options):=(
-  regional(name,cutend,tmp,tmp1,tmp2,ptlist,Ltype,opcindy,Noflg,eqL,Msg,color,color4);
-  if(substring(nm,0,1)=="-",  // 16.01.27 from
+Shade(nm,plistorg,options):=(
+  regional(name,plist,jj,nn,trim,first,tmp,tmp1,tmp2,Noflg,
+     opstr,opcindy,eqL,reL,Str,G2,flg,encflg,startpt,color,color4,ctr,ptshade);
+  if(substring(nm,0,1)=="-", //200513from
     name=substring(nm,1,length(nm));
   ,
-    name="sg"+nm;
-  ); // upto
+    name="shade"+nm;
+  ); //200513to
+  plist=plistorg;
   tmp=Divoptions(options);
-  Ltype=tmp_1;
-  Noflg=tmp_2;
-  eqL=tmp_5;
+  Noflg=tmp_2; //200512
+  eqL=tmp_5; 
+  reL=tmp_6;
   color=tmp_(length(tmp)-2); color4=Colorrgb2cmyk(color); //200618
+  opstr=tmp_(length(tmp)-1);
   opcindy=tmp_(length(tmp));
-  Msg="Y";  //190206
- Msg="N"; //
-  cutend=[0,0];//180719
+  encflg=0; //201029
+  tmp=select(plist,indexof(#,"Invert")>0); //180929from
+  trim="N";
+  first="N"; //191007
+  ptshade="N"; //200513
   forall(eqL,
     tmp=Strsplit(#,"=");
-    tmp1=Toupper(substring(tmp_1,0,1));
-    if(tmp1=="M",
-      Msg=Toupper(substring(tmp_2,0,1));
+    tmp1=Toupper(tmp_1);
+    tmp2=Toupper(tmp_2);
+    if(substring(tmp1,0,1)=="E",
+      if(substring(tmp2,0,1)=="Y",
+        encflg=1;
+      );
     );
-    if(tmp1=="C",//180719from
-      tmp2=replace(tmp_2,"[","");
-      tmp2=replace(tmp2,"]","");
-      cutend=tokenize(tmp2,",");
-      if(length(cutend)==1,cutend=[cutend_1,cutend_1]);     
-    );//180719to
-  );
-  if(Noflg<3,
-    if(Msg=="Y", //190206
-      println("generate Listplot "+name);
+    if(substring(tmp1,0,1)=="T",
+      trim=substring(tmp2,0,1);
     );
-    if(isstring(list_1),tmp=apply(list,parse(#)),tmp=list); // 15.03.24
-    ptlist=apply(tmp,Pcrd(#));
-    if(|cutend|>0,//180719from
-      tmp=ptlist_(length(ptlist))-ptlist_1;
-      tmp=tmp/|tmp|;
-      ptlist_1=ptlist_1+tmp*cutend_1;
-      ptlist_(length(ptlist))=ptlist_(length(ptlist))-tmp*cutend_2;
-    );//180719to
-    tmp=name+"="+Textformat(ptlist,5)+";"; //190415
-    parse(tmp);
+    if(substring(tmp1,0,1)=="F",
+      first=substring(tmp2,0,1);
+    );
+    if(substring(tmp1,0,1)=="P", //200513[3lines]
+      ptshade=Toupper(substring(tmp2,0,1));
+    );
   );
-  if(Noflg<3, //190818
-    if(isstring(Ltype),
-      Ltype=Getlinestyle(text(Noflg)+Ltype,name);
+  startpt=[];
+  forall(reL,
+    if(islist(#),
+      startpt=#;
+    );
+  ); //180929to
+  flg=0; ctr=1;
+  if(encflg==1, //180929from
+    if(length(startpt)==2,
+      Enclosing(nm,plist,[startpt,"nodisp"]);
     ,
-      if(Noflg==1,Ltype=0);
+      Enclosing(nm,plist,["nodisp"]);
     );
-    GCLIST=append(GCLIST,[name,Ltype,opcindy]);
+    plist=["en"+nm];
+  ); //180929to
+  if((length(plist)==1)&(trim=="Y"), //190220from,109224
+    plist=[Shadein(plist)];
+  ); //190220to
+  forall(1..(length(plist)),jj, //180613from
+    if(flg==0,
+      tmp1=plist_jj;
+      if(isstring(tmp1),tmp=parse(tmp1),tmp=tmp1);
+      if(!islist(tmp),
+         flg=1;
+      ,
+        if(!isstring(tmp1),
+          tmp2=[];
+          forall(tmp1,if(ispoint(#),tmp=#.xy,tmp=#);
+            tmp2=append(tmp2,tmp);
+          );
+          Listplot("-"+name+text(ctr),tmp2,["nodisp"]); //190520
+          plist_jj=name+text(ctr);
+          ctr=ctr+1;
+        );
+      ); 
+    );
+  );//180613to
+  if(flg==1,
+    println("    Shade : some data not defined properly");
+ ,
+    if(Noflg<2, //200512
+      G2=Joincrvs("1",plist,["nodata"]);
+      G2=apply(G2,Pcrd(#));
+      tmp1="fillpoly("+Textformat(G2,10)+opcindy+");";
+      if(ptshade=="N", //200513from
+        tmp=select(1..(length(GCLIST)),contains(plist,GCLIST_#_1)); //200715from
+        if(length(tmp)>0,
+          nn=min(tmp);
+        ,
+          nn=length(GCLIST)+1;
+        );
+        tmp2=GCLIST_(1..(nn-1));
+        tmp2=append(tmp2,[tmp1,[5,0]]);
+        GCLIST=concat(tmp2,GCLIST_(nn..(length(GCLIST))));
+      ,
+        PTSHADElist=append(PTSHADElist,[name,tmp1]);
+      ); //200513to
+    );
   );
-  tmp1=apply(list,Lcrd(#));
-  tmp1;
+  SHADECTR=SHADECTR+1;
 );
 Divoptions(options):=(
   regional(Ltype,Noflg,Inflg,Outflg,eqL,realL,strL,
@@ -470,197 +507,6 @@ Colorrgb2cmyk(clr):=(
   );
   clrnew;
 );
-Pcrd(pt):=(
-  regional(tmp);
-  if(ispoint(pt),
-    tmp=pt.xy;
-  ,
-    tmp=[pt_1*SCALEX,pt_2*SCALEY];
-  );
- re(tmp); //191231
-);
-Getlinestyle(str,name):=(
-  regional(noflg,tmp,tmp1,tmp2,Dop,Ltype,subflg);
-  Ltype=-1;
-  Dop="";
-  tmp1=indexof(str,",");
-  if(tmp1>0,
-    Dop=","+substring(str,tmp1,length(str));
-  );
-  noflg=parse(substring(str,0,1));
-  if(substring(name,0,3)=="sub",subflg=1,subflg=0);  // 16.02.29
-  if(noflg<=1, //1900818from
-    tmp1=Toupper(substring(str,1,3));
-  ,
-    tmp1="NO";
-  ); //1900818to
-  tmp2=""; //190119from
-  tmp=indexof(str,",");
-  if(tmp>0,
-    tmp2=substring(str,tmp,length(str));
-  ); //190119to
-  if(tmp1=="DR",
-    if(length(tmp2)==0,tmp2="1"); //190125
-    Ltype=[0,tmp2];  //190119
-    if(noflg==0 & subflg==0, // 16.02.29
-    );
-  );
-  if(tmp1=="DA",
-    if(length(tmp2)==0,tmp2="1,1"); //190125
-    if(indexof(tmp2,",")==0,tmp2=tmp2+",1"); //200911
-    Ltype=[1,tmp2];  //190119
-    if(noflg==0 & subflg==0, // 16.02.29
-    );
-  );
-  if(tmp1=="ID",
-    if(length(tmp2)==0,tmp2="1,1"); //190125
-    if(indexof(tmp2,",")==0,tmp2=tmp2+",1"); //200911
-    Ltype=[2,tmp2];  //190119
-    if(noflg==0 & subflg==0, // 16.02.29
-    );
-  );
-  if(tmp1=="DO",
-    if(length(tmp2)==0,tmp2="1,1"); //190125
-    if(indexof(tmp2,",")==0,tmp2=tmp2+",1"); //200911
-    Ltype=[3,tmp2];  //190119
-    if(noflg==0 & subflg==0, // 16.02.29
-    );
-  );
-  if(tmp1=="DP",
-    if(length(tmp2)==0,tmp2="1"); //190125
-    Ltype=[0,tmp2];  //190119
-    tmp1=parse(name);
-    tmp2="";
-    forall(tmp1,
-      tmp2=tmp2+Textformat(#_1,5)+",";
-    );
-    tmp2=substring(tmp2,0,length(tmp2)-1);
-    if(noflg==0,
-    );
-  );
-  if(tmp1=="NO", //190818from
-    Ltype=[-1,"0"];
-  );  //190818to
-  Ltype;
-);
-Lcrd(pt):=(
-  regional(tmp);
-  if(ispoint(pt),
-    tmp=[pt.x/SCALEX,pt.y/SCALEY];
-  ,
-    tmp=pt;
-  );
-  re(tmp); //191231
-);
-Shade(plist):=Shade(plist,[]); 
-Shade(Arg1,Arg2):=(
-  if(!isstring(Arg1),
-    Shade(text(SHADECTR),Arg1,Arg2); //190222
-  ,
-    Shade(Arg1,Arg2,[]);
-  );
-);
-Shade(nm,plistorg,options):=(
-  regional(name,plist,jj,nn,trim,first,tmp,tmp1,tmp2,Noflg,
-     opstr,opcindy,eqL,reL,Str,G2,flg,encflg,startpt,color,color4,ctr,ptshade);
-  if(substring(nm,0,1)=="-", //200513from
-    name=substring(nm,1,length(nm));
-  ,
-    name="shade"+nm;
-  ); //200513to
-  plist=plistorg;
-  tmp=Divoptions(options);
-  Noflg=tmp_2; //200512
-  eqL=tmp_5; 
-  reL=tmp_6;
-  color=tmp_(length(tmp)-2); color4=Colorrgb2cmyk(color); //200618
-  opstr=tmp_(length(tmp)-1);
-  opcindy=tmp_(length(tmp));
-  encflg=0; //201029
-  tmp=select(plist,indexof(#,"Invert")>0); //180929from
-  trim="N";
-  first="N"; //191007
-  ptshade="N"; //200513
-  forall(eqL,
-    tmp=Strsplit(#,"=");
-    tmp1=Toupper(tmp_1);
-    tmp2=Toupper(tmp_2);
-    if(substring(tmp1,0,1)=="E",
-      if(substring(tmp2,0,1)=="Y",
-        encflg=1;
-      );
-    );
-    if(substring(tmp1,0,1)=="T",
-      trim=substring(tmp2,0,1);
-    );
-    if(substring(tmp1,0,1)=="F",
-      first=substring(tmp2,0,1);
-    );
-    if(substring(tmp1,0,1)=="P", //200513[3lines]
-      ptshade=Toupper(substring(tmp2,0,1));
-    );
-  );
-  startpt=[];
-  forall(reL,
-    if(islist(#),
-      startpt=#;
-    );
-  ); //180929to
-  flg=0; ctr=1;
-  if(encflg==1, //180929from
-    if(length(startpt)==2,
-      Enclosing(nm,plist,[startpt,"nodisp"]);
-    ,
-      Enclosing(nm,plist,["nodisp"]);
-    );
-    plist=["en"+nm];
-  ); //180929to
-  if((length(plist)==1)&(trim=="Y"), //190220from,109224
-    plist=[Shadein(plist)];
-  ); //190220to
-  forall(1..(length(plist)),jj, //180613from
-    if(flg==0,
-      tmp1=plist_jj;
-      if(isstring(tmp1),tmp=parse(tmp1),tmp=tmp1);
-      if(!islist(tmp),
-         flg=1;
-      ,
-        if(!isstring(tmp1),
-          tmp2=[];
-          forall(tmp1,if(ispoint(#),tmp=#.xy,tmp=#);
-            tmp2=append(tmp2,tmp);
-          );
-          Listplot("-"+name+text(ctr),tmp2,["nodisp"]); //190520
-          plist_jj=name+text(ctr);
-          ctr=ctr+1;
-        );
-      ); 
-    );
-  );//180613to
-  if(flg==1,
-    println("    Shade : some data not defined properly");
- ,
-    if(Noflg<2, //200512
-      G2=Joincrvs("1",plist,["nodata"]);
-      G2=apply(G2,Pcrd(#));
-      tmp1="fillpoly("+Textformat(G2,10)+opcindy+");";
-      if(ptshade=="N", //200513from
-        tmp=select(1..(length(GCLIST)),contains(plist,GCLIST_#_1)); //200715from
-        if(length(tmp)>0,
-          nn=min(tmp);
-        ,
-          nn=length(GCLIST)+1;
-        );
-        tmp2=GCLIST_(1..(nn-1));
-        tmp2=append(tmp2,[tmp1,[5,0]]);
-        GCLIST=concat(tmp2,GCLIST_(nn..(length(GCLIST))));
-      ,
-        PTSHADElist=append(PTSHADElist,[name,tmp1]);
-      ); //200513to
-    );
-  );
-  SHADECTR=SHADECTR+1;
-);
 Enclosing(nm,plist):=Enclosing2(nm,plist,[]);//180706[2lines]
 Enclosing(nm,plistorg,options):=Enclosing2(nm,plistorg,options);
 Enclosing2(nm,plist):=Enclosing2(nm,plist,[]);
@@ -828,6 +674,15 @@ Enclosing2(nm,plistorg,options):=(
     GCLIST=append(GCLIST,[name,Ltype,opcindy]);
   );
   AnsL; //201110
+);
+Lcrd(pt):=(
+  regional(tmp);
+  if(ispoint(pt),
+    tmp=[pt.x/SCALEX,pt.y/SCALEY];
+  ,
+    tmp=pt;
+  );
+  re(tmp); //191231
 );
 Intersectcurvespp(crv1org,crv2org):=Intersectcurvespp(crv1org,crv2org,[]);
 Intersectcurvespp(crv1org,crv2org,options):=(
@@ -1247,6 +1102,79 @@ Bezierpt(t,ptlist,ctrlist):=(
   p8=(1-t)*p5+t*p6;
   p9=(1-t)*p7+t*p8;
   if(flg3==0,p7,p9);
+);
+Pcrd(pt):=(
+  regional(tmp);
+  if(ispoint(pt),
+    tmp=pt.xy;
+  ,
+    tmp=[pt_1*SCALEX,pt_2*SCALEY];
+  );
+ re(tmp); //191231
+);
+Getlinestyle(str,name):=(
+  regional(noflg,tmp,tmp1,tmp2,Dop,Ltype,subflg);
+  Ltype=-1;
+  Dop="";
+  tmp1=indexof(str,",");
+  if(tmp1>0,
+    Dop=","+substring(str,tmp1,length(str));
+  );
+  noflg=parse(substring(str,0,1));
+  if(substring(name,0,3)=="sub",subflg=1,subflg=0);  // 16.02.29
+  if(noflg<=1, //1900818from
+    tmp1=Toupper(substring(str,1,3));
+  ,
+    tmp1="NO";
+  ); //1900818to
+  tmp2=""; //190119from
+  tmp=indexof(str,",");
+  if(tmp>0,
+    tmp2=substring(str,tmp,length(str));
+  ); //190119to
+  if(tmp1=="DR",
+    if(length(tmp2)==0,tmp2="1"); //190125
+    Ltype=[0,tmp2];  //190119
+    if(noflg==0 & subflg==0, // 16.02.29
+    );
+  );
+  if(tmp1=="DA",
+    if(length(tmp2)==0,tmp2="1,1"); //190125
+    if(indexof(tmp2,",")==0,tmp2=tmp2+",1"); //200911
+    Ltype=[1,tmp2];  //190119
+    if(noflg==0 & subflg==0, // 16.02.29
+    );
+  );
+  if(tmp1=="ID",
+    if(length(tmp2)==0,tmp2="1,1"); //190125
+    if(indexof(tmp2,",")==0,tmp2=tmp2+",1"); //200911
+    Ltype=[2,tmp2];  //190119
+    if(noflg==0 & subflg==0, // 16.02.29
+    );
+  );
+  if(tmp1=="DO",
+    if(length(tmp2)==0,tmp2="1,1"); //190125
+    if(indexof(tmp2,",")==0,tmp2=tmp2+",1"); //200911
+    Ltype=[3,tmp2];  //190119
+    if(noflg==0 & subflg==0, // 16.02.29
+    );
+  );
+  if(tmp1=="DP",
+    if(length(tmp2)==0,tmp2="1"); //190125
+    Ltype=[0,tmp2];  //190119
+    tmp1=parse(name);
+    tmp2="";
+    forall(tmp1,
+      tmp2=tmp2+Textformat(#_1,5)+",";
+    );
+    tmp2=substring(tmp2,0,length(tmp2)-1);
+    if(noflg==0,
+    );
+  );
+  if(tmp1=="NO", //190818from
+    Ltype=[-1,"0"];
+  );  //190818to
+  Ltype;
 );
 Intersectseg(seg1,seg2):=Intersectseg(seg1,seg2,0.01);
 Intersectseg(seg1org,seg2org,Eps1):=(
@@ -1687,6 +1615,78 @@ Unscaling(pdata):=(
     );
   );
   Out;
+);
+Listplot(list):=Listplot(list,[]);
+Listplot(Arg1,Arg2):=(
+  regional(name,list,options,str);
+  if(isstring(Arg1),
+    name=Arg1;
+    list=Arg2;
+    Listplot(name,list,[]);
+  ,
+    list=Arg1;
+    options=Arg2;
+    name="";
+    forall(list, // 16.10.07from
+       name=name+#.name;
+    );// 16.10.07until
+    Listplot(name,list,options);
+  );
+);
+Listplot(nm,list,options):=(
+  regional(name,cutend,tmp,tmp1,tmp2,ptlist,Ltype,opcindy,Noflg,eqL,Msg,color,color4);
+  if(substring(nm,0,1)=="-",  // 16.01.27 from
+    name=substring(nm,1,length(nm));
+  ,
+    name="sg"+nm;
+  ); // upto
+  tmp=Divoptions(options);
+  Ltype=tmp_1;
+  Noflg=tmp_2;
+  eqL=tmp_5;
+  color=tmp_(length(tmp)-2); color4=Colorrgb2cmyk(color); //200618
+  opcindy=tmp_(length(tmp));
+  Msg="Y";  //190206
+ Msg="N"; //
+  cutend=[0,0];//180719
+  forall(eqL,
+    tmp=Strsplit(#,"=");
+    tmp1=Toupper(substring(tmp_1,0,1));
+    if(tmp1=="M",
+      Msg=Toupper(substring(tmp_2,0,1));
+    );
+    if(tmp1=="C",//180719from
+      tmp2=replace(tmp_2,"[","");
+      tmp2=replace(tmp2,"]","");
+      cutend=tokenize(tmp2,",");
+      if(length(cutend)==1,cutend=[cutend_1,cutend_1]);     
+    );//180719to
+  );
+  if(Noflg<3,
+    if(Msg=="Y", //190206
+      println("generate Listplot "+name);
+    );
+    if(isstring(list_1),tmp=apply(list,parse(#)),tmp=list); // 15.03.24
+    ptlist=apply(tmp,Pcrd(#));
+    if(|cutend|>0,//180719from
+      tmp=ptlist_(length(ptlist))-ptlist_1;
+      tmp=tmp/|tmp|;
+      ptlist_1=ptlist_1+tmp*cutend_1;
+      ptlist_(length(ptlist))=ptlist_(length(ptlist))-tmp*cutend_2;
+    );//180719to
+    tmp=name+"="+Textformat(ptlist,5)+";"; //190415
+    parse(tmp);
+  );
+  if(Noflg<3, //190818
+    if(isstring(Ltype),
+      Ltype=Getlinestyle(text(Noflg)+Ltype,name);
+    ,
+      if(Noflg==1,Ltype=0);
+    );
+    GCLIST=append(GCLIST,[name,Ltype,opcindy]);
+  );
+  tmp1=apply(list,Lcrd(#));
+  tmp1;
 );
 Shadein(pstrorg):=( //190220
   regional(pstr,ptL,pL,crv,nn,
@@ -4303,12 +4303,12 @@ Ucreate(uc1,uc2,uc3,uc4):=(
 );
 
 
-Ucreate("Text201","��$<$",[11.2,-3],"Button201();");
+Ucreate("Text201","��$>$",[11.2,-3],"Button201();");
 Button201():=(
  funflg=1;name="UB()";
 );
 
-Ucreate("Text202","��$>$",[11.2,-4],"Button202();");
+Ucreate("Text202","��$<$",[11.2,-4],"Button202();");
 Button202():=(
  funflg=1;name="UF()";
 );
@@ -4437,11 +4437,11 @@ Ucreate("Text112","�L�^",[11.2,-8.2],"Button112();");
 Unaka(list):=(
  regional(str);
  str=text(list);
- Dq+substring(str,1,length(str)-1)+Dq;
+ substring(str,1,length(str)-1);
 );
 Button112():=(
  ansflg=11;rflg=8;
- Subsedit(10,[Dq+Prbstr+Dq,[Unaka(R123L_1),Unaka(R123L_2),Unaka(R123L_3)]]);
+ Subsedit(10,Prbstr+";"+Unaka(R123L_1)+";"+Unaka(R123L_2)+";"+Unaka(R123L_3));
 );
 
 Ucreate("Text4","��",[3.4,-5.8],"Button4();");
@@ -4553,6 +4553,8 @@ R1pos10=Text100.xy+[1.2,0.2];
 R1pos=[R1pos1,R1pos2,R1pos0,R1pos4,R1pos5,R1pos6,R1pos7,R1pos8,R1pos9,R1pos10];
 rflg=10;
 
+Button100();
+
 
 
 
@@ -4562,6 +4564,8 @@ rflg=10;
 <script id="csdraw" type="text/x-cindyscript">
 Ketinit(1);
 Addax(0);
+
+Listplot("1",[[6,-1],[-1.1,-1],[-1.1,-3.1],[5.9,-3.1]]);
 
 Keytable(4,12,1,12,[6,-3.75],[0,1,0],nameL1,[0,-0.2],22);
 Keytable(4,12,4,12,[6,-8.55],[1,1,0],nameL2,[0,-0.2],22);
@@ -4611,38 +4615,38 @@ Expr(Text106.xy+[0,0.2],"e","(6)",["Size=1.2"]);
 Letter([2.6,-5.7],"e","？",["Size=1.2"]);
 
 ichi=[0,-0.3];
-ichi2=[0.5,-3.1];
+ichi2=[0.4,-3.2];
 
 if(ansflg==1,
  Letter(ichi,"se","微分する",["Size=1.2","Color=red"]);
 );
 if(ansflg==2,
- Letter(ichi,"se","因数分解する",["Size=1.2","Color=red"]);
+ Letter(ichi,"se","$y'$ を因数分解する",["Size=1.2","Color=red"]);
  Letter(ichi2,"se","各因数が $x$ で始まる形に",["Size=1.1","Color=red"]);
- Letter(ichi2+[0,-0.7],"se","解の公式で(3)を先に",["Size=1.1","Color=red"]);
- Letter(ichi2+[0,-1.4],"se","求めてからでもよい",["Size=1.1","Color=red"]);
+ Letter(ichi2+[0,-0.6],"se","解の公式で(3)を先に",["Size=1.1","Color=red"]);
+ Letter(ichi2+[0,-1.2],"se","求めてからでもよい",["Size=1.1","Color=red"]);
 );
 if(ansflg==3,
  Letter(ichi,"se","$y'=0$ となる $x$ の値",["Size=1.2","Color=red"]);
  Letter(ichi2,"se","(2)のそれぞれの因子",["Size=1.1","Color=red"]);
- Letter(ichi2+[0,-0.7],"se","を 0 にする $x$ の値",["Size=1.1","Color=red"]);
- Letter(ichi2+[0,-1.4],"se","解の公式で求めてもよい",["Size=1.1","Color=red"]);
+ Letter(ichi2+[0,-0.6],"se","を 0 にする $x$ の値",["Size=1.1","Color=red"]);
+ Letter(ichi2+[0,-1.2],"se","解の公式で求めてもよい",["Size=1.1","Color=red"]);
 );
 if(ansflg==4,
  Letter(ichi,"se","表の1行目",["Size=1.2","Color=red"]);
  Letter(ichi2,"se","まず，(3)の答え",["Size=1.1","Color=red"]);
- Letter(ichi2+[0,-0.7],"se","前後と間に「$\cdots$」",["Size=1.1","Color=red"]);
+ Letter(ichi2+[0,-0.6],"se","前後と間に「$\cdots$」",["Size=1.1","Color=red"]);
 );
 if(ansflg==5,
  Letter(ichi,"se","表の2行目",["Size=1.2","Color=red"]);
  if(Stagenum>4,
   Letter(ichi2,"se","(3)の答えの下は 0",["Size=1.2","Color=red"]);
-  Letter(ichi2+[0,-0.7],"se","それ以外は $+$ か $-$",["Size=1.1","Color=red"]);
-  Letter(ichi2+[0,-1.4],"se","(2)を使って符号を求める",["Size=1.1","Color=red"]);
+  Letter(ichi2+[0,-0.6],"se","それ以外は $+$ か $-$",["Size=1.1","Color=red"]);
+  Letter(ichi2+[0,-1.2],"se","(2)を使って符号を求める",["Size=1.1","Color=red"]);
  ,
   if(zero2flg==1,
    Letter(ichi2,"se","$+$ か $-$",["Size=1.2","Color=red"]);
-   Letter(ichi2+[0,-0.7],"se","(2)を使って符号を求める",["Size=1.1","Color=red"]);
+   Letter(ichi2+[0,-0.6],"se","(2)を使って符号を求める",["Size=1.1","Color=red"]);
   ,
    Letter(ichi2,"se","(3)の答えの下は 0",["Size=1.1","Color=red"]);
    A123B_2_2="";A123B_2_4="";A123B_2_6="";A123B_2_8="";
@@ -4652,10 +4656,10 @@ if(ansflg==5,
 );
 if(ansflg==6,
  Letter(ichi,"se","表の3行目",["Size=1.2","Color=red"]);
- Letter(ichi2,"se","$+$ の下は $\nearrow$",["Size=1.1","Color=red"]);
+ Letter(ichi2,"se","$+$ の下は $\nearrow$,",["Size=1.1","Color=red"]);
  Letter(ichi2+[2.8,0],"se" ,"$-$ の下は $\searrow$",["Size=1.1","Color=red"]);
- Letter(ichi2+[0,-0.7],"se","(3)の答えを書いた列の",["Size=1.2","Color=red"]);
- Letter(ichi2+[0,-1.4],"se","ところは値を計算する",["Size=1.2","Color=red"]);
+ Letter(ichi2+[0,-0.6],"se","(3)の答えを書いた列の",["Size=1.2","Color=red"]);
+ Letter(ichi2+[0,-1.2],"se","ところは値を計算する",["Size=1.2","Color=red"]);
 );
 
 if(ansflg==8,
@@ -4693,7 +4697,7 @@ Str=replace(Str,"frfr","tfr");
 Strnq=replace(Ustr+Str,"?","");
 Tstr="$"+Totexform(Strnq)+"$";
 Tstr2=Totexform(Strnq);
-if(Tstr2=="" % ansflg==11,,
+if(ansflg==11,,
  Expr([6.1,-0.5],"e",Qstr+Tstr2,["Size=1.2"]);
 );
 
@@ -4996,8 +5000,6 @@ Letter([5,3],"e","Car1L="+Car1L,["Size=1"]);
 Letter([5,2],"e","R123L_1="+R123L_1,["Size=1"]);
  );
 
-
-
  if(Astr1==Castr1,,
   Letter(pos1+[0,-1.5],"e","(1)",["Size=1.2","Color=red"]));
  if((Astr2==Castr2a)%(Astr2==Castr2b),,
@@ -5047,8 +5049,8 @@ var cdy = CindyJS({
     {name: "NE", type: "Free", pos: [-1.3339257942679403, -4.0, -0.8886914019106865], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
     {name: "R1", type: "Free", pos: [4.0, -1.7096774193548387, 0.32258064516129037], color: [1.0, 0.0, 0.0], size: 3.0, border: true },
     {name: "Text10", type: "EditableText", pos: [4.0, -1.095890410958904, 0.547945205479452], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, minwidth: 190, textsize: 22.0},
-    {name: "Text201", type: "Button", pos: [4.0, -1.0714285714285714, 0.35714285714285715], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "Button201();", text: "↑$<$", textsize: 20.0},
-    {name: "Text202", type: "Button", pos: [4.0, -1.4285714285714286, 0.35714285714285715], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "Button202();", text: "↑$>$", textsize: 20.0},
+    {name: "Text201", type: "Button", pos: [4.0, -1.0714285714285714, 0.35714285714285715], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "Button201();", text: "↑$>$", textsize: 20.0},
+    {name: "Text202", type: "Button", pos: [4.0, -1.4285714285714286, 0.35714285714285715], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "Button202();", text: "↑$<$", textsize: 20.0},
     {name: "Text211", type: "Button", pos: [4.0, 3.4, -2.0], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "Button211();", text: "↑", textsize: 20.0},
     {name: "Text212", type: "Button", pos: [-2.962962962962963, -4.0, 1.4814814814814814], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "Button212();", text: "↓", textsize: 20.0},
     {name: "Text221", type: "Button", pos: [-2.3529411764705883, -4.0, 2.3529411764705883], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "Button221();", text: "　", textsize: 20.0},
@@ -5094,10 +5096,8 @@ var cdy = CindyJS({
   ports: [{
     id: "CSCanvas",
     width: 588,
-    height: 527,
-    transform: [{visibleRect: [-2.6839642993153903, 4.90517613323157, 12.864518538097899, -9.030283824790205]}],
-    axes: true,
-    grid: 1.0,
+    height: 514,
+    transform: [{visibleRect: [-2.6839642993153894, 4.878733135208762, 12.8645185380979, -8.712967848516461]}],
     background: "rgb(247,247,247)"
   }],
   csconsole: false,
