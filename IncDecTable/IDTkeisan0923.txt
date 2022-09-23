@@ -593,6 +593,9 @@ Utable4(list):=(
      kaitext1=kai0text3;ytext1=y0text3;
      kaitext2=kai0text1;ytext2=y0text1;
      kaitext3=kai0text2;ytext3=y0text2;
+     kaivalue1=kai0value3;yvalue1=y0value3;
+     kaivalue2=kai0value1;yvalue2=y0value1;
+     kaivalue3=kai0value2;yvalue3=y0value2;
      B2=[B231,B232,B213,B212,B223,B221];
      B3=[B331,B332,B313,B312,B323,B321];
     ,
@@ -600,12 +603,18 @@ Utable4(list):=(
       kaitext1=kai0text1;ytext1=y0text1;
       kaitext2=kai0text2;ytext2=y0text2;
       kaitext3=kai0text3;ytext3=y0text3;
+      kaivalue1=kai0value1;yvalue1=y0value1;
+      kaivalue2=kai0value2;yvalue2=y0value2;
+      kaivalue3=kai0value3;yvalue3=y0value3;
       B2=[B212,B213,B221,B223,B231,B232];
       B3=[B312,B313,B321,B323,B331,B332];
      ,
       kaitext1=kai0text1;ytext1=y0text1;
       kaitext2=kai0text3;ytext2=y0text3;
       kaitext3=kai0text2;ytext3=y0text2;
+      kaivalue1=kai0value1;yvalue1=y0value1;
+      kaivalue2=kai0value3;yvalue2=y0value3;
+      kaivalue3=kai0value2;yvalue3=y0value2;
       B2=[B213,B212,B231,B232,B221,B223];
       B3=[B313,B312,B331,B332,B321,B323];
      );

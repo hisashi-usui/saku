@@ -5055,6 +5055,9 @@ Utable4(list):=(
      kaitext1=kai0text3;ytext1=y0text3;
      kaitext2=kai0text1;ytext2=y0text1;
      kaitext3=kai0text2;ytext3=y0text2;
+     kaivalue1=kai0value3;yvalue1=y0value3;
+     kaivalue2=kai0value1;yvalue2=y0value1;
+     kaivalue3=kai0value2;yvalue3=y0value2;
      B2=[B231,B232,B213,B212,B223,B221];
      B3=[B331,B332,B313,B312,B323,B321];
     ,
@@ -5062,12 +5065,18 @@ Utable4(list):=(
       kaitext1=kai0text1;ytext1=y0text1;
       kaitext2=kai0text2;ytext2=y0text2;
       kaitext3=kai0text3;ytext3=y0text3;
+      kaivalue1=kai0value1;yvalue1=y0value1;
+      kaivalue2=kai0value2;yvalue2=y0value2;
+      kaivalue3=kai0value3;yvalue3=y0value3;
       B2=[B212,B213,B221,B223,B231,B232];
       B3=[B312,B313,B321,B323,B331,B332];
      ,
       kaitext1=kai0text1;ytext1=y0text1;
       kaitext2=kai0text3;ytext2=y0text3;
       kaitext3=kai0text2;ytext3=y0text2;
+      kaivalue1=kai0value1;yvalue1=y0value1;
+      kaivalue2=kai0value3;yvalue2=y0value3;
+      kaivalue3=kai0value2;yvalue3=y0value2;
       B2=[B213,B212,B231,B232,B221,B223];
       B3=[B313,B312,B331,B332,B321,B323];
      );
@@ -5403,18 +5412,24 @@ if(BM1strnq=="2468",kaitou=0);
     ); 
     QR=1;
     Letter([0.5+QL*1.5,5.5-QR*1.5],"se","?",["Size=1.5"]);
+    A123B_QR_(QL+1)=Strnq;
+    R123L_QR_(QL+1)=RLstr;
    );
 
   if(ansflg==5,
     Qstr="(5)\ ?=";
     QR=2;
     Letter([0.5+QL*1.5,5.5-QR*1.5],"se","?",["Size=1.5"]);
+    A123B_QR_(QL+1)=Strnq;
+    R123L_QR_(QL+1)=RLstr;
   );
 
   if(ansflg==6,
     Qstr="(6)\ ?=";
     QR=3;
     Letter([0.5+QL*1.5,5.5-QR*1.5],"se","?",["Size=1.5"]);
+    A123B_QR_(QL+1)=Strnq;
+    R123L_QR_(QL+1)=RLstr;
   );
 
 if(ansflg>3 & ansflg<7 & QL==Lnum,
@@ -5456,9 +5471,6 @@ if(ansflg<8,
  Letter(ichi2+[0,-0.6],"se",ucomment3,["Size=1.1","Color=red"]);
  Letter(ichi2+[0,-1.2],"se",ucomment4,["Size=1.1","Color=red"]);
 );
-
-  A123B_QR_(QL+1)=Strnq;
-  R123L_QR_(QL+1)=RLstr;
 
   Tabledata("1",xL,yL,[""],[0]);
   Putrowexpr(1,"c",R123L_1);
@@ -5567,7 +5579,7 @@ var cdy = CindyJS({
   geometry: [
     {name: "SW", type: "Free", pos: [4.0, 4.0, -0.8], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
     {name: "NE", type: "Free", pos: [4.0, 4.0, 0.8], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
-    {name: "R1", type: "Free", pos: [4.0, -1.709677419354838, 0.3225806451612903], color: [1.0, 0.0, 0.0], visible: false, size: 3.0, border: true },
+    {name: "R1", type: "Free", pos: [4.0, -1.7096774193548387, 0.32258064516129037], color: [1.0, 0.0, 0.0], visible: false, size: 3.0, border: true },
     {name: "Text10", type: "EditableText", pos: [4.0, -1.095890410958904, 0.547945205479452], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, minwidth: 190, textsize: 18.0},
     {name: "Text100", type: "Button", pos: [4.0, -1.9642857142857144, 0.35714285714285715], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "Button100();", text: "出題", textsize: 20.0},
     {name: "Text99", type: "Button", pos: [4.0, -2.5, 0.35714285714285715], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "Button99();", text: "入力", textsize: 20.0},
@@ -5613,8 +5625,8 @@ var cdy = CindyJS({
   ports: [{
     id: "CSCanvas",
     width: 577,
-    height: 516,
-    transform: [{visibleRect: [-2.498863313155707, 4.85229013718595, 12.758746546006654, -8.792296842584896]}],
+    height: 519,
+    transform: [{visibleRect: [-2.498863313155707, 4.85229013718595, 12.758746546006654, -8.871625836653331]}],
     background: "rgb(247,247,247)"
   }],
   csconsole: false,
