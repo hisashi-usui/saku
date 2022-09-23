@@ -4318,7 +4318,7 @@ Button106():=(
 
 Ucreate("Text111","�������킹",[-2,-5.8],"caflg=mod(caflg+1,2);usetans=1;");
 
-Ucreate("Text4","��",[3.4,-5.8],"Button4();");
+Ucreate("Text4","�@�@",[4.4,-5.8],"Button4();");
 Button4():=(
  if(ansflg>3 & ansflg<7,
   if(QL<Lnum,
@@ -4332,21 +4332,13 @@ Button4():=(
  );
 );
 
-Ucreate("Text5","��",[1.6,-5.8],"Button5();");
+Ucreate("Text5","�@�@",[2,-5.8],"Button5();");
 Button5():=(
  if(ansflg>3 & ansflg<7,
   if(QL>1,
    QL=QL-1;
    Subsedit(10,A123B_QR_(QL+1));
   );
- );
-);
-
-Ucreate("Text6","�m��",[4.6,-5.8],"Button6();");
-Button6():=(
- if(ansflg>3 & ansflg<7,
-  A123B_QR_(QL+1)=Strnq;
-  R123L_QR_(QL+1)=RLstr;
  );
 );
 
@@ -5275,7 +5267,11 @@ Expr(Text104.xy+[0,0.2],"e","(4)",["Size=1.2"]);
 Expr(Text105.xy+[0,0.2],"e","(5)",["Size=1.2"]);
 Expr(Text106.xy+[0,0.2],"e","(6)",["Size=1.2"]);
 
-Letter([2.6,-5.7],"e","？",["Size=1.2"]);
+if(ansflg>3 & ansflg<7,
+ Letter([2.5,-5.7],"c","←",["Size=1.2"]);
+ Letter([4.9,-5.7],"c","→",["Size=1.2"]);
+ Letter([3.7,-5.7],"c","？",["Size=1.2"]);
+);
 
 if(pbflg==1,
 if(funflg==1,
@@ -5569,8 +5565,8 @@ var cdy = CindyJS({
   },
   angleUnit: "°",
   geometry: [
-    {name: "SW", type: "Free", pos: [-0.004, -0.004, 4.0], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
-    {name: "NE", type: "Free", pos: [4.0, 3.0001666388935178, 0.6665555740709881], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
+    {name: "SW", type: "Free", pos: [4.0, 4.0, -0.8], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
+    {name: "NE", type: "Free", pos: [4.0, 4.0, 0.8], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
     {name: "R1", type: "Free", pos: [4.0, -1.709677419354838, 0.3225806451612903], color: [1.0, 0.0, 0.0], visible: false, size: 3.0, border: true },
     {name: "Text10", type: "EditableText", pos: [4.0, -1.095890410958904, 0.547945205479452], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, minwidth: 190, textsize: 18.0},
     {name: "Text100", type: "Button", pos: [4.0, -1.9642857142857144, 0.35714285714285715], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "Button100();", text: "出題", textsize: 20.0},
@@ -5579,9 +5575,8 @@ var cdy = CindyJS({
     {name: "Text105", type: "Button", pos: [1.9047619047619049, -4.0, -1.9047619047619049], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "Button105();", text: "　", textsize: 20.0},
     {name: "Text106", type: "Button", pos: [4.0, -2.4, -4.0], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "Button106();", text: "　", textsize: 20.0},
     {name: "Text111", type: "Button", pos: [-1.379310344827586, -4.0, 0.689655172413793], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "caflg=mod(caflg+1,2);usetans=1;", text: "答え合わせ", textsize: 20.0},
-    {name: "Text4", type: "Button", pos: [2.3448275862068964, -4.0, 0.689655172413793], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "Button4();", text: "→", textsize: 20.0},
-    {name: "Text5", type: "Button", pos: [1.103448275862069, -4.0, 0.689655172413793], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "Button5();", text: "←", textsize: 20.0},
-    {name: "Text6", type: "Button", pos: [3.172413793103448, -4.0, 0.689655172413793], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "Button6();", text: "確定", textsize: 20.0},
+    {name: "Text4", type: "Button", pos: [3.0344827586206895, -4.0, 0.689655172413793], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "Button4();", text: "　　", textsize: 20.0},
+    {name: "Text5", type: "Button", pos: [1.379310344827586, -4.0, 0.689655172413793], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "Button5();", text: "　　", textsize: 20.0},
     {name: "Text201", type: "Button", pos: [4.0, -1.0714285714285714, 0.35714285714285715], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "Button201();", text: "↑$>$", textsize: 20.0},
     {name: "Text202", type: "Button", pos: [4.0, -1.4285714285714286, 0.35714285714285715], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "Button202();", text: "↑$<$", textsize: 20.0},
     {name: "Text211", type: "Button", pos: [4.0, 3.4, -2.0], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, minwidth: 33, script: "Button211();", text: "↑", textsize: 20.0},
@@ -5618,8 +5613,8 @@ var cdy = CindyJS({
   ports: [{
     id: "CSCanvas",
     width: 577,
-    height: 522,
-    transform: [{visibleRect: [-2.498863313155707, 4.85229013718595, 12.758746546006654, -8.950954830721766]}],
+    height: 516,
+    transform: [{visibleRect: [-2.498863313155707, 4.85229013718595, 12.758746546006654, -8.792296842584896]}],
     background: "rgb(247,247,247)"
   }],
   csconsole: false,

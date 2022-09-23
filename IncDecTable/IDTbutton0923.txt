@@ -66,11 +66,9 @@ Button106():=(
 
 Ucreate("Text111","答え合わせ",[-2,-5.8],"caflg=mod(caflg+1,2);usetans=1;");
 
-Ucreate("Text4","→",[3.4,-5.8],"Button4();");
+Ucreate("Text4","　　",[4.4,-5.8],"Button4();");
 Button4():=(
  if(ansflg>3 & ansflg<7,
-//  A123B_QR_(QL+1)=Strnq;
-//  R123L_QR_(QL+1)=RLstr;
   if(QL<Lnum,
    QL=QL+1;
    if(QL==Lnum,
@@ -82,23 +80,13 @@ Button4():=(
  );
 );
 
-Ucreate("Text5","←",[1.6,-5.8],"Button5();");
+Ucreate("Text5","　　",[2,-5.8],"Button5();");
 Button5():=(
  if(ansflg>3 & ansflg<7,
-//  A123B_QR_(QL+1)=Strnq;
-//  R123L_QR_(QL+1)=RLstr;
   if(QL>1,
    QL=QL-1;
    Subsedit(10,A123B_QR_(QL+1));
   );
- );
-);
-
-Ucreate("Text6","確定",[4.6,-5.8],"Button6();");
-Button6():=(
- if(ansflg>3 & ansflg<7,
-  A123B_QR_(QL+1)=Strnq;
-  R123L_QR_(QL+1)=RLstr;
  );
 );
 
