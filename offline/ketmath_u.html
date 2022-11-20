@@ -33,15 +33,7 @@
 
         }
 
-input[type="button"] {
--webkit-appearance: none;
-border-radius: 0;
-}
 
-button {
--webkit-appearance: none;
-border-radius: 0;
-}
 
 </style>
 
@@ -57,8 +49,8 @@ Start():=(
  textlist=["",""];
  reshownumber=1;
  elementslist=[["SW", "Free", [[-0.3267, 1, -0.031]]],
- ["NE", "Free", [[1, 0.3121, 0.0155]]], ["T1", "Free", [[15, 40, 1]]],
- ["T2", "Free", [[15, 35, 1]]]];
+ ["NE", "Free", [[1, 0.3121, 0.0155]]], ["T1", "Free", [[15, 35, 1]]],
+ ["T2", "Free", [[15, 30, 1]]]];
 );
 
 Start();
@@ -3787,6 +3779,7 @@ if(reshownumber==1,
 
 T1.labelled=false;
 T2.labelled=false;
+T2.color=[0.8,1,1];
 
 javascript("textJSbox()");
 
@@ -3884,8 +3877,8 @@ var cdy = CindyJS({
   ],
   ports: [{
     id: "CSCanvas",
-    width: 636,
-    height: 400,
+    width: 950,
+    height: 500,
     transform: [{visibleRect: [8.958445090062735, 25.468249653947986, 63.178144169185884, 25.85060307686192]}],
     grid: 5.0,
     background: "rgb(247,247,247)"
@@ -3904,18 +3897,13 @@ var cdy = CindyJS({
 <!--- usui 
 <table border="1">
 --->
-<table>
 
-<tr><td>
-    <div id="CSCanvas"></div>
-</td></tr>
+<div style="padding-left: 10px">
 
-<tr><td>
-<textarea  name="comment" cols="60" rows="5" id="jsbox" value="" style="font-size:x-large;" onfocus="focusFunction()"></textarea >
-</td>
-</tr>
+<div id="CSCanvas"></div>
 
-</table>
+<textarea  name="comment"  cols="75" rows="6"  id="jsbox" style="font-size:x-large;" ></textarea >
+
 
 <!-- ここならよい 　改行あるとダメ -->
 

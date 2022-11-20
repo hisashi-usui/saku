@@ -26,7 +26,7 @@
             background-color: #FAFAFA;
             border-top: 1px solid #333333;
             bottom: 0px;
-            height: 20px;
+            height: 200px;
             overflow-y: scroll;
             position: fixed;
             width: 100%;
@@ -3779,6 +3779,7 @@ if(reshownumber==1,
 
 T1.labelled=false;
 T2.labelled=false;
+T2.color=[0.8,1,1];
 
 javascript("textJSbox()");
 
@@ -3876,8 +3877,8 @@ var cdy = CindyJS({
   ],
   ports: [{
     id: "CSCanvas",
-    width: 900,
-    height: 400,
+    width: 950,
+    height: 500,
     transform: [{visibleRect: [8.958445090062735, 25.468249653947986, 63.178144169185884, 25.85060307686192]}],
     grid: 5.0,
     background: "rgb(247,247,247)"
@@ -3901,21 +3902,12 @@ var cdy = CindyJS({
 
 <div id="CSCanvas"></div>
 
-<!---
-<textarea  name="comment" cols="60" rows="5" id="jsbox" value="" style="font-size:x-large;" onfocus="focusFunction()"></textarea >
---->
-
-
-<textarea  name="comment"  cols="70" rows="6"  id="jsbox" style="font-size:x-large;" ></textarea >
-
-<!---
-<div style="padding: 50px">
---->
+<textarea  name="comment"  cols="75" rows="6"  id="jsbox" style="font-size:x-large;" ></textarea >
 
 <div style="padding-left: 70px">
 
-<p><font size="3">&emsp;<b>KeTMath数式ルール</b></font></p>
-<ol><font size="3">
+<p><font size="2">&emsp;<b>KeTMath数式ルール</b></font></p>
+<ol><font size="2">
 <li>分数　<b>fr(a,b)</b>　注) 小さい分数 <b>tfr(a,b)</b></li>
 <li>掛け算　<b>ab</b>　注) <b>a*b</b>も可</li>
 <li>べき乗　<b>a^(b)</b>　注) 1文字の場合は<b>a^b</b>も可</li>
