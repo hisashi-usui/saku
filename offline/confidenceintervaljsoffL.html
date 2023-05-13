@@ -860,6 +860,49 @@ Ptend(Fig):=(
   if(isstring(Fig),tmp=parse(Fig),tmp=Fig);
   tmp_(length(tmp)); // 15.04.12
 );
+Defvar(varstr):=(
+  regional(name,value,tmp,tmp1);
+  if(isstring(varstr),
+    parse(varstr+";");
+    tmp=indexof(varstr,"=");
+    name=substring(varstr,0,tmp-1);
+    value=substring(varstr,tmp,length(varstr));
+    value=parse(value);
+    tmp1=select(1..length(VLIST),VLIST_#_1==name);
+    if(length(tmp1)>0,
+      tmp=tmp1_1;
+      VLIST_tmp=[name,value];
+    ,
+      VLIST=prepend([name,value],VLIST);
+    );
+  ,
+    forall(1..(length(varstr)/2), // 16.11.16from
+      name=varstr_(2*#-1);
+      value=varstr_(2*#);
+      Defvar(name,value);
+    ); // 16.11.16until
+  );
+);
+Defvar(name,value):=(
+  regional(tmp,tmp1);
+  if(islist(value),
+    tmp1="[";
+    forall(value,
+      if(isstring(#), // 16.11.14
+        tmp1=tmp1+Dq+#+Dq+","; // 16.11.14
+      ,
+        tmp1=tmp1+format(#,16)+","; //190918
+      );
+    );
+    tmp1=substring(tmp1,0,length(tmp1)-1)+"]";
+  ,
+    tmp1=format(value,10);
+  );
+  tmp=name+"="+tmp1+";"; // 15.02.06//190415
+  parse(tmp);
+  VLIST=select(VLIST,#_1!=name); // 15.02.08
+  VLIST=prepend([name,value],VLIST);
+);
 Translatedata(nm,plist,mov):=Translatedata(nm,plist,mov,[]);
 Translatedata(nm,plist,mov,optionorg):=(
   regional(options,tmp,tmp1,tmp2,pdata,Cx,Cy,PdL,Nj,Njj,Kj,eqL,
@@ -1545,21 +1588,23 @@ u1=[[-5,0],[-4.8,0],[-4.6,0],[-4.4,0],[-4.2,0],[-4,0],[-3.8,0.01],[-3.6,0.01],[-
 u2=[u1_18,[u1_18_1,0]];println(u1_18);
 u3=[u1_34,[u1_34_1,0]];println(u1_34);
 
-Translatedata(1,"u1",[S.x,0],["nodisp"]);
-Translatedata(2,"u2",[S.x,0],["nodisp"]);
-Translatedata(3,"u3",[S.x,0],["nodisp"]);
+Defvar(["a",1]);
+
+Translatedata(1,"u1",[S.x/a,0],["nodisp"]);
+Translatedata(2,"u2",[S.x/a,0],["nodisp"]);
+Translatedata(3,"u3",[S.x/a,0],["nodisp"]);
 
 Listplot("11",tr1);
 Listplot("12",tr2);
 Listplot("13",tr3);
 
-Letter([S.x,2.2],"n","母平均が$\ \mu \ $のときの分布");
+Letter([S.x/a,2.2],"n","母平均が$\ \mu \ $のときの分布");
 Letter(A,"s3","実現値");
 Letter(S,"s2","$\mu$");
 Letter([A.x,-2.2],"s","母平均$\ \mu \ $の信頼区間");
 
-if(S.x>A.x-1.6,smin=Min(smin,S.x));
-if(S.x<A.x+1.6,smax=Max(smax,S.x));
+if(S.x>(A.x-1.6)*a,smin=Min(smin,S.x));
+if(S.x<(A.x+1.6)*a,smax=Max(smax,S.x));
 
 Listplot("20",[[smin,-2],[smax,-2]],["dr,1"]);
 Listplot("21",[[smin,-1.9],[smin,-2.1]],["dr,1"]);
@@ -1587,15 +1632,15 @@ var cdy = CindyJS({
   geometry: [
     {name: "SW", type: "Free", pos: [4.0, 3.2, -0.8], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
     {name: "NE", type: "Free", pos: [4.0, 2.4, 0.8], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
-    {name: "S", type: "Free", pos: [-1.127683342624861, -4.0, 4.0], color: [1.0, 0.0, 0.0], labeled: false, size: 3.0, border: true },
-    {name: "A", type: "Free", pos: [-3.242089610048, 0.0, 4.0], color: [1.0, 0.0, 0.0], labeled: false, size: 3.0, border: true },
+    {name: "S", type: "Free", pos: [4.0, -1.7875124649835468, 1.7875124649835468], color: [1.0, 0.0, 0.0], labeled: false, size: 3.0, border: true },
+    {name: "A", type: "Free", pos: [1.339123969368, 0.0, 4.0], color: [1.0, 0.0, 0.0], labeled: false, size: 3.0, border: true },
     {name: "Text0", type: "Button", pos: [4.0, -3.4146341463414633, 1.0399941500654617], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "Putpoint(\"S\",[A.x,S.y],[A.x,S.y]);\nsmin=A.x;smax=A.x;", text: "実行"}
   ],
   ports: [{
     id: "CSCanvas",
     width: 1081,
-    height: 598,
-    transform: [{visibleRect: [-6.810150186320449, 4.484303292156674, 9.065516871570171, -4.290482717643026]}],
+    height: 582,
+    transform: [{visibleRect: [-6.810150186320449, 4.484303292156674, 9.065516871570171, -4.061422038672351]}],
     axes: true,
     background: "rgb(247,247,247)"
   }],
