@@ -5015,7 +5015,7 @@ function CTouch(){
 }
 
 var mouseup = function(){
-if(clickflag==1){
+ if(clickflag==1){
   event.preventDefault();
   moji1=hairetu[injsk-1][2][0];
   moji2=hairetu[injsk-1][2][1];
@@ -5031,83 +5031,76 @@ if(clickflag==1){
   }
   cleardraw();
   clickflag=0;
-}
+ }
 }
 
 for(var injsi = 1; injsi < 21; injsi ++) {
 
-if(mouseortouch==1){
+ if(mouseortouch==1){
 
-document.getElementById('key'+injsi).addEventListener('mousedown', function(){
- let str=this.id;
- let newstr=str.replace("key", "");
- injsk=Number(newstr); 
-  event.preventDefault();
-  cleardraw();
+  document.getElementById('key'+injsi).addEventListener('mousedown', function(){
+   let str=this.id;
+   let newstr=str.replace("key", "");
+   injsk=Number(newstr); 
+   event.preventDefault();
+   cleardraw();
    startX = event.clientX;
    startY = event.clientY;
-  selectX=40;  selectY=40;
-  if(clickflag==0){;}
-  clickflag=1;
-  drawSimple(injsk);
-document.addEventListener('mouseup', mouseup);
-});
+   selectX=40;  selectY=40;
+   if(clickflag==0){;}
+   clickflag=1;
+   drawSimple(injsk);
+   document.addEventListener('mouseup', mouseup);
+  });
 
-document.getElementById('key'+injsi).addEventListener('mousemove', function(){
-  event.preventDefault();
-  cleardraw();
-  selectX=40;  selectY=40;
-  if(mouseortouch==1){
+  document.getElementById('key'+injsi).addEventListener('mousemove', function(){
+   event.preventDefault();
+   cleardraw();
+   selectX=40;  selectY=40;
    endX = event.clientX;
    endY = event.clientY;
-  }
+   if(endX > startX+10){selectX = 80;}
+   if(endX < startX-10){selectX = 0;}
+   if(endY < startY-10){selectY = 0;selectX=40;}
+   if(endY > startY+10){selectY = 80;selectX=40;}
+   if(clickflag==1){drawSimple(injsk);}
+   document.addEventListener('mouseup', mouseup);
+  });
+
+ }
+
+ document.getElementById('key'+injsi).addEventListener('touchstart', function(){
   if(mouseortouch==2){
+   let str=this.id;
+   let newstr=str.replace("key", "");
+   injsk=Number(newstr); 
+   event.preventDefault();
+   cleardraw();
+   startX = event.touches[0].pageX;
+   startY = event.touches[0].pageY;
+   selectX=40;  selectY=40;
+   if(clickflag==0){;}
+   clickflag=1;
+   drawSimple(injsk);
+   document.addEventListener('touchend', mouseup);
+  }
+ });
+
+ document.getElementById('key'+injsi).addEventListener('touchmove', function(){
+  if(mouseortouch==2){
+   event.preventDefault();
+   cleardraw();
+   selectX=40;  selectY=40;
    endX = event.touches[0].pageX;
    endY = event.touches[0].pageY;
+   if(endX > startX+10){selectX = 80;}
+   if(endX < startX-10){selectX = 0;}
+   if(endY < startY-10){selectY = 0;selectX=40;}
+   if(endY > startY+10){selectY = 80;selectX=40;}
+   if(clickflag==1 ){drawSimple(injsk);}
+   document.addEventListener('touchend', mouseup);
   }
-  if(endX > startX+10){selectX = 80;}
-  if(endX < startX-10){selectX = 0;}
-  if(endY < startY-10){selectY = 0;selectX=40;}
-  if(endY > startY+10){selectY = 80;selectX=40;}
-  if(clickflag==1){drawSimple(injsk);}
-document.addEventListener('mouseup', mouseup);
-});
-
-}
-
-
-document.getElementById('key'+injsi).addEventListener('touchstart', function(){
-if(mouseortouch==2){
- let str=this.id;
- let newstr=str.replace("key", "");
- injsk=Number(newstr); 
-  event.preventDefault();
-  cleardraw();
-  startX = event.touches[0].pageX;
-  startY = event.touches[0].pageY;
-  selectX=40;  selectY=40;
-  if(clickflag==0){;}
-  clickflag=1;
-  drawSimple(injsk);
-document.addEventListener('touchend', mouseup);
-}
-});
-
-document.getElementById('key'+injsi).addEventListener('touchmove', function(){
-if(mouseortouch==2){
-  event.preventDefault();
-  cleardraw();
-  selectX=40;  selectY=40;
-  endX = event.touches[0].pageX;
-  endY = event.touches[0].pageY;
-  if(endX > startX+10){selectX = 80;}
-  if(endX < startX-10){selectX = 0;}
-  if(endY < startY-10){selectY = 0;selectX=40;}
-  if(endY > startY+10){selectY = 80;selectX=40;}
-  if(clickflag==1 ){drawSimple(injsk);}
-document.addEventListener('touchend', mouseup);
-}
-});
+ });
 
 }
 
