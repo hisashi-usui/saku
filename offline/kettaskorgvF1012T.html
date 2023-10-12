@@ -4206,7 +4206,7 @@ hairetu1=[
 ["abc 2#",["a","b","c","#","2"],["a","b","c","#","2"]],
 ["def 3%",["d","e","f","%","3"],["d","e","f","%","3"]],
 ["( <",["(","{","[","<","$\leq$"],["(","\{","[","<","(leq)"]],
-["fr $\sqrt{\phantom{a}}$  _",["fr","tfr","$\sqrt{\phantom{a}}$","^","_"],["fr(","tfr(","sq(","^(","_("]],
+["fr $\sqrt{\phantom{a}}$_^",["fr","tfr","$\sqrt{\phantom{a}}$","^","_"],["fr(","tfr(","sq(","^(","_("]],
 ["ghi 4(",["g","h","i","(","4"],["g","h","i","(","4"]],
 ["jkl 5&",["j","k","l","&","5"],["j","k","l","&","5"]],
 ["mno 6)",["m","n","o",")","6"],["m","n","o",")","6"]],
@@ -4230,7 +4230,7 @@ hairetu2=[
 ["ABC 2#",["A","B","C","#","2"],["A","B","C","#","2"]],
 ["DEF 3%",["D","E","F","%","3"],["D","E","F","%","3"]],
 ["( <",["(","{","[","<","$\leq$"],["(","\{","[","<","(leq)"]],
-["fr $\sqrt{\phantom{a}}$  _",["fr","tfr","$\sqrt{\phantom{a}}$","^","_"],["fr(","tfr(","sq(","^(","_("]],
+["fr $\sqrt{\phantom{a}}$_^",["fr","tfr","$\sqrt{\phantom{a}}$","^","_"],["fr(","tfr(","sq(","^(","_("]],
 ["GHI 4(",["G","H","I","(","4"],["G","H","I","(","4"]],
 ["JKL 5&",["J","K","L","&","5"],["J","K","L","&","5"]],
 ["MNO 6)",["M","N","O",")","6"],["M","N","O",")","6"]],
@@ -4254,7 +4254,7 @@ hairetu3=[
 ["$\alpha \beta \chi$ 2#",["$\alpha$","$\beta$","$\chi$","#","2"],["{\alpha}","{\beta}","{\chi}","#","2"]],
 ["$\delta \varepsilon \varphi$ 3",["$\delta$","$\varepsilon$","$\varphi$","%","3"],["{\delta}","{\varepsilon}","{\varphi}","%","3"]],
 ["( <",["(","{","[","<","$\leq$"],["(","\{","[","<","(leq)"]],
-["fr √ ^ _",["fr","tfr","√","^","_"],["fr(","tfr(","sq(","^(","_("]],
+["fr $\sqrt{\phantom{a}}$_^",["fr","tfr","$\sqrt{\phantom{a}}$","^","_"],["fr(","tfr(","sq(","^(","_("]],
 ["$\gamma\eta\iota$ 4(",["$\gamma$","$\eta$","$\iota$","(","4"],["{\gamma}","{\eta}","{\iota}","(","4"]],
 ["$\Lambda\kappa\lambda$ 5&",["$\Lambda$","$\kappa$","$\lambda$","&","5"],["{\Lambda}","{\kappa}","{\lambda}","&","5"]],
 ["$\mu\nu\Omega$ 6)",["$\mu$","$\nu$","$\Omega$",")","6"],["{\mu}","{\nu}","{\Omega}",")","6"]],
@@ -4278,7 +4278,7 @@ hairetu4=[
 ["2",["2","b","c","#","a"],["2","b","c","#","a"]],
 ["3",["3","e","f","%","d"],["3","e","f","%","d"]],
 ["( <",["(","{","[","<","$\leq$"],["(","\{","[","<","(leq)"]],
-["fr √ ^ _",["fr","tfr","√","^","_"],["fr(","tfr(","sq(","^(","_("]],
+["fr $\sqrt{\phantom{a}}$_^",["fr","tfr","$\sqrt{\phantom{a}}$","^","_"],["fr(","tfr(","sq(","^(","_("]],
 ["4",["4","h","i","(","g"],["4","h","i","(","g"]],
 ["5",["5","k","l","&","j"],["5","k","l","&","j"]],
 ["6",["6","n","o",")","m"],["6","n","o",")","m"]],
@@ -4646,11 +4646,14 @@ nameL=[
 nmove=[0,0];
 Keytable(5,10*dx,4,10*dy,[x0,y0],[0.9,0.9,0.9],nameL,nmove,16);
 
+
+
+if(clickf==1,
+select=1;
 nx=ceil((click1x-x0)/dx);
 ny=ceil(3+(y0-click1y)/dy);
 butnum=ny*5+nx;
-
-if(clickf==1,select=1);
+);
 
 if(clickf==2,
  select=1;
@@ -4665,9 +4668,10 @@ clickf3():=(
 funflg=1;
 name=hairetu_butnum_3_select;
 clickf=0;
+butnum=0;
 );
 
-a=2;b=10;c=80;
+a=2;b=10;c=60;
 
 if(or(clickf==1,clickf==2),
 iro0=[0.9,0.9,0.9];
@@ -4763,6 +4767,7 @@ KeTTask
 
 
 <script language="javascript" type="text/javascript">
+
 
 document.addEventListener('touchstart', function(){
    const ffh="clickft=\"1\"";
