@@ -4617,9 +4617,12 @@ y0=-28;
 dx=9;
 dy=5.7;
 
+click1xj=parse(click1xt);
+click1yj=parse(click1yt);
+
 clickf0=parse(clickft);
-if(mouse()_1>x0 & mouse()_1<x0+5*dx,
-if(mouse()_2>y0 & mouse()_2<y0+4*dy,
+if(click1xj>84 & click1xj<517,
+if(click1yj>365 & click1yj<583,
 if(clickf==0 & clickf0==1,clickf=1);
 );
 );
@@ -4700,9 +4703,10 @@ Keytable(1,20*a,1,20*a,[c+a,b],iro_4,[[hairetu_butnum_2_4]],[0,0],16);
 Keytable(1,20*a,1,20*a,[c-a,b-2*a],iro_5,[[hairetu_butnum_2_5]],[0,0],16);
 );
 
-if(1==1,
+if(1==0,
 drawtext([90,5],"click1="+[click1x,click1y]);
 drawtext([90,0],"click2="+[click2x,click2y]);
+drawtext([90,-5],"click1j="+[click1xj,click1yj]);
 drawtext([90,-15],"butnum="+butnum);
 drawtext([100,-15],"[nx,ny]="+[nx,ny]);
 drawtext([90,-20],"clickf="+clickf);
@@ -4784,6 +4788,12 @@ KeTTask
 <script language="javascript" type="text/javascript">
 
 document.addEventListener('mousedown', function(){
+   startX = event.clientX;
+   startY = event.clientY;
+   const fff="click1xt=\""+startX+"\"";
+   cdy.evokeCS(fff);
+   const ffg="click1yt=\""+startY+"\"";
+   cdy.evokeCS(ffg);
    const ffh="clickft=\"1\"";
    cdy.evokeCS(ffh);
 });
@@ -4799,6 +4809,12 @@ document.addEventListener('mouseup', function(){
 });
 
 document.addEventListener('touchstart', function(){
+   startX = event.touches[0].pageX;
+   startY = event.touches[0].pageY;
+   const fff="click1xt=\""+startX+"\"";
+   cdy.evokeCS(fff);
+   const ffg="click1yt=\""+startY+"\"";
+   cdy.evokeCS(ffg);
    const ffh="clickft=\"1\"";
    cdy.evokeCS(ffh);
 });
