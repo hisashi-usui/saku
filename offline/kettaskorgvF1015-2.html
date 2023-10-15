@@ -4310,8 +4310,6 @@ keychange():=(
 );
 
 clickf=0;
-xoffsett="0";
-yoffsett="0";
 
 // ----- usui -----^
 
@@ -4622,13 +4620,6 @@ y0=-28;
 dx=9;
 dy=5.7;
 
-ctcheck1=parse(ctcheck1t);
-ctcheck2=parse(ctcheck2t);
-ctcheck3=parse(ctcheck3t);
-ctcheck4=parse(ctcheck4t);
-ctcheck5=parse(ctcheck5t);
-ctcheck6=parse(ctcheck6t);
-
 click1xj=parse(click1xt);
 click1yj=parse(click1yt);
 
@@ -4732,7 +4723,6 @@ drawtext([100,-15],"[nx,ny]="+[nx,ny]);
 xxx=x0+5*dx;yyy=y0+4*dy;
 drawtext([90,-20],x0+"<x<"+xxx);
 drawtext([100,-20],y0+"<y<"+yyy);
-drawtext([90,-25],[ctcheck1,ctcheck2,ctcheck3,ctcheck4,ctcheck5,ctcheck6]);
 );
 
 //----- usui -----^
@@ -4822,22 +4812,16 @@ document.addEventListener('mousedown', function(){
    cdy.evokeCS(ggg);
    const ggh="yoffsett=\""+window.pageYOffset+"\"";
    cdy.evokeCS(ggh);
-   const hhh="ctcheck1t=\"1\"";
-   cdy.evokeCS(hhh);
 });
 
 document.addEventListener('mousemove', function(){
    const ffh="clickft=\"2\"";
    cdy.evokeCS(ffh);
-   const hhh="ctcheck2t=\"2\"";
-   cdy.evokeCS(hhh);
 });
 
 document.addEventListener('mouseup', function(){
    const ffh="clickft=\"3\"";
    cdy.evokeCS(ffh);
-   const hhh="ctcheck3t=\"3\"";
-   cdy.evokeCS(hhh);
 });
 
 document.addEventListener('touchstart', function(){
@@ -4853,22 +4837,16 @@ document.addEventListener('touchstart', function(){
    cdy.evokeCS(ggg);
    const ggh="yoffsett=\"0\"";
    cdy.evokeCS(ggh);
-   const hhh="ctcheck4t=\"4\"";
-   cdy.evokeCS(hhh);
 });
 
 document.addEventListener('touchmove', function(){
    const ffh="clickft=\"2\"";
    cdy.evokeCS(ffh);
-   const hhh="ctcheck5t=\"5\"";
-   cdy.evokeCS(hhh);
 });
 
 document.addEventListener('touchend', function(){
    const ffh="clickft=\"3\"";
    cdy.evokeCS(ffh);
-   const hhh="ctcheck6t=\"6\"";
-   cdy.evokeCS(hhh);
 });
 
 </script>
