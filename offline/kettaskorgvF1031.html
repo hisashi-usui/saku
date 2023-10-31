@@ -4548,6 +4548,8 @@ if(ctcheck4==4,
  yoffset=0;
 );
 
+drawtext([90,18],"mouse()="+mouse());
+
 
 if(startposf==0,
 
@@ -4557,7 +4559,9 @@ if(startposf==0,
  drawtext([30,-30],"クリック　または　タッチ",size->20);
  drawtext([30,-35],"してください",size->20);
 
-if(or(ctcheck1==1,ctcheck4==4),
+//if(or(ctcheck1==1,ctcheck4==4),
+if(clickf0==1,
+if(and(and(mouse()_1>20,mouse()_1<80),and(mouse()_2>-42,mouse()_2<-12)),
 changeax=8.5004;
 changebx=click1xj-changeax*mouse()_1;
 changeay=-8.5004;
@@ -4567,6 +4571,7 @@ keyxmax=changeax*(x0+5*dx)+changebx+xoffset;
 keyymax=changeay*y0+changeby+yoffset;
 keyymin=changeay*(y0+4*dy)+changeby+yoffset;
 startposf=1;
+);
 );
 ,
 
