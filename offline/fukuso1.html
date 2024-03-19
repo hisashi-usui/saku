@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+    <title>fukuso1.cdy</title>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #CSConsole {
+            background-color: #FAFAFA;
+            border-top: 1px solid #333333;
+            bottom: 0px;
+            height: 200px;
+            overflow-y: scroll;
+            position: fixed;
+            width: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cindyjs.org/dist/v0.8/CindyJS.css">
+    <script type="text/javascript" src="https://cindyjs.org/dist/v0.8/Cindy.js"></script>
+<script id="csdraw" type="text/x-cindyscript">
+//Script (CindyScript)
+draw([-5,0],[5,0]);
+draw([0,-5],[0,5]);
+draw([-5,-5],[-5,5]);
+draw([-5,-5],[5,-5]);
+draw([5,5],[-5,5]);
+draw([5,5],[5,-5]);
+O=[0,0];
+
+//----------------------------
+//str="exp(z)";
+//str="sin(z)";
+str="1/z";
+//str="z^2";
+//str="conjugate(z)";
+//str="abs(z)";
+str=Text0.text;
+
+f(z):=parse(str);
+
+A.labelled=false;
+A.size=3;
+
+if(r<1,
+ z1=complex(A);
+ if(r<0,
+  z1=1+ra*cos(arctan2(A-[1,0]))+i*ra*sin(arctan2(A-[1,0]));
+ );
+ z2=f(z1);
+ P=gauss(z2);
+ drawtext((6,4),"$f(z)="+str+"$",size->20); 
+ draw(P,color->[1,1,1]);
+ drawtext(A+(0.08,0.08),"$z$");
+ drawtext(P+(0.08,0.08),"$f(z)$");
+); 
+
+if(r>0,
+ A.y=0;
+ z1=A.x;
+ z2=f(z1);
+ P=[z2,0];
+ if(rr==1,P=[0,z2]);
+ strx=replace(str,"z","x");
+ drawtext((6,4),"$f(x)="+strx+"$",size->20); 
+ draw(P,color->[1,1,1]);
+ drawtext(A+(0.08,0.08),"$x$"); 
+ drawtext(P+(0.08,0.08),"$f(x)$"); 
+);
+
+B.caption="a";
+B.size=3;
+a1=complex(B);
+a2=f(a1);
+Q=gauss(a2);
+
+if(r<0,
+ if(r==-1,ra=sqrt(2));
+ if(r==-2,ra=1);
+ A.y=ra*sin(arctan2(A-[1,0]));
+ A.x=1+ra*cos(arctan2(A-[1,0]));
+ plot([1,0]+ra*[cos(t),sin(t)],start->0,stop->2*pi+0.1);
+ if(ans>0,
+   if(str=="1/z",
+     if(r==-2,
+       draw([1/2,-5],[1/2,5]),
+       plot([1/(1-ra^2),0]+[cos(t),sin(t)]*ra/(ra^2-1),start->0,stop->2*pi+0.1)
+     );
+     ,
+     plot(gauss(f(1+ra*cos(t)+i*ra*sin(t))),start->0,stop->2*pi);
+   );
+ );
+);
+
+if(r>1,
+ AP=(A.x,P.y);
+ draw(A,AP);
+ draw(P,AP);
+ draw(AP,color->[0,0,0],size->2);
+);
+
+if(r>2,
+ g(x):=parse(strx);
+ ta=min([A.x,ta]);
+ to=max([A.x,to]);
+ plot(g(x),color->[0,0,0],start->ta,stop->to);
+);
+
+if(f==2,
+draw(O,A,color->[1,0,0]);
+draw(O,P,color->[0,0,0]);
+if(A.x>0 & A.y>0,t1=0;t2=arctan(A.y/A.x));
+if(A.x<0 & A.y>0,t1=0;t2=arctan(A.y/A.x)+pi);
+if(A.x>0 & A.y<0,t2=0;t1=arctan(A.y/A.x));
+if(A.x<0 & A.y<0,t2=0;t1=arctan(A.y/A.x)-pi);
+plot([cos(t),sin(t)]*0.4,color->[1,0,0],size->1,start->t1,stop->t2);
+if(P.x>0 & P.y>0,p1=0;p2=arctan(P.y/P.x));
+if(P.x<0 & P.y>0,p1=0;p2=arctan(P.y/P.x)+pi);
+if(P.x>0 & P.y<0,p2=0;p1=arctan(P.y/P.x));
+if(P.x<0 & P.y<0,p2=0;p1=arctan(P.y/P.x)-pi);
+plot([cos(t),sin(t)]*0.3,color->[0,0,0],size->1,start->p1,stop->p2);
+drawcircle(O,dist(O,A),color->[1,0,0],size->0.5);
+drawcircle(O,dist(O,P),color->[0,0,0],size->0.5);
+drawtext([0.9,-0.3],"1");
+);
+
+if(f==3,
+draw(Q,color->[0,0,0]);
+drawtext(Q+(0.08,0.08),"f(a)"); 
+drawtext((6,2),"$\frac{f(z)-f(a)}{z-a}="
++(f(z1)-f(a1))/(z1-a1),size->15);
+eps=0.001;
+drawtext((6,0.5),"その方向から近づけた極限",size->15);
+drawtext((6,0),"（すぐ近くでの値）",size->15);
+drawtext((6,-0.8),"$lim \frac{f(z)-f(a)}{z-a}="
++(f(a1+eps*(z1-a1))-f(a1))/(eps*(z1-a1)),size->15);
+);
+
+
+;
+
+</script>
+    <script type="text/javascript">
+var cdy = CindyJS({
+  scripts: "cs*",
+  defaultAppearance: {
+    dimDependent: 0.7,
+    fontFamily: "sans-serif",
+    lineSize: 1,
+    pointSize: 5.0,
+    textsize: 12.0
+  },
+  angleUnit: "°",
+  geometry: [
+    {name: "O1", type: "Free", pos: [4.0, 0.0, 4.0], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "B2", type: "Free", pos: [0.0, 0.0, 4.0], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "c2", type: "CircleMP", color: [0.0, 0.0, 1.0], args: ["O1", "B2"], visible: false},
+    {name: "O2", type: "Free", pos: [4.0, -0.0, -4.0], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "WW", type: "Free", pos: [4.0, -0.0, -0.8], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "EE", type: "Free", pos: [4.0, 0.0, 0.8], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "xline", type: "Segment", color: [0.0, 0.0, 1.0], args: ["WW", "EE"]},
+    {name: "A", type: "Free", pos: [4.0, 2.039215686274509, 2.75918520469395], color: [1.0, 0.0, 0.0], size: 3.0, printname: "$x$"},
+    {name: "Text0", type: "EditableText", pos: [4.0, 1.6124031007751938, 0.545420331160432], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.5, minwidth: 100},
+    {name: "Text1", type: "Button", pos: [4.0, -2.238532110091743, 0.6454974561439975], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "rr=1;r=1;", text: "実数関数"},
+    {name: "Text2", type: "Button", pos: [4.0, 0.9724770642201835, 0.6454974561439975], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "r=0;f=1;ans=0;", text: "複素関数"},
+    {name: "Text3", type: "Button", pos: [4.0, 0.6459627329192548, 0.43701380571239584], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "f=f+1;if(f>2,f=1);", text: "補助線"},
+    {name: "Text5", type: "Button", pos: [4.0, -1.2323232323232323, 0.35534960969543294], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "rr=1;r=3;ta=A.x;to=A.x;", text: "グラフ"},
+    {name: "Text4", type: "Button", pos: [4.0, -1.5185185185185182, 0.43431618962775137], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "rr=1;r=2;", text: "補助線"},
+    {name: "Text6", type: "Button", pos: [4.0, -2.5296442687747036, 0.5561993890885037], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "rr=0;r=1;", text: "同一数直線に"},
+    {name: "Text7", type: "Button", pos: [4.0, 0.06751054852320675, 0.5937487149341412], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "r=-1;", text: "例題6 (1)"},
+    {name: "Text8", type: "Button", pos: [4.0, 0.037267080745341616, 0.43701380571239584], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "r=-2;", text: "例題6 (2)"},
+    {name: "Text9", type: "Button", pos: [4.0, 0.028169014084507046, 0.3303249892943461], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "ans=mod(ans+1,2);", text: "答え"},
+    {name: "Text10", type: "Button", pos: [4.0, -0.3015521064301552, 0.3120142914398923], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "ra=ra+0.01;", text: "半径大きく"},
+    {name: "Text11", type: "Button", pos: [4.0, -0.3910614525139665, 0.3930682833502554], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "ra=ra-0.01;", text: "半径小さく"},
+    {name: "Text12", type: "Button", pos: [4.0, -0.5, 0.5173472258801156], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "r=-3;", text: "変形する"}
+  ],
+  ports: [{
+    id: "CSCanvas",
+    width: 771,
+    height: 409,
+    transform: [{visibleRect: [-5.983579461604101, 6.097281684152398, 15.932523934580042, -5.528770571410916]}],
+    grid: 1.0,
+    background: "rgb(168,176,192)"
+  }],
+  csconsole: false,
+  use: ["katex"],
+  cinderella: {build: 2039, version: [3, 0, 2039]}
+});
+    </script>
+</head>
+<body>
+    <div id="CSCanvas"></div>
+</body>
+</html>
