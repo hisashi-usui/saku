@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     
-    <title>fukuso20240425.cdy</title>
+    <title>fukuso20240426.cdy</title>
     <style type="text/css">
         * {
             margin: 0px;
@@ -4436,7 +4436,7 @@ if(str=="",str="0");
 str0=str;
 
 nu1=indexof(str0,"sq(");
- if(nu1>0,hojo=0;ans=0;
+ if(nu1>0,
   nu2=indexof(str0,",",nu1);
   nu3=indexof(str0,")",nu1);
   if(and(nu2>0,nu2<nu3),
@@ -4517,8 +4517,7 @@ if(rcflg==0,
  drawtext(A+(0.08,0.08),"$z$");
  drawtext(P+(0.08,0.08),"$f(z)$");
 
- 
- if(nu1>0,
+ if(nu1>0,hojo=0;ans=0;
   w=1;q=0;
   repeat(nnn-1, 
    w=w*w0;
@@ -4701,10 +4700,10 @@ var cdy = CindyJS({
     {name: "Text5", type: "Button", pos: [4.0, 1.9259259259259258, 0.7407407407407407], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "if(rcflg==1,one=mod(one+1,2),en=mod(en+1,2);ra=sqrt(2););", text: "　　　　　"}
   ],
   ports: [{
-    width: 673,
-    height: 420,
+    width: 665,
+    height: 392,
     id: "CSCanvas",
-    transform: [{visibleRect: [-5.543751774132035, 5.622386551070079, 12.09664985230229, -5.3864822202559495]}],
+    transform: [{visibleRect: [-5.543751774132035, 5.622386551070079, 11.886957113800843, -4.652557635500881]}],
     grid: 1.0,
     background: "rgb(247,247,247)"
   }],
