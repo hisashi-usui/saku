@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     
-    <title>fukuso20240426.cdy</title>
+    <title>fukuso20240427.cdy</title>
     <style type="text/css">
         * {
             margin: 0px;
@@ -4423,7 +4423,6 @@ if(funflg==1,
 Str=Textedit(0,"","");
 
 
-
 str=Str;
 
 Str=replace(Str,"frfr","tfr");
@@ -4434,28 +4433,29 @@ Texstr=replace(Texstr0,"$","");
 if(str=="",str="0");
 
 str0=str;
+nnn=1;
 
 nu1=indexof(str0,"sq(");
- if(nu1>0,
-  nu2=indexof(str0,",",nu1);
-  nu3=indexof(str0,")",nu1);
-  if(and(nu2>0,nu2<nu3),
-   nnn=parse(substring(str0,nu1+2,nu2-1))
-  ,
-   nnn=2
-  );
-  str0=replace(str0,"sq(","w*sq(");
-  tt=2*pi/nnn;w0=cos(tt)+i*sin(tt);
+if(nu1>0,
+ nu2=indexof(str0,",",nu1);
+ nu3=indexof(str0,")",nu1);
+ if(and(nu2>0,nu2<nu3),
+  nnn=parse(substring(str0,nu1+2,nu2-1))
+ ,
+  nnn=2
  );
- lnu1=indexof(str0,"log(");
- if(lnu1>0,
-  lnu2=indexof(str0,")",lnu1);
-  ustr1=substring(str0,0,lnu1-1);
-  ustr2=substring(str0,lnu1-1,lnu2);
-  ustr3=substring(str0,lnu2,length(str0));
-  str0=ustr1+"("+ustr2+"+q)"+ustr3;
- );
- ustr=Tocindyform(str0);
+ str0=replace(str0,"sq(","w*sq(");
+ tt=2*pi/nnn;w0=cos(tt)+i*sin(tt);
+);
+lnu1=indexof(str0,"log(");
+if(lnu1>0,
+ lnu2=indexof(str0,")",lnu1);
+ ustr1=substring(str0,0,lnu1-1);
+ ustr2=substring(str0,lnu1-1,lnu2);
+ ustr3=substring(str0,lnu2,length(str0));
+ str0=ustr1+"("+ustr2+"+q)"+ustr3;
+);
+ustr=Tocindyform(str0);
 
 str=Tocindyform(str);
 
@@ -4510,49 +4510,17 @@ if(rcflg==0,
    if(listflg==2,Ospline("2",list2););
   );
  );
- z2=f(z1);
- P=gauss(z2);
  drawtext((5.5,4.5),"$f(z)="+Texstr+"$",size->20); 
- draw(P,color->[1,1,1]);
- drawtext(A+(0.08,0.08),"$z$");
- drawtext(P+(0.08,0.08),"$f(z)$");
-
- if(nu1>0,hojo=0;ans=0;
-  w=1;q=0;
-  repeat(nnn-1, 
-   w=w*w0;
-   g(z):=parse(ustr);
-   z3=g(z1);
-   P2=gauss(z3);
-   draw(P2,color->[1,1,1]);
-   drawtext(P2+(0.08,0.08),"$f(z)$");
-  );
- );
- if(lnu1>0,hojo=0;ans=0;
-  w=1;
-  q=0;P2=[0,0];
-  while(|P2|<10, 
-   q=q+2*pi*i;
-   g(z):=parse(ustr);
-   z3=g(z1);
-   P2=gauss(z3);
-   draw(P2,color->[1,1,1]);
-   drawtext(P2+(0.08,0.08),"$f(z)$");
-  );
-  q=0;P2=[0,0];
-  while(|P2|<10, 
-   q=q-2*pi*i;
-   g(z):=parse(ustr);
-   z3=g(z1);
-   P2=gauss(z3);
-   draw(P2,color->[1,1,1]);
-   drawtext(P2+(0.08,0.08),"$f(z)$");
-  );
- );
- if(and(nu1>0,lnu1>0),
-  w=1;
-  repeat(nnn-1, 
-   w=w*w0;
+ if(or(nu1>0,lnu1>0),hojo=0;ans=0;);
+ w=1;
+ repeat(nnn,
+  q=0; 
+  g(z):=parse(ustr);
+  z3=g(z1);
+  P2=gauss(z3);
+  draw(P2,color->[1,1,1]);
+  drawtext(P2+(0.08,0.08),"$f(z)$");
+  if(lnu1>0,
    q=0;P2=[0,0];
    while(|P2|<10, 
     q=q+2*pi*i;
@@ -4572,6 +4540,7 @@ if(rcflg==0,
     drawtext(P2+(0.08,0.08),"$f(z)$");
    );
   );
+  w=w*w0;
  );
  if(hojo==1,
   drawtext([7,3.4],"○",size->13,color->(1,0,0));
@@ -4631,10 +4600,6 @@ if(rcflg==1,
 Windispg();
 
 
-
-
-
-
 ;
 
 </script>
@@ -4654,7 +4619,7 @@ var cdy = CindyJS({
     {name: "Text0", type: "EditableText", pos: [4.0, 1.2142857142857144, 0.7142857142857143], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, minwidth: 230, textsize: 18.0},
     {name: "SW", type: "Free", pos: [4.0, 4.0, -0.8], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
     {name: "NE", type: "Free", pos: [4.0, 4.0, 0.8], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
-    {name: "A", type: "Free", pos: [4.0, 0.0, 1.7953439443143857], color: [1.0, 0.0, 0.0], size: 3.0, border: true },
+    {name: "A", type: "Free", pos: [4.0, 0.0, 2.8260043567908575], color: [1.0, 0.0, 0.0], size: 3.0, border: true },
     {name: "B", type: "Free", pos: [4.0, -0.0, 4.0], color: [0.0, 0.0, 1.0], visible: false, labeled: false, printname: "中心", size: 3.0, border: true },
     {name: "Text23", type: "Button", pos: [4.0, -1.7942857142857143, 0.38095238095238093], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"/\";", text: "　　", textsize: 18.0},
     {name: "Text25", type: "Button", pos: [4.0, -1.8634146341463413, 0.4878048780487805], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"2\";", text: "　　", textsize: 18.0},
@@ -4700,10 +4665,10 @@ var cdy = CindyJS({
     {name: "Text5", type: "Button", pos: [4.0, 1.9259259259259258, 0.7407407407407407], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "if(rcflg==1,one=mod(one+1,2),en=mod(en+1,2);ra=sqrt(2););", text: "　　　　　"}
   ],
   ports: [{
-    width: 671,
+    width: 683,
     height: 423,
     id: "CSCanvas",
-    transform: [{visibleRect: [-5.543751774132035, 5.622386551070079, 12.044226667676929, -5.465116997193992]}],
+    transform: [{visibleRect: [-5.701021328008122, 5.543751774132035, 12.201496221553015, -5.543751774132035]}],
     grid: 1.0,
     background: "rgb(247,247,247)"
   }],
