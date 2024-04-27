@@ -4518,28 +4518,28 @@ if(pointc==0,
  C.visible=true;
 );
 
-drawtext([10.7,4.2],"制御点",size->13);
+drawtext([10.8,4.1],"制御点",size->13);
 drawtext([11,3.7],"表示",size->13);
 
 if(rcflg==0,
- drawtext([5.3,3.9],"複素関数",size->16);
- drawtext([7.6,3.9],"補助線",size->13);
- drawtext([5.4,2.7],"$z$：円周上",size->13);
+ drawtext([5.3,3.95],"複素関数",size->15);
+ drawtext([7.6,3.95],"補助線",size->13);
+ drawtext([5.3,2.8],"$z$：円周上",size->13);
  drawtext((5.5,5),"$f(z)="+Texstr+"$",size->20); 
  z1=complex(A);
  if(en==1,
-  drawtext([9,3.9],"像表示",size->13);
-  drawtext([7.8,2.7],"小さく",size->13);
-  drawtext([10.6,2.7],"大きく",size->13);
+  drawtext([9,3.95],"像表示",size->13);
+  drawtext([7.9,2.8],"小さく",size->13);
+  drawtext([10.7,2.8],"大きく",size->13);
   if(rdr==0,
-   drawtext([9.3,2.7],"半径",size->13);
+   drawtext([9.45,2.8],"半径",size->13);
   ,
-   drawtext([9.2,2.7],"変化量",size->13);
+   drawtext([9.3,2.8],"変化量",size->13);
   );
   z1=B.x+ra*cos(arctan2(A-B))+i*(B.y+ra*sin(arctan2(A-B)));
-  drawtext([5.2,3],"○",size->13,color->(1,0,0));
+  drawtext([5.1,3.1],"○",size->13,color->(1,0,0));
   B.visible=true;
-  drawtext(B+(0.08,0.08),"中心");
+  drawtext(B+(-0.27,-0.14),"中心");
   A.y=B.y+ra*sin(arctan2(A-B));
   A.x=B.x+ra*cos(arctan2(A-B));
   plot(B+ra*[cos(t),sin(t)],start->0,stop->2*pi+0.1);
@@ -4611,10 +4611,10 @@ if(rcflg==0,
 ); 
 
 if(rcflg==1,
- drawtext([5.3,3.9],"実数関数",size->16);
- drawtext([7.6,3.9],"補助線",size->13);
- drawtext([9,3.9],"グラフ",size->13);
- drawtext([5.3,2.7],"同一直線上",size->13);
+ drawtext([5.3,3.95],"実数関数",size->15);
+ drawtext([7.6,3.95],"補助線",size->13);
+ drawtext([9,3.95],"グラフ",size->13);
+ drawtext([5.2,2.8],"同一直線上",size->13);
  Texstr=replace(Texstr,"z","x");
  drawtext((5.5,5),"$f(x)="+Texstr+"$",size->20); 
  if(and(one==0,ans==1),
@@ -4638,7 +4638,7 @@ if(rcflg==1,
    draw(AP,color->[0,0,0],size->2);
   );
  ,
-  drawtext([5.2,3],"○",size->13,color->(1,0,0));
+  drawtext([5.1,3.1],"○",size->13,color->(1,0,0));
  );
  draw(P,color->[1,1,1]);
  drawtext(A+(0.08,0.08),"$x$"); 
