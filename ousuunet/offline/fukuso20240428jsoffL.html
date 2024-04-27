@@ -4421,7 +4421,7 @@ inspect(Text6,"textsize",20);
 
 </script>
 <script id="csdraw" type="text/x-cindyscript">
-Ketinit();
+Ketinit(1);
 
 
 nameL=[["BS","AC","<",">",">>"]];
@@ -4570,28 +4570,19 @@ if(rcflg==0,
  if(or(nu1>0,lnu1>0),hojo=0;ans=0;);
  w=1;
  repeat(nnn,
-  q=0; 
-  g(z):=parse(ustr);
-  z3=g(z1);
-  P2=gauss(z3);
+  q=0;g(z):=parse(ustr);z3=g(z1);P2=gauss(z3);
   draw(P2,color->[1,1,1]);
   drawtext(P2+(0.08,0.08),"$f(z)$");
   if(lnu1>0,
    q=0;P2=[0,0];
    while(|P2|<10, 
-    q=q+2*pi*i;
-    g(z):=parse(ustr);
-    z3=g(z1);
-    P2=gauss(z3);
+    q=q+2*pi*i;g(z):=parse(ustr);z3=g(z1);P2=gauss(z3);
     draw(P2,color->[1,1,1]);
     drawtext(P2+(0.08,0.08),"$f(z)$");
    );
    q=0;P2=[0,0];
    while(|P2|<10, 
-    q=q-2*pi*i;
-    g(z):=parse(ustr);
-    z3=g(z1);
-    P2=gauss(z3);
+    q=q-2*pi*i;g(z):=parse(ustr);z3=g(z1);P2=gauss(z3);
     draw(P2,color->[1,1,1]);
     drawtext(P2+(0.08,0.08),"$f(z)$");
    );
@@ -4727,9 +4718,9 @@ var cdy = CindyJS({
   ],
   ports: [{
     width: 675,
-    height: 642,
+    height: 629,
     id: "CSCanvas",
-    transform: [{visibleRect: [-5.4651169971939915, 5.93692565882225, 12.227707813865694, -10.890916605918962]}],
+    transform: [{visibleRect: [-5.4651169971939915, 5.93692565882225, 12.227707813865694, -10.550165905854108]}],
     grid: 1.0,
     background: "rgb(247,247,247)"
   }],
