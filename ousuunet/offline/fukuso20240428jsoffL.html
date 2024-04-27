@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     
-    <title>fukuso20240427.cdy</title>
+    <title>fukuso20240428.cdy</title>
     <style type="text/css">
         * {
             margin: 0px;
@@ -4230,9 +4230,12 @@ one=0;
 en=0;
 ans=0;
 ra=sqrt(2);
+A.xy=[2,0];
 B.xy=[1,0];
 rdr=0;
 dra=0.02;
+pointc=0;
+acchange=0;
 
 drwt(line,str):=(
   drawtext([-5,poy],text(line)+" "+str,size->15);
@@ -4317,10 +4320,26 @@ Text55.xy=[5.8,-0.23];
 
 Text0.xy=[5.6,1.7];
 
-create(["Text14"],"Text",[]);
+create(["A"],"FreePoint",[1,1,1]);
+A.size=5;
+A.labelled=false;
+A.visible=true;
 
+create(["C"],"FreePoint",[1,1,1]);
+C.size=10;
+C.color=(0,1,0);
+C.labelled=false;
+
+create(["B"],"FreePoint",[1,1,1]);
+B.size=10;
+B.color=(0,0,1);
+B.labelled=false;
+B.visible=false;
+B.alpha=0.2;
+
+create(["Text14"],"Text",[]);
 Text14.text="　　";
-Text14.xy=[7.8,2.7];
+Text14.xy=[7.9,2.7];
 Text14.color=[0,0,0];
 Text14.fillalpha=0;
 inspect(Text14,"textbutton","true");
@@ -4330,7 +4349,7 @@ inspect(Text14,"textsize",20);
 
 create(["Text15"],"Text",[]);
 Text15.text="　　";
-Text15.xy=[10.6,2.7];
+Text15.xy=[10.7,2.7];
 Text15.color=[0,0,0];
 Text15.fillalpha=0;
 inspect(Text15,"textbutton","true");
@@ -4340,7 +4359,7 @@ inspect(Text15,"textsize",20);
 
 create(["Text16"],"Text",[]);
 Text16.text="　　";
-Text16.xy=[9.2,2.7];
+Text16.xy=[9.3,2.7];
 Text16.color=[0,0,0];
 Text16.fillalpha=0;
 inspect(Text16,"textbutton","true");
@@ -4350,7 +4369,7 @@ inspect(Text16,"textsize",20);
 
 create(["Text17"],"Text",[]);
 Text17.text="　　　";
-Text17.xy=[5.4,3.9];
+Text17.xy=[5.3,3.9];
 Text17.color=[0,0,0];
 Text17.fillalpha=0;
 inspect(Text17,"textbutton","true");
@@ -4380,13 +4399,23 @@ inspect(Text19,"textsize",20);
 
 create(["Text5"],"Text",[]);
 Text5.text="　　　";
-Text5.xy=[5.4,2.7];
+Text5.xy=[5.3,2.7];
 Text5.color=[0,0,0];
 Text5.fillalpha=0;
 inspect(Text5,"textbutton","true");
 inspect(Text5,"texttoggle","true");
 inspect(Text5,"button.script","if(rcflg==1,one=mod(one+1,2),en=mod(en+1,2);ra=sqrt(2););");
 inspect(Text5,"textsize",20);
+
+create(["Text6"],"Text",[]);
+Text6.text="　　";
+Text6.xy=[10.8,3.9];
+Text6.color=[0,0,0];
+Text6.fillalpha=0;
+inspect(Text6,"textbutton","true");
+inspect(Text6,"texttoggle","true");
+inspect(Text6,"button.script","acchange=1;");
+inspect(Text6,"textsize",20);
 
 ;
 
@@ -4470,12 +4499,27 @@ str=Tocindyform(str);
 f(z):=parse(str);
 strx=replace(str,"z","x");
 
-A.size=5;
-A.labelled=false;
+if(acchange==1,
+ if(pointc==0,
+  C.xy=A.xy-[0,5];
+  pointc=1;
+ ,
+  A.xy=C.xy+[0,5];
+  pointc=0;
+ );
+ acchange=0;
+);
 
-B.size=5;
-B.labelled=false;
-B.visible=false;
+if(pointc==0,
+ C.visible=false;
+,
+ drawtext([10.7,3.7],"○",size->13,color->(1,0,0));
+ A.xy=C.xy+[0,5];
+ C.visible=true;
+);
+
+drawtext([10.7,4.2],"制御点",size->13);
+drawtext([11,3.7],"表示",size->13);
 
 if(rcflg==0,
  drawtext([5.3,3.9],"複素関数",size->16);
@@ -4493,7 +4537,7 @@ if(rcflg==0,
    drawtext([9.2,2.7],"変化量",size->13);
   );
   z1=B.x+ra*cos(arctan2(A-B))+i*(B.y+ra*sin(arctan2(A-B)));
-  drawtext([5.4,3],"○",size->13,color->(1,0,0));
+  drawtext([5.2,3],"○",size->13,color->(1,0,0));
   B.visible=true;
   drawtext(B+(0.08,0.08),"中心");
   A.y=B.y+ra*sin(arctan2(A-B));
@@ -4520,6 +4564,8 @@ if(rcflg==0,
    Ospline("1",list1);
    if(listflg==2,Ospline("2",list2););
   );
+ ,
+  B.visible=false;
  );
  if(or(nu1>0,lnu1>0),hojo=0;ans=0;);
  w=1;
@@ -4611,7 +4657,7 @@ if(rcflg==1,
 Windispg();
 
 
-println(inspect(Text14,"textsize"));
+println(inspect(B));
 
 ;
 
@@ -4630,10 +4676,11 @@ var cdy = CindyJS({
   angleUnit: "°",
   geometry: [
     {name: "Text0", type: "EditableText", pos: [4.0, 1.2142857142857144, 0.7142857142857143], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, minwidth: 230, textsize: 18.0},
-    {name: "SW", type: "Free", pos: [4.0, 4.0, -0.8], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
-    {name: "NE", type: "Free", pos: [4.0, 4.0, 0.8], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
-    {name: "A", type: "Free", pos: [4.0, -0.0, 2.0129530762100134], color: [1.0, 0.0, 0.0], size: 3.0, border: true },
-    {name: "B", type: "Free", pos: [4.0, -0.0, 4.0], color: [0.0, 0.0, 1.0], visible: false, size: 3.0, border: true },
+    {name: "B", type: "Free", pos: [4.0, -0.0, 4.0], dimDependent: 1, color: [0.0, 0.0, 1.0], alpha: 0.2, visible: false, size: 10.0, border: true },
+    {name: "NE", type: "Free", pos: [4.0, 4.0, 0.7989750537525279], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
+    {name: "A", type: "Free", pos: [4.0, 0.0, 2.0], color: [1.0, 0.0, 0.0], size: 3.0, border: true },
+    {name: "SW", type: "Free", pos: [4.0, 4.0, -0.8031801856144347], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
+    {name: "C", type: "Free", pos: [4.0, -3.513693706543462, 1.1466966503742375], dimDependent: 1, color: [0.0, 1.0, 0.0], visible: false, size: 10.0, border: true },
     {name: "Text23", type: "Button", pos: [4.0, -1.7942857142857143, 0.38095238095238093], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"/\";", text: "　　", textsize: 18.0},
     {name: "Text25", type: "Button", pos: [4.0, -1.8634146341463413, 0.4878048780487805], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"2\";", text: "　　", textsize: 18.0},
     {name: "Text26", type: "Button", pos: [4.0, -1.643010752688172, 0.43010752688172044], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"3\";", text: "　　", textsize: 18.0},
@@ -4669,19 +4716,20 @@ var cdy = CindyJS({
     {name: "Text47", type: "Button", pos: [4.0, 0.32195121951219513, 0.4878048780487805], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"Left()\";", text: "　　", textsize: 18.0},
     {name: "Text48", type: "Button", pos: [4.0, 0.2838709677419355, 0.43010752688172044], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"Right()\";", text: "　　", textsize: 18.0},
     {name: "Text49", type: "Button", pos: [4.0, 0.25142857142857145, 0.38095238095238093], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"RRight()\";", text: "　　", textsize: 18.0},
-    {name: "Text14", type: "Button", pos: [4.0, 1.3846153846153848, 0.5128205128205129], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "if(rdr==0,ra=ra-dra,dra=dra/2);", text: "　　", textsize: 20.0},
-    {name: "Text15", type: "Button", pos: [4.0, 1.0188679245283019, 0.3773584905660377], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "if(rdr==0,ra=ra+dra,dra=dra*2);", text: "　　", textsize: 20.0},
-    {name: "Text16", type: "Button", pos: [4.0, 1.173913043478261, 0.4347826086956522], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "rdr=mod(rdr+1,2);", text: "　　", textsize: 20.0},
-    {name: "Text17", type: "Button", pos: [4.0, 2.888888888888889, 0.7407407407407407], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "rcflg=mod(rcflg+1,2);", text: "　　　", textsize: 20.0},
+    {name: "Text14", type: "Button", pos: [4.0, 1.3670886075949367, 0.5063291139240507], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "if(rdr==0,ra=ra-dra,dra=dra/2);", text: "　　", textsize: 20.0},
+    {name: "Text15", type: "Button", pos: [4.0, 1.0093457943925235, 0.3738317757009346], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "if(rdr==0,ra=ra+dra,dra=dra*2);", text: "　　", textsize: 20.0},
+    {name: "Text16", type: "Button", pos: [4.0, 1.1612903225806452, 0.43010752688172044], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "rdr=mod(rdr+1,2);", text: "　　", textsize: 20.0},
+    {name: "Text17", type: "Button", pos: [4.0, 2.943396226415094, 0.7547169811320754], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "rcflg=mod(rcflg+1,2);", text: "　　　", textsize: 20.0},
     {name: "Text18", type: "Button", pos: [4.0, 2.052631578947368, 0.5263157894736842], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "hojo=mod(hojo+1,2);", text: "　　", textsize: 20.0},
     {name: "Text19", type: "Button", pos: [4.0, 1.7333333333333334, 0.4444444444444444], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "ans=mod(ans+1,2);ta=A.x;to=A.x;", text: "　　", textsize: 20.0},
-    {name: "Text5", type: "Button", pos: [4.0, 2.0, 0.7407407407407407], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "if(rcflg==1,one=mod(one+1,2),en=mod(en+1,2);ra=sqrt(2););", text: "　　　", textsize: 20.0}
+    {name: "Text5", type: "Button", pos: [4.0, 2.0377358490566038, 0.7547169811320754], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "if(rcflg==1,one=mod(one+1,2),en=mod(en+1,2);ra=sqrt(2););", text: "　　　", textsize: 20.0},
+    {name: "Text6", type: "Button", pos: [4.0, 1.4444444444444444, 0.37037037037037035], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "acchange=1;", text: "　　", textsize: 20.0}
   ],
   ports: [{
-    width: 683,
-    height: 434,
+    width: 675,
+    height: 642,
     id: "CSCanvas",
-    transform: [{visibleRect: [-5.648598143382759, 5.858290881884207, 12.253919406178374, -5.517540181819354]}],
+    transform: [{visibleRect: [-5.4651169971939915, 5.93692565882225, 12.227707813865694, -10.890916605918962]}],
     grid: 1.0,
     background: "rgb(247,247,247)"
   }],
