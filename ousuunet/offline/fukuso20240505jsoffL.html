@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     
-    <title>fukuso20240428.cdy</title>
+    <title>fukuso20240505.cdy</title>
     <style type="text/css">
         * {
             margin: 0px;
@@ -4521,6 +4521,32 @@ if(pointc==0,
 drawtext([10.8,4.1],"制御点",size->13);
 drawtext([11,3.7],"表示",size->13);
 
+showans(on):=(
+ num=100;
+ list1=[];list2=[];dv=2*pi/num;v=0;
+ listflg=1;
+ repeat(num+1,
+  zoupoint=gauss(g(B.x+ra*cos(v)+i*(B.y+ra*sin(v))));
+  if(v==0,zoupoint0=zoupoint;);
+  if(or(
+      |zoupoint|>10,
+      and(or(nu1>0,lnu1>0),|zoupoint-zoupoint0|>1)
+     ),
+   listflg=2;
+  ,
+   if(listflg==1,
+    list1=append(list1,zoupoint);
+   ,
+    list2=append(list2,zoupoint);
+   );
+  );
+  zoupoint0=zoupoint;
+  v=v+dv;
+ );
+ Ospline(on+"1",list1);
+ if(listflg==2,Ospline(on+"2",list2););
+);
+
 if(rcflg==0,
  drawtext([5.3,3.95],"複素関数",size->15);
  drawtext([7.6,3.95],"補助線",size->13);
@@ -4545,49 +4571,34 @@ if(rcflg==0,
   plot(B+ra*[cos(t),sin(t)],start->0,stop->2*pi+0.1);
   if(ans==1,
    drawtext([8.9,4.2],"○",size->13,color->(1,0,0));
-   num=100;
-   list1=[];list2=[];v=0;dv=2*pi/num;
-   listflg=1;
-   repeat(num+1,
-    v=v+dv;
-    zoupoint=gauss(f(B.x+ra*cos(v)+i*(B.y+ra*sin(v))));
-    if(|zoupoint|>10,
-     listflg=2;
-    ,
-     if(listflg==1,
-      list1=append(list1,zoupoint);
-     ,
-      list2=append(list2,zoupoint);
-     );
-    );
-   );
-   Ospline("1",list1);
-   if(listflg==2,Ospline("2",list2););
   );
  ,
   B.visible=false;
  );
- if(or(nu1>0,lnu1>0),hojo=0;ans=0;);
- w=1;
+ if(or(nu1>0,lnu1>0),hojo=0;);
+ w=1;wn=1;
  repeat(nnn,
-  q=0;g(z):=parse(ustr);z3=g(z1);P2=gauss(z3);
+  q=0;qn=0;g(z):=parse(ustr);z3=g(z1);P2=gauss(z3);
   draw(P2,color->[1,1,1]);
   drawtext(P2+(0.08,0.08),"$f(z)$");
+  if(ans==1,showans(text(qn)+text(wn)));
   if(lnu1>0,
-   q=0;P2=[0,0];
+   q=0;P2=[0,0];qn=0;
    while(|P2|<10, 
-    q=q+2*pi*i;g(z):=parse(ustr);z3=g(z1);P2=gauss(z3);
+    q=q+2*pi*i;qn=qn+1;g(z):=parse(ustr);z3=g(z1);P2=gauss(z3);
     draw(P2,color->[1,1,1]);
     drawtext(P2+(0.08,0.08),"$f(z)$");
+    if(ans==1,showans(text(qn)+text(wn)));
    );
-   q=0;P2=[0,0];
+   q=0;P2=[0,0];qn=100;
    while(|P2|<10, 
-    q=q-2*pi*i;g(z):=parse(ustr);z3=g(z1);P2=gauss(z3);
+    q=q-2*pi*i;qn=qn-1;g(z):=parse(ustr);z3=g(z1);P2=gauss(z3);
     draw(P2,color->[1,1,1]);
     drawtext(P2+(0.08,0.08),"$f(z)$");
+    if(ans==1,showans(text(qn)+text(wn)));
    );
   );
-  w=w*w0;
+  w=w*w0;wn=wn+1;
  );
  if(hojo==1,
   drawtext([7.4,4.2],"○",size->13,color->(1,0,0));
@@ -4718,9 +4729,9 @@ var cdy = CindyJS({
   ],
   ports: [{
     width: 675,
-    height: 629,
+    height: 603,
     id: "CSCanvas",
-    transform: [{visibleRect: [-5.4651169971939915, 5.93692565882225, 12.227707813865694, -10.550165905854108]}],
+    transform: [{visibleRect: [-5.4651169971939915, 5.93692565882225, 12.227707813865694, -9.868664505724402]}],
     grid: 1.0,
     background: "rgb(247,247,247)"
   }],
