@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     
-    <title>fukuso20240519.cdy</title>
+    <title>fukuso20240520.cdy</title>
     <style type="text/css">
         * {
             margin: 0px;
@@ -4230,7 +4230,7 @@ one=0;
 en=0;
 ans=0;
 ra=sqrt(2);
-A.xy=[2,0];
+A.xy=[2,0];MAC=A.xy;macf=0;
 B.xy=[1,0];
 rdr=0;
 dra=0.02;
@@ -4337,7 +4337,7 @@ B.labelled=false;
 B.visible=false;
 B.alpha=0.2;
 
-create(["Text14"],"Text",[]);
+create(["Text14"],"Text",[]);//小さく
 Text14.text="　　";
 Text14.xy=[7.9,2.7];
 Text14.color=[0,0,0];
@@ -4347,7 +4347,7 @@ inspect(Text14,"texttoggle","true");
 inspect(Text14,"button.script","if(rdr==0,ra=ra-dra,dra=dra/2);");
 inspect(Text14,"textsize",20);
 
-create(["Text15"],"Text",[]);
+create(["Text15"],"Text",[]);//大きく
 Text15.text="　　";
 Text15.xy=[10.7,2.7];
 Text15.color=[0,0,0];
@@ -4357,7 +4357,7 @@ inspect(Text15,"texttoggle","true");
 inspect(Text15,"button.script","if(rdr==0,ra=ra+dra,dra=dra*2);");
 inspect(Text15,"textsize",20);
 
-create(["Text16"],"Text",[]);
+create(["Text16"],"Text",[]);//半径，変化量
 Text16.text="　　";
 Text16.xy=[9.3,2.7];
 Text16.color=[0,0,0];
@@ -4367,17 +4367,17 @@ inspect(Text16,"texttoggle","true");
 inspect(Text16,"button.script","rdr=mod(rdr+1,2);");
 inspect(Text16,"textsize",20);
 
-create(["Text17"],"Text",[]);
+create(["Text17"],"Text",[]);//実数，複素
 Text17.text="　　　";
 Text17.xy=[5.3,3.9];
 Text17.color=[0,0,0];
 Text17.fillalpha=0;
 inspect(Text17,"textbutton","true");
 inspect(Text17,"texttoggle","true");
-inspect(Text17,"button.script","rcflg=mod(rcflg+1,2);");
+inspect(Text17,"button.script","rcflg=mod(rcflg+1,2);hojo=0;ans=0;en=0;B.visible=false;");
 inspect(Text17,"textsize",20);
 
-create(["Text18"],"Text",[]);
+create(["Text18"],"Text",[]);//補助
 Text18.text="　　";
 Text18.xy=[7.6,3.9];
 Text18.color=[0,0,0];
@@ -4387,7 +4387,7 @@ inspect(Text18,"texttoggle","true");
 inspect(Text18,"button.script","hojo=mod(hojo+1,2);");
 inspect(Text18,"textsize",20);
 
-create(["Text19"],"Text",[]);
+create(["Text19"],"Text",[]);//ans
 Text19.text="　　";
 Text19.xy=[9,3.9];
 Text19.color=[0,0,0];
@@ -4397,7 +4397,7 @@ inspect(Text19,"texttoggle","true");
 inspect(Text19,"button.script","ans=mod(ans+1,2);ta=A.x;to=A.x;");
 inspect(Text19,"textsize",20);
 
-create(["Text5"],"Text",[]);
+create(["Text5"],"Text",[]);//x軸，円
 Text5.text="　　　";
 Text5.xy=[5.3,2.7];
 Text5.color=[0,0,0];
@@ -4407,7 +4407,7 @@ inspect(Text5,"texttoggle","true");
 inspect(Text5,"button.script","if(rcflg==1,one=mod(one+1,2),en=mod(en+1,2);ra=sqrt(2););");
 inspect(Text5,"textsize",20);
 
-create(["Text6"],"Text",[]);
+create(["Text6"],"Text",[]);//制御点
 Text6.text="　　";
 Text6.xy=[10.8,3.9];
 Text6.color=[0,0,0];
@@ -4510,8 +4510,8 @@ if(acchange==1,
  acchange=0;
 );
 
- drawtext([10.8,4.1],"制御点",size->13,alpha->0.7);
- drawtext([11,3.7],"表示",size->13,alpha->0.7);
+ drawtext([10.8,4.1],"制御点",size->13,alpha->0.5);
+ drawtext([11,3.7],"表示",size->13,alpha->0.5);
 
 if(pointc==0,
  C.visible=false;
@@ -4519,10 +4519,11 @@ if(pointc==0,
  drawtext([10.7,3.7],"○",size->13,color->(1,0,0));
  drawtext([10.8,4.1],"制御点",size->13,alpha->1);
  drawtext([11,3.7],"表示",size->13,alpha->1);
- A.xy=C.xy+[0,5];
  C.visible=true;
 );
 
+if(dist(mouse(),A)<2.5,
+Putpoint("C",A.xy-[0,5]),Putpoint("A",C.xy+[0,5]));
 
 
 showans(on):=(
@@ -4554,17 +4555,21 @@ showans(on):=(
 if(rcflg==0,
  drawtext([5.28,3.95],"複素関数",size->15,bold->true);
  if(or(nu1>0,lnu1>0),,
- drawtext([7.6,3.95],"補助線",size->13,alpha->0.7););
- drawtext([5.3,2.8],"$z$：円周上",size->13,alpha->0.7);
- drawtext((5.5,5),"$f(z)="+Texstr+"$",size->20); 
+ drawtext([7.6,3.95],"補助線",size->13,alpha->0.5););
+ drawtext([5.3,2.8],"$z$：円周上",size->13,alpha->0.5);
+ drawtext((5.5,5),"$f(z)="+Texstr+"$",size->20);
  z1=complex(A);
  if(en==1,
-  drawtext([9,3.95],"像表示",size->13,alpha->0.7);
+  drawtext([9,3.95],"像表示",size->13,alpha->0.5);
   drawtext([7.9,2.8],"小さく",size->13);
+  drawtext([7.9,2.8],"小さく",size->13);
+  drawtext([10.7,2.8],"大きく",size->13);
   drawtext([10.7,2.8],"大きく",size->13);
   if(rdr==0,
    drawtext([9.45,2.8],"半径",size->13);
+   drawtext([9.45,2.8],"半径",size->13);
   ,
+   drawtext([9.3,2.8],"変化量",size->13);
    drawtext([9.3,2.8],"変化量",size->13);
   );
   z1=B.x+ra*cos(arctan2(A-B))+i*(B.y+ra*sin(arctan2(A-B)));
@@ -4572,8 +4577,22 @@ if(rcflg==0,
   drawtext([5.3,2.8],"$z$：円周上",size->13,alpha->1);
   B.visible=true;
   drawtext(B+(-0.27,-0.14),"中心");
-  A.y=B.y+ra*sin(arctan2(A-B));
-  A.x=B.x+ra*cos(arctan2(A-B));
+  if(cos(arctan2(A-B))<-0.6,
+   A.y=B.y+ra*sin(arctan2(A-B));
+   A.x=B.x-sqrt(ra^2-(A.y-B.y)^2);
+  );
+  if(cos(arctan2(A-B))>0.6,
+   A.y=B.y+ra*sin(arctan2(A-B));
+   A.x=B.x+sqrt(ra^2-(A.y-B.y)^2);
+  );
+  if(sin(arctan2(A-B))<-0.6,
+   A.x=B.x+ra*cos(arctan2(A-B));
+   A.y=B.y-sqrt(ra^2-(A.x-B.x)^2);
+  );
+  if(sin(arctan2(A-B))>0.6,
+   A.x=B.x+ra*cos(arctan2(A-B));
+   A.y=B.y+sqrt(ra^2-(A.x-B.x)^2);
+  );
   plot(B+ra*[cos(t),sin(t)],start->0,stop->2*pi+0.1);
   if(ans==1,
    drawtext([8.9,4.2],"○",size->13,color->(1,0,0));
@@ -4631,9 +4650,9 @@ if(rcflg==0,
 
 if(rcflg==1,
  drawtext([5.28,3.95],"実数関数",size->15,bold->true);
- drawtext([7.6,3.95],"補助線",size->13,alpha->0.7);
- drawtext([9,3.95],"グラフ",size->13,alpha->0.7);
- drawtext([5.2,2.8],"同一直線上",size->13,alpha->0.7);
+ drawtext([7.6,3.95],"補助線",size->13,alpha->0.5);
+ drawtext([9,3.95],"グラフ",size->13,alpha->0.5);
+ drawtext([5.2,2.8],"同一直線上",size->13,alpha->0.5);
  Texstr=replace(Texstr,"z","x");
  drawtext((5.5,5),"$f(x)="+Texstr+"$",size->20); 
  if(and(one==0,ans==1),
@@ -4670,7 +4689,6 @@ if(rcflg==1,
 Windispg();
 
 
-println(inspect(B));
 
 ;
 
@@ -4693,7 +4711,7 @@ var cdy = CindyJS({
     {name: "NE", type: "Free", pos: [4.0, 4.0, 0.7989750537525279], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
     {name: "A", type: "Free", pos: [4.0, 0.0, 2.0], color: [1.0, 0.0, 0.0], size: 3.0, border: true },
     {name: "SW", type: "Free", pos: [4.0, 4.0, -0.8031801856144347], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
-    {name: "C", type: "Free", pos: [4.0, -3.513693706543462, 1.1466966503742375], dimDependent: 1, color: [0.0, 1.0, 0.0], visible: false, size: 10.0, border: true },
+    {name: "C", type: "Free", pos: [1.7520661157025836, -4.0, 1.2611920269979335], dimDependent: 1, color: [0.0, 1.0, 0.0], visible: false, size: 10.0, border: true },
     {name: "Text23", type: "Button", pos: [4.0, -1.7942857142857143, 0.38095238095238093], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"/\";", text: "　　", textsize: 18.0},
     {name: "Text25", type: "Button", pos: [4.0, -1.8634146341463413, 0.4878048780487805], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"2\";", text: "　　", textsize: 18.0},
     {name: "Text26", type: "Button", pos: [4.0, -1.643010752688172, 0.43010752688172044], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"3\";", text: "　　", textsize: 18.0},
@@ -4732,7 +4750,7 @@ var cdy = CindyJS({
     {name: "Text14", type: "Button", pos: [4.0, 1.3670886075949367, 0.5063291139240507], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "if(rdr==0,ra=ra-dra,dra=dra/2);", text: "　　", textsize: 20.0},
     {name: "Text15", type: "Button", pos: [4.0, 1.0093457943925235, 0.3738317757009346], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "if(rdr==0,ra=ra+dra,dra=dra*2);", text: "　　", textsize: 20.0},
     {name: "Text16", type: "Button", pos: [4.0, 1.1612903225806452, 0.43010752688172044], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "rdr=mod(rdr+1,2);", text: "　　", textsize: 20.0},
-    {name: "Text17", type: "Button", pos: [4.0, 2.943396226415094, 0.7547169811320754], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "rcflg=mod(rcflg+1,2);", text: "　　　", textsize: 20.0},
+    {name: "Text17", type: "Button", pos: [4.0, 2.943396226415094, 0.7547169811320754], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "rcflg=mod(rcflg+1,2);hojo=0;ans=0;en=0;B.visible=false;", text: "　　　", textsize: 20.0},
     {name: "Text18", type: "Button", pos: [4.0, 2.052631578947368, 0.5263157894736842], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "hojo=mod(hojo+1,2);", text: "　　", textsize: 20.0},
     {name: "Text19", type: "Button", pos: [4.0, 1.7333333333333334, 0.4444444444444444], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "ans=mod(ans+1,2);ta=A.x;to=A.x;", text: "　　", textsize: 20.0},
     {name: "Text5", type: "Button", pos: [4.0, 2.0377358490566038, 0.7547169811320754], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "if(rcflg==1,one=mod(one+1,2),en=mod(en+1,2);ra=sqrt(2););", text: "　　　", textsize: 20.0},
@@ -4740,9 +4758,9 @@ var cdy = CindyJS({
   ],
   ports: [{
     width: 675,
-    height: 631,
+    height: 627,
     id: "CSCanvas",
-    transform: [{visibleRect: [-5.4651169971939915, 5.93692565882225, 12.227707813865694, -10.602589090479471]}],
+    transform: [{visibleRect: [-5.4651169971939915, 5.93692565882225, 12.227707813865694, -10.497742721228747]}],
     grid: 1.0,
     background: "rgb(247,247,247)"
   }],
