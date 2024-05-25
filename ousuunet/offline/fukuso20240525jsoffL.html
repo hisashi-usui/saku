@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     
-    <title>fukuso20240520.cdy</title>
+    <title>fukuso20240525.cdy</title>
     <style type="text/css">
         * {
             margin: 0px;
@@ -4223,6 +4223,7 @@ Gridpaper():=(
 );
 
 
+Dq=unicode("0022");
 rcflg=1;
 hojo=0;
 graph=0;
@@ -4337,85 +4338,52 @@ B.labelled=false;
 B.visible=false;
 B.alpha=0.2;
 
-create(["Text14"],"Text",[]);//小さく
-Text14.text="　　";
-Text14.xy=[7.9,2.7];
-Text14.color=[0,0,0];
-Text14.fillalpha=0;
-inspect(Text14,"textbutton","true");
-inspect(Text14,"texttoggle","true");
-inspect(Text14,"button.script","if(rdr==0,ra=ra-dra,dra=dra/2);");
-inspect(Text14,"textsize",20);
+Makebutton(name,ichi,script):=(
+create([name],"Text",[]);// sq(z)
+parse(name+".text="+Dq+"　　"+Dq+";");
+parse(name+".xy="+ichi+";");
+parse(name+".color=[0,0,0];");
+parse(name+".fillalpha=0;");
+parse("inspect("+name+","+Dq+"textbutton"+Dq+","+Dq+"true"+Dq+");");
+parse("inspect("+name+","+Dq+"texttoggle"+Dq+","+Dq+"true"+Dq+");");
+parse("inspect("+name+","+Dq+"button.script"+Dq+","+Dq+script+Dq+";)");
+parse("inspect("+name+","+Dq+"textsize"+Dq+",20);");
+);
 
-create(["Text15"],"Text",[]);//大きく
-Text15.text="　　";
-Text15.xy=[10.7,2.7];
-Text15.color=[0,0,0];
-Text15.fillalpha=0;
-inspect(Text15,"textbutton","true");
-inspect(Text15,"texttoggle","true");
-inspect(Text15,"button.script","if(rdr==0,ra=ra+dra,dra=dra*2);");
-inspect(Text15,"textsize",20);
-
-create(["Text16"],"Text",[]);//半径，変化量
-Text16.text="　　";
-Text16.xy=[9.3,2.7];
-Text16.color=[0,0,0];
-Text16.fillalpha=0;
-inspect(Text16,"textbutton","true");
-inspect(Text16,"texttoggle","true");
-inspect(Text16,"button.script","rdr=mod(rdr+1,2);");
-inspect(Text16,"textsize",20);
-
-create(["Text17"],"Text",[]);//実数，複素
+Tscript="if(rdr==0,ra=ra-dra,dra=dra/2);";//小さく
+Makebutton("Text14","[7.9,2.7]",Tscript);
+Tscript="if(rdr==0,ra=ra+dra,dra=dra*2);";//大きく
+Makebutton("Text15","[10.7,2.7]",Tscript);
+Tscript="rdr=mod(rdr+1,2);";//半径，変化量
+Makebutton("Text16","[9.3,2.7]",Tscript);
+Tscript="rcflg=mod(rcflg+1,2);hojo=0;ans=0;en=0;B.visible=false;";//実数，複素
+Makebutton("Text17","[5.3,3.9]",Tscript);
 Text17.text="　　　";
-Text17.xy=[5.3,3.9];
-Text17.color=[0,0,0];
-Text17.fillalpha=0;
-inspect(Text17,"textbutton","true");
-inspect(Text17,"texttoggle","true");
-inspect(Text17,"button.script","rcflg=mod(rcflg+1,2);hojo=0;ans=0;en=0;B.visible=false;");
-inspect(Text17,"textsize",20);
-
-create(["Text18"],"Text",[]);//補助
-Text18.text="　　";
-Text18.xy=[7.6,3.9];
-Text18.color=[0,0,0];
-Text18.fillalpha=0;
-inspect(Text18,"textbutton","true");
-inspect(Text18,"texttoggle","true");
-inspect(Text18,"button.script","hojo=mod(hojo+1,2);");
-inspect(Text18,"textsize",20);
-
-create(["Text19"],"Text",[]);//ans
-Text19.text="　　";
-Text19.xy=[9,3.9];
-Text19.color=[0,0,0];
-Text19.fillalpha=0;
-inspect(Text19,"textbutton","true");
-inspect(Text19,"texttoggle","true");
-inspect(Text19,"button.script","ans=mod(ans+1,2);ta=A.x;to=A.x;");
-inspect(Text19,"textsize",20);
-
-create(["Text5"],"Text",[]);//x軸，円
+Tscript="hojo=mod(hojo+1,2);";//補助
+Makebutton("Text18","[7.6,3.9]",Tscript);
+Tscript="ans=mod(ans+1,2);ta=A.x;to=A.x;";//ans
+Makebutton("Text19","[9,3.9]",Tscript);
+Tscript="if(rcflg==1,one=mod(one+1,2),en=mod(en+1,2);ra=sqrt(2););";//x軸，円
+Makebutton("Text5","[5.3,2.7]",Tscript);
 Text5.text="　　　";
-Text5.xy=[5.3,2.7];
-Text5.color=[0,0,0];
-Text5.fillalpha=0;
-inspect(Text5,"textbutton","true");
-inspect(Text5,"texttoggle","true");
-inspect(Text5,"button.script","if(rcflg==1,one=mod(one+1,2),en=mod(en+1,2);ra=sqrt(2););");
-inspect(Text5,"textsize",20);
-
-create(["Text6"],"Text",[]);//制御点
-Text6.text="　　";
-Text6.xy=[10.8,3.9];
-Text6.color=[0,0,0];
-Text6.fillalpha=0;
-inspect(Text6,"textbutton","true");
-inspect(Text6,"texttoggle","true");
-inspect(Text6,"button.script","acchange=1;");
-inspect(Text6,"textsize",20);
+Tscript="acchange=1;";//制御点
+Makebutton("Text6","[10.8,3.9]",Tscript);
+Tscript="funflg=1;name="+Dq+"+Dq+"+Dq+"fr(1,z)"+Dq+"+Dq+"+Dq+";";
+Makebutton("Text100","[7.0,-6.1]",Tscript);
+Tscript="funflg=1;name="+Dq+"+Dq+"+Dq+"z^2"+Dq+"+Dq+"+Dq+";";
+Makebutton("Text101","[8.5,-6.1]",Tscript);
+Tscript="funflg=1;name="+Dq+"+Dq+"+Dq+"e^z"+Dq+"+Dq+"+Dq+";";
+Makebutton("Text102","[10.0,-6.1]",Tscript);
+Tscript="funflg=1;name="+Dq+"+Dq+"+Dq+"sq(z)"+Dq+"+Dq+"+Dq+";";
+Makebutton("Text103","[7.0,-7.3]",Tscript);
+Tscript="funflg=1;name="+Dq+"+Dq+"+Dq+"sq(3,z)"+Dq+"+Dq+"+Dq+";";
+Makebutton("Text104","[8.5,-7.3]",Tscript);
+Tscript="funflg=1;name="+Dq+"+Dq+"+Dq+"log(z)"+Dq+"+Dq+"+Dq+";";
+Makebutton("Text105","[10.0,-7.3]",Tscript);
+Tscript="rcflg=0;en=1;ra=sqrt(2);B.xy=[1,0];funflg=1;name="+Dq+"+Dq+"+Dq+"fr(1,z)"+Dq+"+Dq+"+Dq+";";
+Makebutton("Text106","[7.0,-8.5]",Tscript);
+Tscript="rcflg=0;en=1;ra=1;B.xy=[1,0];funflg=1;name="+Dq+"+Dq+"+Dq+"fr(1,z)"+Dq+"+Dq+"+Dq+";";
+Makebutton("Text107","[8.5,-8.5]",Tscript);
 
 ;
 
@@ -4428,6 +4396,20 @@ nameL=[["BS","AC","<",">",">>"]];
 Keytable(5,12,1,9,[5.6,0.4],[0,1,0],nameL,[0,-0.2],22);
 nameL=Keyname();
 Keytable(5,12,6,9,[5.6,-5],[1,1,0],nameL,[0,-0.2],22);
+
+drawtext([5.8,-6.0],"例",size->20);
+drawtext([7.4,-6.1],"$\dfrac{1}{z}$",size->17);
+drawtext([8.8,-6.1],"$z^2$",size->20);
+drawtext([10.3,-6.1],"$e^z$",size->20);
+drawtext([7.1,-7.3],"$\sqrt{z}$",size->20);
+drawtext([8.6,-7.3],"$\sqrt[3]{z}$",size->20);
+drawtext([10.0,-7.3],"$\log z$",size->20);
+drawtext([7.1,-8.3],"例題6",size->13);
+drawtext([7.3,-8.7],"(1)",size->13);
+drawtext([8.6,-8.3],"例題6",size->13);
+drawtext([8.8,-8.7],"(2)",size->13);
+
+
 
 draw([-5,0],[5,0]);
 draw([0,-5],[0,5]);
@@ -4553,7 +4535,8 @@ showans(on):=(
 );
 
 if(rcflg==0,
- drawtext([5.28,3.95],"複素関数",size->15,bold->true);
+ drawtext([5.28,4.1],"実数関数",size->15,alpha->0.5);
+ drawtext([5.28,3.7],"複素関数",size->15,bold->true);
  if(or(nu1>0,lnu1>0),,
  drawtext([7.6,3.95],"補助線",size->13,alpha->0.5););
  drawtext([5.3,2.8],"$z$：円周上",size->13,alpha->0.5);
@@ -4566,15 +4549,18 @@ if(rcflg==0,
   drawtext([10.7,2.8],"大きく",size->13);
   drawtext([10.7,2.8],"大きく",size->13);
   if(rdr==0,
-   drawtext([9.45,2.8],"半径",size->13);
-   drawtext([9.45,2.8],"半径",size->13);
+   drawtext([9.45,2.95],"半径",size->13);
+   drawtext([9.45,2.95],"半径",size->13);
+   drawtext([9.3,2.55],"変化量",size->13,alpha->0.5);
   ,
-   drawtext([9.3,2.8],"変化量",size->13);
-   drawtext([9.3,2.8],"変化量",size->13);
+   drawtext([9.45,2.95],"半径",size->13,alpha->0.5);
+   drawtext([9.3,2.55],"変化量",size->13);
+   drawtext([9.3,2.55],"変化量",size->13);
   );
   z1=B.x+ra*cos(arctan2(A-B))+i*(B.y+ra*sin(arctan2(A-B)));
   drawtext([5.1,3.1],"○",size->13,color->(1,0,0));
-  drawtext([5.3,2.8],"$z$：円周上",size->13,alpha->1);
+  drawtext([5.3,2.8],"$z$：円周上",size->13);
+  drawtext([5.3,2.8],"$z$：円周上",size->13);
   B.visible=true;
   drawtext(B+(-0.27,-0.14),"中心");
   if(cos(arctan2(A-B))<-0.6,
@@ -4649,7 +4635,8 @@ if(rcflg==0,
 ); 
 
 if(rcflg==1,
- drawtext([5.28,3.95],"実数関数",size->15,bold->true);
+ drawtext([5.28,4.1],"実数関数",size->15,bold->true);
+ drawtext([5.28,3.7],"複素関数",size->15,alpha->0.5);
  drawtext([7.6,3.95],"補助線",size->13,alpha->0.5);
  drawtext([9,3.95],"グラフ",size->13,alpha->0.5);
  drawtext([5.2,2.8],"同一直線上",size->13,alpha->0.5);
@@ -4754,13 +4741,21 @@ var cdy = CindyJS({
     {name: "Text18", type: "Button", pos: [4.0, 2.052631578947368, 0.5263157894736842], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "hojo=mod(hojo+1,2);", text: "　　", textsize: 20.0},
     {name: "Text19", type: "Button", pos: [4.0, 1.7333333333333334, 0.4444444444444444], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "ans=mod(ans+1,2);ta=A.x;to=A.x;", text: "　　", textsize: 20.0},
     {name: "Text5", type: "Button", pos: [4.0, 2.0377358490566038, 0.7547169811320754], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "if(rcflg==1,one=mod(one+1,2),en=mod(en+1,2);ra=sqrt(2););", text: "　　　", textsize: 20.0},
-    {name: "Text6", type: "Button", pos: [4.0, 1.4444444444444444, 0.37037037037037035], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "acchange=1;", text: "　　", textsize: 20.0}
+    {name: "Text6", type: "Button", pos: [4.0, 1.4444444444444444, 0.37037037037037035], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "acchange=1;", text: "　　", textsize: 20.0},
+    {name: "Text100", type: "Button", pos: [4.0, -3.4857142857142853, 0.5714285714285714], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"fr(1,z)\";", text: "　　", textsize: 20.0},
+    {name: "Text101", type: "Button", pos: [4.0, -2.870588235294117, 0.47058823529411764], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"z^2\";", text: "　　", textsize: 20.0},
+    {name: "Text102", type: "Button", pos: [4.0, -2.44, 0.4], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"e^z\";", text: "　　", textsize: 20.0},
+    {name: "Text103", type: "Button", pos: [3.8356164383561646, -4.0, 0.547945205479452], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"sq(z)\";", text: "　　", textsize: 20.0},
+    {name: "Text104", type: "Button", pos: [4.0, -3.4352941176470586, 0.47058823529411764], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"sq(3,z)\";", text: "　　", textsize: 20.0},
+    {name: "Text105", type: "Button", pos: [4.0, -2.92, 0.4], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"log(z)\";", text: "　　", textsize: 20.0},
+    {name: "Text106", type: "Button", pos: [3.2941176470588234, -4.0, 0.47058823529411764], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "rcflg=0;en=1;ra=sqrt(2);B.xy=[1,0];funflg=1;name=\"fr(1,z)\";", text: "　　", textsize: 20.0},
+    {name: "Text107", type: "Button", pos: [4.0, -4.0, 0.47058823529411764], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "rcflg=0;en=1;ra=1;B.xy=[1,0];funflg=1;name=\"fr(1,z)\";", text: "　　", textsize: 20.0}
   ],
   ports: [{
     width: 675,
-    height: 627,
+    height: 639,
     id: "CSCanvas",
-    transform: [{visibleRect: [-5.4651169971939915, 5.93692565882225, 12.227707813865694, -10.497742721228747]}],
+    transform: [{visibleRect: [-5.4651169971939915, 5.93692565882225, 12.227707813865694, -10.812281828980918]}],
     grid: 1.0,
     background: "rgb(247,247,247)"
   }],
