@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     
-    <title>binomialeq7.cdy</title>
+    <title>binomialeq8.cdy</title>
     <style type="text/css">
         * {
             margin: 0px;
@@ -50,6 +50,345 @@ Settextkey(num,pos,name,script,size,fill,alpha):=(
     inspect(pid,"texttoggle",true);
     inspect(pid,"button.script",script);
   );
+);
+Totexform(str):=( //231215
+  regional(plv,funL,repL,parL,out,head,flg,rep,fun,pre,
+    post,ctr,clv,nn,tmp,tmp1,tmp2,tmp3,tmp4);
+  tmp1="\displaystyle\int"; //210831from
+  tmp2="\displaystyle\lim";
+  tmp3="\displaystyle\sum"; //210831to
+  repL=[ //190515from
+    ["^(",["^{xx}"]], //210805
+    ["_(",["_{xx}"]], //210831
+    ["tx(",["\text{xx}"]], //210907
+    ["tfr(",["","\frac{xx}{yy}"]], //210831,220523
+    ["fr(",["","\displaystyle\frac{xx}{yy}"]], //210228from 231224
+    ["log(",["\log xx ","\log_{xx} yy"]], //210405
+    ["ln(",["\ln xx "]], //210903
+    ["sq(",["\sqrt{xx}","\sqrt[xx]{yy}"]],
+    ["po(",["","{xx}^{yy}"]],
+    ["sin(",["\sin xx ","\sin^{xx}\! yy "]], //200823[3lines]  //210405
+    ["cos(",["\cos xx ","\cos^{xx}\! yy "]], //210405
+    ["tan(",["\tan xx ","\tan^{xx}\! yy "]],  //210228to  //210405
+    ["lim(", ["",tmp2+"_{xx \to yy} ",tmp2+"_{xx \to yy} zz"]], //210831from
+    ["int(", [tmp1+" ",tmp1+" xx yy ",tmp1+" yy zz ",tmp1+"_{xx}^{yy} zz ww "]],  //211027
+    ["sum(", ["",tmp3+"_{xx}^{yy} ", tmp3+"_{xx}^{yy} zz"]], //210831to
+    ["diff(", ["d ","\frac{dxx}{dyy}"]], //210913
+    ["par(", ["\partial ","\frac{\partial xx}{\partial yy}"]] ,//210913
+    ["br(", ["","","\Bigl[xx\Bigr]_{yy}^{zz}"]] //210923,1019
+  ];
+  parL=["log(","sin(","cos(","tan(","lim(","int(","sum("]; //210901
+  out=replace(str,"pi","{\pi}"); //210805
+  out=replace(out,"frac(","fr(");//231227
+  out=replace(out,"sqrt(","sq(");//231215 from
+  tmp=indexof(out,")/(");
+  ctr=1;
+  while((tmp>0)&(ctr<20),
+    tmp1=substring(out,0,tmp);
+    tmp2=substring(out,tmp+1,length(out));
+    tmp=Bracket(tmp1);
+    tmp3=tmp_(-1)_2;
+    tmp=select(tmp,#_2==-tmp3);
+    tmp=tmp_(-1)_1;
+    tmp1=substring(tmp1,0,tmp-1)+"fr("+
+           substring(tmp1,tmp,length(tmp1)-1)+",";
+    tmp=Bracket(tmp2);
+    tmp=select(tmp,#_2==-1);
+    tmp=tmp_1_1;
+    tmp2=substring(tmp2,1,length(tmp2));
+    out=tmp1+tmp2;
+    tmp=indexof(out,")/(");
+    ctr=ctr+1;
+  );//231215 to
+  head="";
+  flg=0;
+  plv=Bracket(out,"()");
+  if(length(plv)>0,
+    if(plv_1_2==0,
+      head=substring(out,0,plv_1_1);
+      out=substring(out,plv_1_1,length(out));
+      if(substring(out,0,1)=="*",out=substring(out,1,length(out)));
+      plv=Bracket(out,"()");
+    );
+    if(length(plv)>0, //210806
+      tmp=plv_(-1);
+      if(tmp_2!=-1,
+        out=str;
+        flg=1;
+      );
+    );  //210806
+  );
+  if(flg==0,
+    forall(repL,rep,
+      fun=rep_1;
+      ctr=1;
+      tmp=indexof(out,fun);
+      while((tmp>0)&(ctr<40),
+        pre=substring(out,0,tmp-1);
+        out=substring(out,tmp-1,length(out));
+        plv=Bracket(out,"()");
+        tmp=select(plv,#_2==-1);
+        tmp=tmp_1;
+        post=substring(out,tmp_1,length(out));
+        out=substring(out,0,tmp_1);
+        clv=Getlevel(out);
+        clv=select(clv,#_2==1);
+        nn=length(clv)+1;
+        if(nn==1,
+          tmp1=substring(out,plv_1_1,length(out)-1);
+          if(contains(parL,fun), //210901from
+            tmp1=Addpar(tmp1); //211029
+          ); //210901to
+          out=replace(rep_2_1,"xx",tmp1);
+        );
+       if(nn==2,
+          tmp1=substring(out,plv_1_1,clv_1_1-1);
+          tmp2=substring(out,clv_1_1,length(out)-1);
+		  if(indexof(out,"int(")>0, //231227from
+		    if((length(tmp2)>0)&(substring(tmp2,0,1)!="d"),
+			  tmp2="d"+tmp2;
+            );
+          ); //231227to
+          if(contains(parL,fun), //210901from
+            tmp2=Addpar(tmp2); //211029
+          ); //210901to
+          tmp=replace(rep_2_2,"xx",tmp1);
+          out=replace(tmp,"yy",tmp2);
+        );
+        if(nn==3, //210831from
+          tmp1=substring(out,plv_1_1,clv_1_1-1);
+          tmp2=substring(out,clv_1_1,clv_2_1-1);
+          tmp3=substring(out,clv_2_1,length(out)-1);
+          if(contains(parL,fun), //210901from
+            tmp3=Addpar(tmp3); //211029
+          ); //210901to
+          tmp=replace(rep_2_3,"xx",tmp1);
+          tmp=replace(tmp,"yy",tmp2);
+          out=replace(tmp,"zz",tmp3);
+        );
+        if(nn==4,
+          tmp1=substring(out,plv_1_1,clv_1_1-1);
+          tmp2=substring(out,clv_1_1,clv_2_1-1);
+          tmp3=substring(out,clv_2_1,clv_3_1-1);
+          if(contains(parL,fun), //210901from
+            tmp3=Addpar(tmp3); //211029
+          ); //210901to
+          tmp4=substring(out,clv_3_1,length(out)-1);
+		  if(indexof(out,"int(")>0, //231227from
+		    if((length(tmp4)>0)&(substring(tmp4,0,1)!="d"),
+			  tmp4="d"+tmp4;
+            );
+          );//231227to
+          tmp=replace(rep_2_4,"xx",tmp1);
+          tmp=replace(tmp,"yy",tmp2);
+          tmp=replace(tmp,"zz",tmp3);
+          out=replace(tmp,"ww",tmp4);
+        );  //210831to
+        out=pre+out+post;
+        tmp=indexof(out,fun);
+        ctr=ctr+1;
+      );
+    );
+  );
+  out=head+out;
+  out=replace(out,"*"," ");
+  out;
+);
+Bracket(str):=Bracket(str,"()");
+Bracket(str,br):=(
+  regional(ph,pt,out,noL,ncL,nall,level,tmp);
+  ph=substring(br,0,1);
+  pt=substring(br,1,2);
+  noL=Indexall(str,ph);
+  ncL=Indexall(str,pt); // 16.05.22until
+  nall=sort(concat(noL,ncL));
+  level=0;
+  out=[];
+  forall(nall,
+    if(contains(noL,#),
+      level=level+1;
+      tmp=[#,level];
+    ,
+      tmp=[#,-level];
+      level=level-1;
+    );
+    out=append(out,tmp);
+  );
+  out;
+);
+Indexall(str,key):=(
+  regional(rest,out,flg,tmp,tmp1,);
+  out=[];
+  rest=str;
+  flg=0;
+  forall(1..(length(str)),
+    if(flg==0,
+      tmp=indexof(rest,key);
+      if(tmp>0,
+        tmp1=tmp+length(str)-length(rest);
+        out=append(out,tmp1);
+        rest=substring(rest,tmp,length(rest));
+      ,
+        flg=1;
+      );
+    );
+  );
+  out;
+);
+Getlevel(str):=Getlevel(str,",");
+Getlevel(str,Arg):=Getlevel(str,Arg,"()");
+Getlevel(str,Arg,bra):=(
+  regional(nL,parL,n,tmp,tmp1,tmp2,out);
+  if(islist(Arg),
+    nL=Arg;
+  ,
+    nL=Indexall(str,Arg);
+  );
+  parL=Bracket(str,bra);
+  if(length(parL)==0, //210907from
+    tmp="("+str+")"; //210926from
+    tmp1=Getlevel(tmp);
+    out=apply(tmp1,[#_1-1,#_2-1]); //210926to
+  ,
+    out=[];
+    forall(nL,n,
+      if((n<parL_1_1)%(n>parL_(-1)_1),
+        tmp=0;
+      ,
+        tmp2=select(parL,#_1<n);
+        tmp2=tmp2_(-1);
+        if(tmp2_2>=0,tmp=tmp2_2,tmp=-tmp2_2-1);
+      );
+      out=append(out,[n,tmp]);
+    );
+  );  //210907to
+  out;
+);
+Addpar(str):=(
+  regional(num,out,add,tmp);
+  out=str;
+  if(length(str)>0,
+    if(substring(str,0,1)=="!",
+      if(substring(str,1,2)!="!",
+        out=substring(str,1,length(str));
+      ,
+        out="("+substring(str,2,length(str))+")";
+      );
+    ,
+      add=(length(str)>=3)&(str!="{\pi}"); //211118
+      num=apply(0..9,text(#));
+      tmp=apply(1..(length(str)),str_#);
+      tmp=sort(tmp);
+      add=add&(common(num,tmp)!=tmp);
+      tmp=Indexall(str,"^");
+      add=add&(length(tmp)!=1);
+      add=add&(str_1!="(");
+      forall(["+","-","/"], //210923from
+        add=add%(indexof(str,#)>0);
+      ); //210923to
+      if(add,out="("+out+")");
+    );
+  );
+  out;
+);
+Sla2fra(str):=(
+  regional(out,subL,nn,sub,numer,ctr,sla,par,nstr,dstr,
+       tmp,tmp1,tmp2,tmp3,tmp4);
+  numer=".0123456789";
+  numer=apply(1..(length(numer)),numer_#);
+  subL=Strsplit(str,"//");
+  forall(2..(length(subL)),
+    tmp=subL_#;
+    if(substring(tmp,0,1)=="/",
+      subL_#=substring(tmp,1,length(tmp))
+    );
+  ); 
+  forall(1..(length(subL)),nn,
+    sub="("+subL_nn+")";
+    sla=Getlevel(sub,"/");
+    sla=sort(sla,[-#_2,#_1]);
+    if(length(sla)>0,sla=sla_1_1,sla=0);
+    ctr=0;
+    while((sla>0)&(ctr<20),
+      par1=Bracket(sub,"()");
+      par2=Bracket(sub,"{}");
+      tmp1=sla-1;
+      tmp=sub_(tmp1);
+      if((tmp==")")%(tmp=="}"),
+        if(tmp==")",par=par1,par=par2);
+        tmp=select(par,#_1==tmp1);
+        tmp=tmp_1_2;
+        tmp2=select(par,(#_1<tmp1)&(#_2==-tmp));
+        tmp2=tmp2_(-1)_1;
+        nstr=substring(sub,tmp2,tmp1-1);
+        tmp2=tmp2-1;
+      ,
+        if(contains(numer,sub_(tmp1)),
+          tmp2=select(1..(tmp1),!contains(numer,sub_#));
+          if(length(tmp2)>0,tmp2=tmp2_(-1),tmp2=0);
+          nstr=substring(sub,tmp2,tmp1);
+        ,
+          if(substring(sub,tmp1-2,tmp1)=="pi",
+            nstr="pi";
+            tmp2=tmp1-2;
+          ,
+            nstr=sub_(tmp1);
+            tmp2=tmp1-1;
+          );
+        );
+      );
+      tmp3=sla+1;
+      tmp=sub_(tmp3);
+      if((tmp=="(")%(tmp=="{"),
+        if(tmp=="(",par=par1,par=par2);
+        tmp=select(par,#_1==tmp3);
+        tmp=tmp_1_2;
+        tmp4=select(par,(#_1>tmp3)&(#_2==-tmp));
+        tmp4=tmp4_1_1;
+        dstr=substring(sub,tmp3,tmp4-1);
+      ,
+        if(contains(numer,sub_(tmp3)),
+          tmp4=select((tmp3)..(length(sub)),
+            !contains(numer,sub_#));
+          if(length(tmp4)>0,tmp4=tmp4_1-1,tmp4=length(sub));
+          dstr=substring(sub,tmp3-1,tmp4);
+        ,
+          if(substring(sub,tmp3-1,tmp3+1)=="pi",
+            dstr="pi";
+            tmp4=tmp3+1;
+          ,
+            tmp4=tmp3;
+            dstr=sub_(tmp4);
+          );
+        );
+      );
+      sub=substring(sub,0,tmp2)+"fr("+nstr+","+dstr+")"+substring(sub,tmp4,length(sub));
+      sla=Getlevel(sub,"/");
+      sla=sort(sla,[-#_2,#_1]);
+      if(length(sla)>0,sla=sla_1_1,sla=0);
+      ctr=ctr+1;
+    );
+    subL_nn=substring(sub,1,length(sub)-1);
+  );
+  out="";
+  forall(subL,
+    out=out+#+"//";
+  );
+  out=substring(out,0,length(out)-2);
+  out;
+);
+Strsplit(strorg,key):=( // 210422 renewed
+  regional(str,ctr,tmp,tmp1,out);
+  str=strorg+key; 
+  out=[];
+  tmp=indexof(str,key);
+  while(tmp>0,
+    tmp1=substring(str,0,tmp-1);
+    out=append(out,tmp1);
+    str=substring(str,tmp-1+length(key),length(str));
+    tmp=indexof(str,key);
+  );
+  out;
 );
 Seteditable(no):=Seteditable(no,[]); //200524
 Seteditable(no,optionorg):=(
@@ -356,38 +695,6 @@ Slider(ptstr,p1,p2,optionsorg):=(//220903
   if(!contains(options,"nodisp"),options=append(options,"notex"));
   Listplot(pA+pB,[p1,p2],options);
   Putonseg(pC,parse("sg"+pA+pB));
-);
-Strsplit(strorg,key):=( // 210422 renewed
-  regional(str,ctr,tmp,tmp1,out);
-  str=strorg+key; 
-  out=[];
-  tmp=indexof(str,key);
-  while(tmp>0,
-    tmp1=substring(str,0,tmp-1);
-    out=append(out,tmp1);
-    str=substring(str,tmp-1+length(key),length(str));
-    tmp=indexof(str,key);
-  );
-  out;
-);
-Indexall(str,key):=(
-  regional(rest,out,flg,tmp,tmp1,);
-  out=[];
-  rest=str;
-  flg=0;
-  forall(1..(length(str)),
-    if(flg==0,
-      tmp=indexof(rest,key);
-      if(tmp>0,
-        tmp1=tmp+length(str)-length(rest);
-        out=append(out,tmp1);
-        rest=substring(rest,tmp,length(rest));
-      ,
-        flg=1;
-      );
-    );
-  );
-  out;
 );
 Listplot(list):=Listplot(list,[]);
 Listplot(Arg1,Arg2):=(
@@ -3500,12 +3807,53 @@ circlebutton(text, pos, isOn, script) := (
 	// 丸枠
 	Letter([pos, "e", unicode("3007")]);
 	// 赤塗り
-	if(isOn, Expr(pos + [-1/64, 1/32], "e", "\bullet", ["Size=2", "Color=red"]));
+	if(isOn, Expr(pos + [0, 3/64], "e", "\bullet", ["Size=2", "Color=red"]));
+);
+
+
+fxess(r, prefix, suffix) := (
+	regional(ret, tel, tex);
+
+	tel = guess(r);
+	tex = Totexform(Sla2fra(tel));
+	if(indexof(tex, "+") > 1 % indexof(tex, "-") > 1 % tel == tex, (
+		ret = format(r, 3);
+	), (
+		ret = replace(tex, "frac", "dfrac");
+	));
+
+	if(r ~= 0, (
+		ret = "";
+	), (
+		if(r ~= 1, (
+			ret = prefix + suffix;
+		), (
+			if(indexof(tex, "-") == 1, (
+				// nop
+			), (
+				ret = prefix + ret;
+			));
+
+			ret = ret + suffix;
+		));
+	));
+
+	ret;
 );
 
 
 
-setupkeyboard([0.5, -3], [0.75, -0.5], "presskeyboardkey", [
+dqe(v, alt) := (
+	if(length(v) == 0, (
+		alt;
+	), (
+		v;
+	));
+);
+
+
+
+setupkeyboard([0.5, -3.0], [0.75, -0.5], "presskeyboardkey", [
 	[ "BS", "増", "+", "7", "8", "9"],
 	["CLR", "減", "-", "4", "5", "6"],
 	["RST", ".", "0", "1", "2", "3"]
@@ -3589,6 +3937,9 @@ Text1200.xy = [-6.20, 5 - 3/32];
 Text1201.xy = [-4.55, 5 - 3/32];
 
 
+
+showingIs = "parts";
+angleFormat = "rad";
 ;
 
 </script>
@@ -3602,8 +3953,8 @@ Fontsize("n");
 
 Addax(1);
 
-Slider("-N-", [-4.9, -5.5], [5.0, -5.5]);
-inEp = floor(N.x + 5);
+Slider("-N-", [-7.0, -5.5], [5.0, -5.5]);
+inEp = floor(N.x + 8);
 n = inEp;
 
 Text1200.text = inRe; a = if(inRe == "", 0, parse(inRe));
@@ -3644,11 +3995,8 @@ forall(ans, Pointdata("p" + ansidx(#), [[ansRe(#), ansIm(#)]], ["Size=4"]));
 
 Letter([[-7, 5], "e", "$z^{" + n + "}=$　　　　　　$+$　　　　　　$i$ を満たす複素数 $z=\sqrt[" + n + "]{" + format(a, 3) + "+" + format(b, 3) + "i}$"]);
 
-if(n > 0, Letter([[2.0, 5.0], "e", "解は極座標表示で $z_n = re^{i\theta_n}$"]));
 
-if(n > 0, Expr([[2.0, 4.5], "e", "r=" + r]));
 
-if(n > 0, Expr([[2.0, 4.0], "e", "\theta_n=" + asfrac(1 / (n / 2), ["", "n\pi"]) + "+" + asfrac(s0 / pi, ["", "\pi"])]));
 
 quot = unicode("22");
 
@@ -3664,11 +4012,38 @@ forall(ans, Arrowhead("ia" + ansidx(#), [ansRe(#), ansIm(#)] / 2, [-ansIm(#), an
 
 forall(ans, Expr([ansRe(#), ansIm(#)] / r * (r + 0.5), "c", "z_{" + (ansidx(#) + 1) + "}"));
 
-forall(ans, Expr(
-	[-7, 3.5 - ansidx(#) * 3/4],
-	"e",
-	"z_{" + (ansidx(#) + 1) + "}=(" + format(ansRe(#), 3) + ")+(" + format(ansIm(#), 3) + ")i")
-);
+
+
+
+
+
+
+if(showingIs == "parts", (
+	forall(ans, Expr(
+		[-7, 3.5 - ansidx(#) * 3/4],
+		"e",
+		"z_{" + (ansidx(#) + 1) + "}=" + fxess(ansRe(#), "\phantom{+}", "") + fxess(ansIm(#), if(ansRe(#) ~= 0, "\phantom{+}" , "+"), "i")
+	));
+));
+
+if(showingIs == "exp", (
+	if(angleFormat == "rad", (
+		forall(ans, Expr(
+			[-7, 3.5 - ansidx(#) * 3/4],
+			"e",
+			"z_{" + (ansidx(#) + 1) + "}=" + fxess(r, "", "") + "e^{" + dqe(fxess(s0 + 2 * ansidx(#) / n, "i", "\pi"), "i0") + "}"
+		));
+	));
+
+	if(angleFormat == "deg", (
+		forall(ans, Expr(
+			[-7, 3.5 - ansidx(#) * 3/4],
+			"e",
+			"z_{" + (ansidx(#) + 1) + "}=" + fxess(r, "", "") + "e^{i" + (s0 + 2 * ansidx(#) / n) * 180 + "°}"
+		));
+	));
+));
+
 
 Expr(N.xy + [0, 1/4], "n", "n=" + n);
 
@@ -3701,10 +4076,10 @@ var cdy = CindyJS({
   },
   angleUnit: "°",
   geometry: [
-    {name: "SW", type: "Free", pos: [4.0, 4.0, -0.999706547817084], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
-    {name: "NE", type: "Free", pos: [4.0, 3.9687500000000155, 0.9958014441146779], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
-    {name: "Text1200", type: "EditableText", pos: [4.0, -3.165322580645161, -0.6451612903225806], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, minwidth: 64, text: "8", textsize: 18.0},
-    {name: "Text1201", type: "EditableText", pos: [3.7095541401273886, -4.0, -0.8152866242038217], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, minwidth: 64, text: "0", textsize: 18.0},
+    {name: "SW", type: "Free", pos: [4.0, 3.9531249999995253, -0.9958014441146779], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
+    {name: "NE", type: "Free", pos: [4.0, 3.9686274509794126, 0.9997065478169617], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
+    {name: "Text1200", type: "EditableText", pos: [4.0, -3.165322580645161, -0.6451612903225806], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, minwidth: 64, script: "showingIs = \"parts\";", text: "8", textsize: 18.0},
+    {name: "Text1201", type: "EditableText", pos: [3.7095541401273886, -4.0, -0.8152866242038217], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, minwidth: 64, script: "showingIs = \"exp\";", text: "0", textsize: 18.0},
     {name: "min-N", type: "Free", pos: [-2.8571428571428577, -4.0, 0.5714285714285714], color: [1.0, 0.0, 0.0], alpha: 0.0, labeled: false, size: 3.0, border: true },
     {name: "max-N", type: "Free", pos: [2.8571428571428577, -4.0, 0.5714285714285714], color: [1.0, 0.0, 0.0], alpha: 0.0, labeled: false, size: 3.0, border: true },
     {name: "N", type: "Free", pos: [-1.4545454545454546, -4.0, 0.7272727272727273], color: [1.0, 0.0, 0.0], labeled: false, size: 3.0, border: true },
@@ -3727,13 +4102,17 @@ var cdy = CindyJS({
     {name: "Text1014", type: "Button", pos: [1.9360730593607307, -4.0, 0.91324200913242], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "presskeyboardkey(\"0\");", text: "　　", textsize: 18.0},
     {name: "Text1015", type: "Button", pos: [2.6301369863013697, -4.0, 0.91324200913242], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "presskeyboardkey(\"1\");", text: "　　", textsize: 18.0},
     {name: "Text1016", type: "Button", pos: [3.3059360730593608, -4.0, 0.91324200913242], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "presskeyboardkey(\"2\");", text: "　　", textsize: 18.0},
-    {name: "Text1017", type: "Button", pos: [4.0, -4.0, 0.91324200913242], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "presskeyboardkey(\"3\");", text: "　　", textsize: 18.0}
+    {name: "Text1017", type: "Button", pos: [4.0, -4.0, 0.91324200913242], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "presskeyboardkey(\"3\");", text: "　　", textsize: 18.0},
+    {name: "Text1300", type: "Button", pos: [-2.834008097165992, -4.0, -0.8097165991902833], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "showingIs = \"parts\";", text: "直交座標表示", textsize: 18.0},
+    {name: "Text1301", type: "Button", pos: [-3.5532994923857864, -4.0, -1.015228426395939], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "showingIs = \"exp\";", text: "極座標表示", textsize: 18.0},
+    {name: "Text1302", type: "Button", pos: [4.0, 3.0109090909090908, 0.7272727272727273], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "angleFormat = \"rad\";", text: "弧度法", textsize: 18.0},
+    {name: "Text1303", type: "Button", pos: [4.0, 2.5745454545454542, 0.7272727272727273], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "angleFormat = \"deg\";", text: "度数法", textsize: 18.0}
   ],
   ports: [{
-    width: 863,
-    height: 823,
+    width: 1024,
+    height: 816,
     id: "CSCanvas",
-    transform: [{visibleRect: [-7.539467375120037, 6.190051778324359, 6.001761229934265, -6.723541665429627]}],
+    transform: [{visibleRect: [-7.774830560607655, 6.739232544462135, 8.292629568680416, -6.064524746064296]}],
     grid: 1.0,
     background: "rgb(247,247,247)"
   }],
