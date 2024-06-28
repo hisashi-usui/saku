@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     
-    <title>fukuso20240529.cdy</title>
+    <title>fukuso20240628.cdy</title>
     <style type="text/css">
         * {
             margin: 0px;
@@ -4231,7 +4231,7 @@ one=0;
 en=0;
 ans=0;
 ra=sqrt(2);
-A.xy=[2,0];MAC=A.xy;macf=0;
+A.xy=[2,0];
 B.xy=[1,0];
 rdr=0;
 dra=0.02;
@@ -4246,14 +4246,10 @@ drwt(line,str):=(
 ky="";
 flg=-1;
 
-create(["Text0"],"EditableText",[]);// sq(z)
+create(["Text0"],"EditableText",[]);
 Text0.xy=[5.6,1.6];
 Text0.fillcolor=[1,1,1];;
 Text0.fillalpha=1;
-inspect(Text0,"textsize",20);
-inspect(Text0,"text.minwidth",50);
-
-println(inspect(Text0,"text.minwidth"));
 
 Makebutton(name,ichi,script):=Makebutton(name,ichi,script,18);
 Makebutton(name,ichi,script,tsize):=(
@@ -4341,7 +4337,7 @@ Makebutton("Text54","[5.8,-1.11]",Tscript);
 Tscript="funflg=1;name="+Dq+"+Dq+"+Dq+"fr("+Dq+"+Dq+"+Dq+";";
 Makebutton("Text55","[5.8,-0.23]",Tscript);
 
-println(Text0.xy);
+
 
 create(["A"],"FreePoint",[1,1,1]);
 A.size=5;
@@ -4359,8 +4355,6 @@ B.color=(0,0,1);
 B.labelled=false;
 B.visible=false;
 B.alpha=0.2;
-
-
 
 Tscript="if(rdr==0,ra=ra-dra,dra=dra/2);";//小さく
 Makebutton("Text14","[7.9,2.7]",Tscript,"20");
@@ -4392,16 +4386,35 @@ Tscript="funflg=1;name="+Dq+"+Dq+"+Dq+"sq(3,z)"+Dq+"+Dq+"+Dq+";";
 Makebutton("Text104","[8.5,-7.3]",Tscript,"20");
 Tscript="funflg=1;name="+Dq+"+Dq+"+Dq+"log(z)"+Dq+"+Dq+"+Dq+";";
 Makebutton("Text105","[10.0,-7.3]",Tscript,"20");
-Tscript="rcflg=0;en=1;ra=sqrt(2);Putpoint("+Dq+"B"+Dq+",[1,0]);funflg=1;name="+Dq+"+Dq+"+Dq+"fr(1,z)"+Dq+"+Dq+"+Dq+";";
-Makebutton("Text106","[7.0,-8.5]",Tscript,"20");
-Tscript="rcflg=0;en=1;ra=1;Putpoint("+Dq+"B"+Dq+",[1,0]);funflg=1;name="+Dq+"+Dq+"+Dq+"fr(1,z)"+Dq+"+Dq+"+Dq+";";
-Makebutton("Text107","[8.5,-8.5]",Tscript,"20");
+
+Makebutton("Text106","[7.0,-8.5]","button106()","20");
+Makebutton("Text107","[8.5,-8.5]","button107()","20");
 
 ;
 
 </script>
 <script id="csdraw" type="text/x-cindyscript">
 Ketinit(1);
+
+button106():=(
+ Str="";
+ rcflg=0;
+ en=1;
+ ra=sqrt(2);
+ Putpoint("B",[1,0]);
+ funflg=1;
+ name="fr(1,z)";
+);
+
+button107():=(
+ Str="";
+ rcflg=0;
+ en=1;
+ ra=1;
+ Putpoint("B",[1,0]);
+ funflg=1;
+ name="fr(1,z)";
+);
 
 
 nameL=[["BS","AC","<",">",">>"]];
@@ -4756,8 +4769,8 @@ var cdy = CindyJS({
     {name: "Text103", type: "Button", pos: [3.8356164383561646, -4.0, 0.547945205479452], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"sq(z)\";", text: "　　", textsize: 20.0},
     {name: "Text104", type: "Button", pos: [4.0, -3.4352941176470586, 0.47058823529411764], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"sq(3,z)\";", text: "　　", textsize: 20.0},
     {name: "Text105", type: "Button", pos: [4.0, -2.92, 0.4], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"log(z)\";", text: "　　", textsize: 20.0},
-    {name: "Text106", type: "Button", pos: [3.2941176470588234, -4.0, 0.47058823529411764], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "rcflg=0;en=1;ra=sqrt(2);Putpoint(\"B\",[1,0]);funflg=1;name=\"fr(1,z)\";", text: "　　", textsize: 20.0},
-    {name: "Text107", type: "Button", pos: [4.0, -4.0, 0.47058823529411764], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "rcflg=0;en=1;ra=1;Putpoint(\"B\",[1,0]);funflg=1;name=\"fr(1,z)\";", text: "　　", textsize: 20.0},
+    {name: "Text106", type: "Button", pos: [3.2941176470588234, -4.0, 0.47058823529411764], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "button106()", text: "　　", textsize: 20.0},
+    {name: "Text107", type: "Button", pos: [4.0, -4.0, 0.47058823529411764], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "button107()", text: "　　", textsize: 20.0},
     {name: "Text20", type: "Button", pos: [4.0, -2.6914285714285713, 0.5714285714285714], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"0\";", text: "　　", textsize: 18.0},
     {name: "Text21", type: "Button", pos: [4.0, -2.2975609756097564, 0.4878048780487805], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\".\";", text: "　　", textsize: 18.0},
     {name: "Text22", type: "Button", pos: [4.0, -2.0258064516129033, 0.43010752688172044], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, script: "funflg=1;name=\"pi\";", text: "　　", textsize: 18.0},
@@ -4765,9 +4778,9 @@ var cdy = CindyJS({
   ],
   ports: [{
     width: 667,
-    height: 646,
+    height: 567,
     id: "CSCanvas",
-    transform: [{visibleRect: [-5.4651169971939915, 5.93692565882225, 12.018015075364245, -10.995762975169686]}],
+    transform: [{visibleRect: [-5.4651169971939915, 5.93692565882225, 12.018015075364245, -8.925047182467885]}],
     grid: 1.0,
     background: "rgb(247,247,247)"
   }],
