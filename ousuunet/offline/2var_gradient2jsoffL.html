@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     
-    <title>2var_gradient.cdy</title>
+    <title>2var_gradient2.cdy</title>
     <style type="text/css">
         * {
             margin: 0px;
@@ -684,6 +684,9 @@ Lettermove(dir,str):=(
 Dqq(str):=DqDq(str); //18.02.11
 DqDq(str):=(
   unicode("0022")+str+unicode("0022");
+);
+Seteditable(no):=Seteditable(no,[]); //200524
+Seteditable(no,optionorg):=(
 );
 Pointdata(nm,list):=Pointdata(nm,list,[]);
 Pointdata(nm,listorg,optionsorg):=(
@@ -3236,7 +3239,7 @@ if(!inketjs, (
 		regional(target);
 		target = element("Text0");
 		target.xy = [-2, -6];
-		target.val = "x * y";
+		target.val = "x^2-y^2";
 		inspect(target, "text.minwidth", 290);
 	), (
 		println("[{init}] `Text0` (Editable Text) is not found");
@@ -3257,6 +3260,7 @@ Addax(0);
 
 Expr([-7.5,6.1],"e","\mbox{2変数関数を入力}");
 Text0.xy=[-5,6];
+Seteditable(0,["x^2-y^2","Size=18","Width=200"]);
 
 f(x, y) := parse(Text0.val);
 
@@ -3318,13 +3322,13 @@ var cdy = CindyJS({
     {name: "scale", type: "PointOnSegment", pos: [-0.9230769230769226, -4.0, 0.6153846153846154], color: [1.0, 0.0, 0.0], args: ["line-scale"], labeled: false, size: 3.0, border: true },
     {name: "SW", type: "Free", pos: [4.0, 4.0, -0.8], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
     {name: "NE", type: "Free", pos: [4.0, 4.0, 0.8], color: [1.0,1.0,1.0], labeled: false, size: 2.0, border:false },
-    {name: "Text0", type: "EditableText", pos: [3.3333333333333335, -4.0, -0.6666666666666666], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 0.784, 0.0], fillalpha: 0.5, minwidth: 290, text: "x * y"}
+    {name: "Text0", type: "EditableText", pos: [3.3333333333333335, -4.0, -0.6666666666666666], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, minwidth: 200, text: "x^2-y^2", textsize: 18.0}
   ],
   ports: [{
     width: 945,
-    height: 804,
+    height: 752,
     id: "CSCanvas",
-    transform: [{visibleRect: [-8.197242228107692, 7.012719267396842, 8.025572233801771, -6.789548274799145]}],
+    transform: [{visibleRect: [-9.321483580404122, 7.70296231563942, 9.56126450851741, -7.323309179460044]}],
     axes: true,
     grid: 1.0,
     snap: true,
