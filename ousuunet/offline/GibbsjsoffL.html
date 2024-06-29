@@ -3277,14 +3277,14 @@ Xsd=1;Xed=2-Xsu;
 Xd=Xu+(Xsu-Xsd)*Sc+0.25;Yd=-0.2;
 fstru="R0^2-(x-Xc)^2-(y-Yu-0.04)^2";
 fstrd="R0^2-(x-Xc)^2-(y-Yd+0.05)^2";
-TNs=[-2,3.8];TNw=[3.45,0];TNd=[0,0.25];
+TNs=[-2,3.8];TNw=[3.45,0];TNd=[0,0.35];
 IntCst():=(
   Listplot("TN",[TNs+TNd,TNs+TNd+TNw,TNs-TNd+TNw,TNs-TNd,TNs+TNd],["nodisp"]);
   Shade(["sgTN"],["Color=yellow"]);
-  if(nxtflag==0,
-    Letter(TNs+TNw/2,"c","フーリエ級数展開",["Size=0.8"]);
+  if(nxtflag<2,
+    Letter(TNs+TNw/2-[0,0.05],"c","フーリエ級数展開",["Size=0.8"]);
   ,
-    Letter(TNs+TNw/2,"c","ギブス現象",["Size=0.8"]);
+    Letter(TNs+TNw/2-[0,0.05],"c","ギブス現象",["Size=0.8"]);
   );
   mdd=0.09;//左右の調整
   Xc=Xu-Sc*(1-Xsu)/2+mdd;
@@ -3349,8 +3349,10 @@ if(nxtflag==1,
 "\displaystyle
 f(x)=\dfrac{1}{2}+\sum_{n=1}^{\infty}\dfrac{1}{n\pi}\big(1-(-1)^n\big)\sin n\pi x",["Size=1.5/Scale"]);
   Expr([XMIN+0.4,-3.5],"e",
-"\displaystyle\phantom{f(x)=}
-\dfrac{1}{2}+\sum_{n=1}^{N}\dfrac{1}{n\pi}\big(1-(-1)^n\big)\sin n\pi x",["Size=1.5/Scale"]);
+"\displaystyle\phantom{f(x)}
+=\dfrac{1}{2}+\sum_{n=1}^{N}\dfrac{1}{n\pi}\big(1-(-1)^n\big)\sin n\pi x",["Size=1.5/Scale"]);
+  Expr([XMIN+1.25,-3.41],"c","\cdot",["Size=1.2/Scale"]);
+  Expr([XMIN+1.4,-3.6],"c","\cdot",["Size=1.2/Scale"]);
   Letter([XMIN+0.4,-4.5],"e",
     "として，$N$を変化させてグラフのようすを",["Size=1.5/Scale"]
   );
@@ -3366,16 +3368,20 @@ if(nxtflag==2,
 );
 );
 Exprf(pt):=(
-Expr(pt+[XMIN+0.4/Scale,0],"e","
-f(x)=
+Expr(pt+[XMIN+0.4/Scale,0],"e",
+"f(x)=
 \left\{
 \begin{array}{ll}
-1\,, & 0 \leq x < 1 \\
+1\,, & \phantom{-}0 \leq x < 1 \phantom{\dfrac{}{}}\\
 0\,, & -1 \leq x < 0 
 \end{array}
 \right.
-\quad f(x+2)=f(x)
-",["Size=1.4/Scale"]);
+\quad f(x+2)=f(x)",
+["Size=1.4/Scale"]);
+Expr(pt+[XMIN+5.82/Scale,0.35/Scale],"e","-",
+["Size=1.4/Scale"]);
+Expr(pt+[XMIN+5.82/Scale,-0.65/Scale],"e","-",
+["Size=1.4/Scale"]);
 );
 
 
@@ -3396,19 +3402,19 @@ Addax(0);
 
 ss=Animationparam(0,5,73);
 
-
 Listplot("STs",[STs+STd,STs+STd+STw,STs-STd+STw,STs-STd,STs+STd],["nodisp"]);
 Listplot("STf",[STf+STd,STf+STd+STw,STf-STd+STw,STf-STd,STf+STd],["nodisp"]);
+
 if(nxtflag==0,
   Text1.xy=[10,YMIN-1];
   Shade(["sgSTs"],["Color=green"]);
-  Letter(STs+STw/2,"c","次へ",["Size=0.9"]);
+  Letter(STs+STw/2,"c","次へ",["Size=0.8"]);
 );
 
 if(nxtflag==1,
   Text1.xy=[10,YMIN-1];
   Shade(["sgSTs"],["Color=green"]);
-  Letter(STs+STw/2,"c","始め",["Size=0.9"]);
+  Letter(STs+STw/2,"c","開始",["Size=0.8"]);
 );
 
 if(nxtflag==2,
@@ -3417,12 +3423,12 @@ if(nxtflag==2,
     Shade(["sgSTs"],["Color=skyblue"]);
     Letter(STs+STw/2,"c","休止",["Size=0.8"]);
     Shade(["sgSTf"],["Color=red"]);
-    Letter(STf+STw/2-[0,0.02],"c","終了",["Size=0.9"]);
+    Letter(STf+STw/2-[0,0.02],"c","終了",["Size=0.8"]);
   ,
     Shade(["sgSTs"],["Color=green"]);
-    Letter(STs+STw/2,"c","進む",["Size=0.6"]);
+    Letter(STs+STw/2,"c","進む",["Size=0.8"]);
     Shade(["sgSTf"],["Color=yellow"]);
-    Letter(STf+STw/2,"c","戻る",["Size=0.55"]);
+    Letter(STf+STw/2,"c","戻る",["Size=0.8"]);
   );
 );
 
@@ -3454,8 +3460,11 @@ if(NN>60,
 );
 if(NN>80,
   Letter([XMIN+0.4,-3.7],"e",
-    "　これをギブス現象という．"
+    "　これを　　　　　という．"
   ,["Size=1.5/Scale"]);
+  Letter([XMIN+0.4,-3.7],"e",
+    "　　　　ギブス現象"
+  ,["Size=1.5/Scale","Color=red"]);
 );
 
 if(nxtflag!=0,
