@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+    <title>UCJSplane20211107.cdy</title>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #CSConsole {
+            background-color: #FAFAFA;
+            border-top: 1px solid #333333;
+            bottom: 0px;
+            height: 200px;
+            overflow-y: scroll;
+            position: fixed;
+            width: 100%;
+        }
+    </style>
+
+<!--
+    <link rel="stylesheet" href="https:/cindyjs.org/dist/v0.8/CindyJS.css">
+    <script type="text/javascript" src="https://cindyjs.org/dist/v0.8/Cindy.js"></script>
+-->
+
+    <link rel="stylesheet" href="cindyjs/CindyJS.css">
+    <script type="text/javascript" src="cindyjs/Cindy.js"></script>
+
+<script id="csinit" type="text/x-cindyscript">
+
+createtool([["Move","Delete","Point", "Intersection", "Mid", "Compass","Line", "Segment", "Parallel", "Orthogonal","Circle"]],2,2,//flipped->true,
+reference->"UL");
+
+Dq=unicode("0022");
+Cr=unicode("000a");
+sample=0;
+realtime=0;
+start3d=0;
+axes3d=0;
+allback=0;
+axes=0;
+grid=0;
+
+
+
+JSprint(cstext):=(
+ if(isstring(cstext),,cstext=text(cstext));
+ javatext=replace(cstext,"\","\\");
+ javatext=replace(javatext,Cr,"\n");
+ javascript("document.getElementById("+Dq+"kakidashi"+Dq+").value +="+Dq+javatext+Dq);
+);
+
+JSprintln(cstext):=(
+ if(isstring(cstext),,cstext=text(cstext));
+ javatext=replace(cstext,"\","\\");
+ javatext=replace(javatext,Cr,"\n");
+ javatext=replace(javatext,"[DQ]","\"+Dq);
+ javascript("document.getElementById("+Dq+"kakidashi"+Dq+").value +="+Dq+javatext+"\n"+Dq);
+);
+
+color0=[0,0,1];
+color1=[0.8,0,1];
+color2=[0,0.8,0];
+
+if(ispoint(A1),,
+createpoint("A1",[7.5,2]);A1.visible=false;
+createpoint("A2",[7.5,4]);A2.visible=false;
+create(["L1"],"Segment",[A1,A2]);
+L1.labelled=false;
+create(["B2"],"PointOnSegment",[L1,[7.5,3,1]]);
+createpoint("A3",[8,2]);A3.visible=false;
+createpoint("A4",[8,4]);A4.visible=false;
+create(["L2"],"Segment",[A3,A4]);
+L2.labelled=false;
+create(["B3"],"PointOnSegment",[L2,[8,3,1]]);
+create(["B1"],"Free",[[6.5,3,1]]);
+B1.labelled=false;
+B2.labelled=false;
+B3.labelled=false;
+L1.color=color1;
+L2.color=color1;
+
+createpoint("A5",[7.5,-1]);A5.visible=false;
+createpoint("A6",[7.5,1]);A6.visible=false;
+create(["L3"],"Segment",[A5,A6]);
+L3.labelled=false;
+create(["B5"],"PointOnSegment",[L3,[7.5,0,1]]);
+createpoint("A7",[8,-1]);A7.visible=false;
+createpoint("A8",[8,1]);A8.visible=false;
+create(["L4"],"Segment",[A7,A8]);
+L4.labelled=false;
+create(["B6"],"PointOnSegment",[L4,[8,0,1]]);
+create(["B4"],"Free",[[6.5,0,1]]);
+B4.labelled=false;
+B5.labelled=false;
+B6.labelled=false;
+L3.color=color2;
+L4.color=color2;
+);
+
+line23(data1,data2):=(
+ regional(a1,b1,a2,b2,c1,c2,pt,ans);
+ a1=map3d(data1_1);b1=map3d(data1_2);
+ a2=map3d(data2_1);b2=map3d(data2_2);
+ pt=Useginter([[a1_1,a1_2],[b1_1,b1_2]],[[a2_1,a2_2],[b2_1,b2_2]]);
+if(pt==[],ans=[],
+ if(b1_2==a1_2,
+  c1=a1_3+(b1_3-a1_3)*(pt_1-a1_1)/(b1_1-a1_1),
+  c1=a1_3+(b1_3-a1_3)*(pt_2-a1_2)/(b1_2-a1_2)
+ );
+ if(b2_2==a2_2,
+  c2=a2_3+(b2_3-a2_3)*(pt_1-a2_1)/(b2_1-a2_1),
+  c2=a2_3+(b2_3-a2_3)*(pt_2-a2_2)/(b2_2-a2_2)
+ );
+ ans=[pt,c1,c2];
+);
+ans;
+);
+
+linecut(data1,data2):=linecut(data1,data2,[],[]);
+linecut(data1,data2,option1,option2):=(
+ regional(ans,i,sp,b,c,j);
+ ans=line23(data1,data2);
+  if(abs(ans_2-ans_3)>0.01,
+   sp=Uparamlist("ans_1+0.1*[cos(t),sin(t)]","[0,2*pi]");
+   Ulistplot(sp,["Thick=0","Shade=0"]);
+   if(ans_2>ans_3,
+    c=Uinter(list2d(data1),sp_1);
+    option=option1;
+   ,
+    c=Uinter(list2d(data2),sp_1);
+    option=option2;
+   );
+   b=[];
+   repeat(length(c),j,
+    if(islist(c_j),b=append(b,c_j));
+   );
+   Ulistplot([b_1,b_2],option);
+  );
+);
+
+
+start3d=1;
+
+C0=[3,3];
+range1=[-3,3,-3,3];
+
+allback=1;
+xax=[[-5,0,0],[5,0,0]];
+yax=[[0,-5,0],[0,5,0]];
+zax=[[0,0,-5],[0,0,5]];
+ax=[xax,yax,zax];
+
+;
+</script>
+
+<script id="csdraw" type="text/x-cindyscript">
+
+if(start3d>0,
+ start3d();
+ CRX2.xy=CRX.xy+[1,0];
+ CRY2.xy=CRY.xy+[1,0];
+ RX.y=CRX.y+sin(arctan2(RX-CRX));
+ RX.x=CRX.x+cos(arctan2(RX-CRX));
+ RY.y=CRY.y+sin(arctan2(RY-CRY));
+ RY.x=CRY.x+cos(arctan2(RY-CRY));
+  drawtext(map2d([5,0,0]),"x");
+  drawtext(map2d([0,5,0]),"y");
+  drawtext(map2d([0,0,5]),"z");
+ if(allback==0,
+  draw([map2d([-5,0,0]),map2d([5,0,0])]);
+  draw([map2d([0,-5,0]),map2d([0,5,0])]);
+  draw([map2d([0,0,-5]),map2d([0,0,5])]);
+ );
+);
+
+connect([[5.2,2],[7.2,2],[7.2,4],[5.2,4],[5.2,2]],color->color1);
+if(B1.x>7.2,B1.x=7.2);
+if(B1.x<5.2,B1.x=5.2);
+if(B1.y>4,B1.y=4);
+if(B1.y<2,B1.y=2);
+V1=[B1.x-6.5,B1.y-3,B2.y-3];
+draw([C0,C0+map2d(V1)],color->color1);
+Uarrow([C0,C0+map2d(V1)],["Size=2","Width=1","Type=0","Color=color1"]);
+
+connect([[5.2,-1],[7.2,-1],[7.2,1],[5.2,1],[5.2,-1]],color->color2);
+if(B4.x>7.2,B4.x=7.2);
+if(B4.x<5.2,B4.x=5.2);
+if(B4.y>1,B4.y=1);
+if(B4.y<-1,B4.y=-1);
+V2=[B4.x-6.5,B4.y,B5.y];
+draw([C0,C0+map2d(V2)],color->color2);
+Uarrow([C0,C0+map2d(V2)],["Size=2","Width=1","Type=0","Color=color2"]);
+
+plane1=[];plane2=[];
+
+au=range1_1;av=range1_3;
+plane1=append(plane1,[au,av,B3.y-3-(V1_1*au+V1_2*av)/V1_3]);
+plane2=append(plane2,[au,av,B6.y-(V2_1*au+V2_2*av)/V2_3]);
+
+au=range1_1;av=range1_4;
+plane1=append(plane1,[au,av,B3.y-3-(V1_1*au+V1_2*av)/V1_3]);
+plane2=append(plane2,[au,av,B6.y-(V2_1*au+V2_2*av)/V2_3]);
+
+au=range1_2;av=range1_4;
+plane1=append(plane1,[au,av,B3.y-3-(V1_1*au+V1_2*av)/V1_3]);
+plane2=append(plane2,[au,av,B6.y-(V2_1*au+V2_2*av)/V2_3]);
+
+au=range1_2;av=range1_3;
+plane1=append(plane1,[au,av,B3.y-3-(V1_1*au+V1_2*av)/V1_3]);
+plane2=append(plane2,[au,av,B6.y-(V2_1*au+V2_2*av)/V2_3]);
+
+plane1=append(plane1,plane1_1);
+plane2=append(plane2,plane2_1);
+
+fillpoly(list2d(plane1),color->color1*0.1+[1,1,1]*0.9,alpha->0.5);
+fillpoly(list2d(plane2),color->color2*0.1+[1,1,1]*0.9,alpha->0.5);
+
+connect(list2d(plane1),color->color1);
+connect(list2d(plane2),color->color2);
+
+kousen=[];
+
+line1=[];line2=[];
+
+repeat(4,i,
+ line1=append(line1,[plane1_i,plane1_(i+1)]);
+ line2=append(line2,[plane2_i,plane2_(i+1)]);
+ pp=line23(line1_i,line2_i);
+ qq=zz(-arctan2(RY-CRY),xx(-arctan2(RX-CRX),append(pp_1,pp_2)));
+ if(pp==[],,kousen=append(kousen,qq));
+);
+
+connect(list2d(kousen),color->[1,0,0]);
+
+repeat(3,i,
+ draw(list2d(ax_i),color->color0);
+ linecut(kousen,ax_i,["Color=[1,0,0]"],["Color=color0"]);
+);
+
+repeat(4,i,
+ repeat(3,j,
+  linecut(line1_i,ax_j,["Color=color1"],["Color=color0"]);
+  linecut(line2_i,ax_j,["Color=color2"],["Color=color0"]);
+ );
+ repeat(4,j,
+  linecut(line1_i,line2_j,["Color=color1"],["Color=color2"]);
+ );
+);
+
+
+
+if(realtime==1,Execute());
+
+
+;
+</script>
+
+
+<script type="text/javascript">
+var cdy = CindyJS({
+  scripts: "cs*",
+  defaultAppearance: {
+    dimDependent: 0.7,
+    fontFamily: "sans-serif",
+    lineSize: 1,
+    pointSize: 5.0,
+    textsize: 12.0
+  },
+  angleUnit: "°",
+  geometry: [
+    {name: "WriteData", type: "Button", 
+pos: [8.7,3.8,1], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, script: "WriteData();", text: "データ"},
+    {name: "Reshow", type: "Button", 
+pos: [9,2.8,1], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, script: "Reshow();", text: "再現"},
+     {name: "Execute", type: "Button", 
+pos: [9,5.8,1], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, script: "Execute();", text: "実行"},
+    {name: "TeX", type: "Button", 
+pos: [9,4.8,1], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, script: "TeX();", text: "TEX"},
+    {name: "RemoveElem", type: "Button", 
+pos: [6.5,5.8,1], dimDependent: 1, color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, script: "RemoveElem();", text: "図形消去"}
+],
+  ports: [{
+    id: "CSCanvas",
+    width: 500,
+    height: 370,
+    transform: [{visibleRect: [-6, 6, 10, -5]}],
+    axes: false,
+    grid: 0,
+    background: "rgb(1000,1000,1000)"
+  }],
+  csconsole: false,
+  use: ["katex"],
+  cinderella: {build: 2017, version: [3, 0, 2017]}
+});
+
+</script>
+</head>
+
+<body>
+
+<table border="1">
+<tr>
+<td><div id="CSCanvas"></div></td>
+<td>
+<p>スクリプト
+<input type="button" onclick="copyDraw()" value="コピー">
+<input type="button" onclick="writeDraw()" value="ファイル">
+<br>
+<textarea  name="comment" cols="40" rows="25" id="input-message" value=""></textarea >
+</p>
+</td> 
+</tr>
+</table>
+<table>
+<tr>
+<td>
+コンソール
+</td>
+<td>
+<textarea  name="comment" cols="60" rows="5" id="kakidashi" value=""></textarea >
+</td>
+<td>
+<input type="button" onclick="copyMessage()" value="コピー">
+<input type="button" onclick="writeMessage()" value="ファイル">
+　
+<input type="button" onclick="allMessage()" value="← に ↑ をつなげる">
+</td>
+</tr>
+</table>
+
+<!-- ここならよい 　改行あるとダメ -->
+<script type="text/javascript" src="ato.js"></script>
+
+<script language="javascript" type="text/javascript">
+
+  const copyDraw = () => {
+    const textbox = document.getElementById("input-message");
+    const inputValue = textbox.value;
+    navigator.clipboard.writeText(inputValue);
+  }
+
+  const writeDraw = () => {
+    const textbox = document.getElementById("input-message");
+    const inputValue = textbox.value;
+    const blob = new Blob([inputValue],{type:"text/plain"});
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'editor.txt';
+    link.click();
+  }
+
+  const copyMessage = () => {
+    const textbox = document.getElementById("kakidashi");
+    const inputValue = textbox.value;
+    navigator.clipboard.writeText(inputValue);
+  }
+
+  const writeMessage = () => {
+    const textbox = document.getElementById("kakidashi");
+    const inputValue = textbox.value;
+    const blob = new Blob([inputValue],{type:"text/plain"});
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'console.txt';
+    link.click();
+  }
+
+  const writeTexfile = () => {
+    const textbox = document.getElementById("kakidashi");
+    const inputValue = textbox.value;
+    const blob = new Blob([inputValue],{type:"text/plain"});
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'fig.tex';
+    link.click();
+  }
+
+  const allMessage = () => {
+    const textbox = document.getElementById("input-message");
+    const inputValue = textbox.value;
+    document.getElementById("kakidashi").value += inputValue;
+  }
+
+</script>
+
+</body>
+
+</html>
