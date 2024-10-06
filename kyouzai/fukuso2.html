@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+    <title>fukuso2.cdy</title>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #CSConsole {
+            background-color: #FAFAFA;
+            border-top: 1px solid #333333;
+            bottom: 0px;
+            height: 200px;
+            overflow-y: scroll;
+            position: fixed;
+            width: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cindyjs.org/dist/v0.8/CindyJS.css">
+    <script type="text/javascript" src="https://cindyjs.org/dist/v0.8/Cindy.js"></script>
+<script id="csdraw" type="text/x-cindyscript">
+//Script (CindyScript)
+draw([-5,0],[5,0]);
+draw([0,-5],[0,5]);
+draw([-5,-5],[-5,5]);
+draw([-5,-5],[5,-5]);
+draw([5,5],[-5,5]);
+draw([5,5],[5,-5]);
+O=[0,0];
+
+//----------------------------
+//str="exp(z)";
+//str="sin(z)";
+str="1/z";
+str="z^2";
+//str="conjugate(z)";
+//str="abs(z)";
+str=Text0.text;
+
+f(z):=parse(str);
+astr=Text1.text;
+h(a):=parse(astr);
+
+f=3;r=0;
+
+A.labelled=false;
+A.size=3;
+
+B.labelled=false;
+B.size=3;
+a1=complex(B);
+a2=f(a1);
+Q=gauss(a2);
+
+if(r<1,
+ z1=complex(A);
+ if(r<0,
+  z1=1+ra*cos(arctan2(A-[1,0]))+i*ra*sin(arctan2(A-[1,0]));
+ );
+ z2=f(z1);
+ P=gauss(z2);
+ drawtext((6,4),"$f(z)="+str+"$",size->20); 
+ draw(P,color->[1,1,1],size->3);
+ drawtext(A+(0.08,0.08),"$z$");
+ drawtext(P+(0.08,0.08),"$f(z)$");
+); 
+
+if(r>0,
+ A.y=0;
+ z1=A.x;
+ z2=f(z1);
+ P=[z2,0];
+ if(rr==1,P=[0,z2]);
+ strx=replace(str,"z","x");
+ drawtext((6,4),"$f(x)="+strx+"$",size->20); 
+ draw(P,color->[1,1,1]);
+ drawtext(A+(0.08,0.08),"$x$"); 
+ drawtext(P+(0.08,0.08),"$f(x)$"); 
+);
+
+if(r<0,
+ if(r==-1,ra=sqrt(2));
+ if(r==-2,ra=1);
+ A.y=ra*sin(arctan2(A-[1,0]));
+ A.x=1+ra*cos(arctan2(A-[1,0]));
+ plot([1,0]+ra*[cos(t),sin(t)],start->0,stop->2*pi+0.1);
+ if(ans>0,
+   if(str=="1/z",
+     if(r==-2,
+       draw([1/2,-5],[1/2,5]),
+       plot([1/(1-ra^2),0]+[cos(t),sin(t)]*ra/(ra^2-1),start->0,stop->2*pi+0.1)
+     );
+     ,
+     plot(gauss(f(1+ra*cos(t)+i*ra*sin(t))),start->0,stop->2*pi);
+   );
+ );
+);
+
+if(r>1,
+ AP=(A.x,P.y);
+ draw(A,AP);
+ draw(P,AP);
+ draw(AP,color->[0,0,0],size->2);
+);
+
+if(r>2,
+ g(x):=parse(strx);
+ ta=min([A.x,ta]);
+ to=max([A.x,to]);
+ plot(g(x),color->[0,0,0],start->ta,stop->to);
+);
+
+if(f==2,
+draw(O,A,color->[1,0,0]);
+draw(O,P,color->[0,0,0]);
+if(A.x>0 & A.y>0,t1=0;t2=arctan(A.y/A.x));
+if(A.x<0 & A.y>0,t1=0;t2=arctan(A.y/A.x)+pi);
+if(A.x>0 & A.y<0,t2=0;t1=arctan(A.y/A.x));
+if(A.x<0 & A.y<0,t2=0;t1=arctan(A.y/A.x)-pi);
+plot([cos(t),sin(t)]*0.4,color->[1,0,0],size->1,start->t1,stop->t2);
+if(P.x>0 & P.y>0,p1=0;p2=arctan(P.y/P.x));
+if(P.x<0 & P.y>0,p1=0;p2=arctan(P.y/P.x)+pi);
+if(P.x>0 & P.y<0,p2=0;p1=arctan(P.y/P.x));
+if(P.x<0 & P.y<0,p2=0;p1=arctan(P.y/P.x)-pi);
+plot([cos(t),sin(t)]*0.3,color->[0,0,0],size->1,start->p1,stop->p2);
+drawcircle(O,dist(O,A),color->[1,0,0],size->0.5);
+drawcircle(O,dist(O,P),color->[0,0,0],size->0.5);
+drawtext([0.9,-0.3],"1");
+);
+
+if(f==3,
+
+
+B.color=[0,1,0];
+draw(Q,color->[0,0,0],size->3);
+drawtext(B+(0.08,0.08),"$a$"); 
+drawtext(Q+(0.08,0.08),"$f(a)$"); 
+drawtext((8.5,-3),"$a=$"+a1,size->15);
+drawtext((8.5,-3.8),"$"+astr+"=$"+h(a1),size->15); 
+eps=0.001;
+drawtext((6,1),"$\dfrac{f(z)-f(a)}{z-a}=$"
++(f(z1)-f(a1))/(z1-a1),size->15);
+eps=0.001;
+drawtext((6,-0.5),"その方向から近づけた極限",size->15);
+drawtext((6,-1),"（すぐ近くでの値）",size->15);
+drawtext((6,-1.8),"$\displaystyle \lim_{z \to a} \dfrac{f(z)-f(a)}{z-a}=$"
++(f(a1+eps*(z1-a1))-f(a1))/(eps*(z1-a1)),size->15);
+);
+
+
+;
+
+</script>
+    <script type="text/javascript">
+var cdy = CindyJS({
+  scripts: "cs*",
+  defaultAppearance: {
+    dimDependent: 0.7,
+    fontFamily: "sans-serif",
+    lineSize: 1,
+    pointSize: 5.0,
+    textsize: 12.0
+  },
+  angleUnit: "°",
+  geometry: [
+    {name: "O1", type: "Free", pos: [4.0, 0.0, 4.0], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "B2", type: "Free", pos: [0.0, 0.0, 4.0], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "c2", type: "CircleMP", color: [0.0, 0.0, 1.0], args: ["O1", "B2"], visible: false},
+    {name: "O2", type: "Free", pos: [4.0, -0.0, -4.0], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "WW", type: "Free", pos: [4.0, -0.0, -0.8], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "EE", type: "Free", pos: [4.0, 0.0, 0.8], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "xline", type: "Segment", color: [0.0, 0.0, 1.0], args: ["WW", "EE"]},
+    {name: "A", type: "Free", pos: [4.0, -1.0566037735849056, 2.655065008290405], color: [1.0, 0.0, 0.0], size: 3.0, printname: "$x$"},
+    {name: "Text0", type: "EditableText", pos: [4.0, 1.6769230769230767, 0.5412247901515056], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.5, minwidth: 100, text: "z"},
+    {name: "B", type: "Free", pos: [4.0, 2.518518518518518, 2.605897137766508], dimDependent: 1, color: [0.0, 1.0, 0.0], size: 3.0, printname: "$a$"},
+    {name: "Text1", type: "EditableText", pos: [4.0, -2.481203007518797, 0.5290167121781633], color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.5, minwidth: 100, script: "\n", text: "a"}
+  ],
+  ports: [{
+    id: "CSCanvas",
+    width: 771,
+    height: 413,
+    transform: [{visibleRect: [-5.983579461604101, 6.097281684152398, 15.932523934580042, -5.642472793959212]}],
+    grid: 1.0,
+    background: "rgb(168,176,192)"
+  }],
+  csconsole: false,
+  use: ["katex"],
+  cinderella: {build: 2039, version: [3, 0, 2039]}
+});
+    </script>
+</head>
+<body>
+    <div id="CSCanvas"></div>
+</body>
+</html>
